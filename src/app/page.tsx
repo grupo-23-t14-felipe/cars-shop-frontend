@@ -1,13 +1,14 @@
 "use client";
 
+import { Button } from "@/components/Button";
 import { Select } from "@chakra-ui/react";
 
 export const Home = () => {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-grey4">
-      <button type="button" className="btn-outline-1-big">
+      <Button type="button" className="btn-outline-1-big">
         testando button
-      </button>
+      </Button>
 
       <input className="input-outline" placeholder="testando input outline" />
 
