@@ -10,9 +10,9 @@ export const Home = () => {
         testando button
       </Button>
 
-      <input className="input-outline" placeholder="testando input outline" />
+      <input className="input-outline input-placeholder" placeholder="testando input outline" />
 
-      <input className="input-default" placeholder="testando input default" />
+      <input className="input-default input-placeholder" placeholder="testando input default" />
 
       <Select placeholder="Select option" focusBorderColor="none" className="select-default">
         <option value="option1">Option 1</option>
