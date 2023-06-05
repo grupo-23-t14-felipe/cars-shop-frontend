@@ -1,4 +1,8 @@
-import "./globals.css";
+import "../styles/globals.css";
+import "../styles/typograph.css";
+import "../styles/buttons.css";
+import "../styles/inputs.css";
+
 import { Inter } from "next/font/google";
 import { Providers } from "./provider";
 
