@@ -70,10 +70,10 @@
   }
 
   .btn-outline-1-big {
-    @apply button-big text-grey0 border-2 border-grey0 hover:text-grey10 hover:bg-grey1;
+    @apply button-big text-grey0 border-2 border-grey0 hover:text-grey10 hover:bg-grey1 hover:border-grey1;
   }
   .btn-outline-1-medium {
-    @apply button-medium text-grey0 border-2 border-grey0 hover:text-grey10 hover:bg-grey1;
+    @apply button-medium text-grey0 border-2 border-grey0 hover:text-grey10 hover:bg-grey1 hover:border-grey1;
   }
 
   .btn-outline-2-big {
