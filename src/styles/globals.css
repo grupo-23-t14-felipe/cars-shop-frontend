@@ -42,3 +42,7 @@
     --whiteFixed: #ffffff;
   }
 }
+
+* {
+  scroll-behavior: smooth;
+}
