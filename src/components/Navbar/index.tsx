@@ -52,14 +52,14 @@ export const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const user: { name: string } | undefined = {
-    name: "samuel da silva leão"
+    name: "samuel leão"
   };
 
   return (
     <header
       className={clsx(
-        "flex-col h-[78px] px-4 sm:px-[1.875rem] justify-between items-center border-b-2 border-b-grey6 bg-grey10 overflow-hidden duration-300",
-        isOpen ? (user ? "h-[372px]" : "h-[264px]") : null
+        "flex-col px-4 sm:px-[1.875rem] justify-between items-center border-b-2 border-b-grey6 bg-grey10 overflow-hidden duration-300",
+        isOpen ? (user ? "h-[372px]" : "h-[264px]") : "h-[78px]"
       )}>
       <div className="w-full min-h-[78px] flex justify-between items-center">
         <figure>
