@@ -7,7 +7,7 @@ interface IButtonProps extends HTMLAttributes<HTMLButtonElement> {
 
 export const Button = ({ children, ...rest }: IButtonProps) => {
   return (
-    <button id={rest.id} type={rest.type} className={rest.className}>
+    <button id={rest.id} type={rest.type} onClick={rest.onClick} className={rest.className}>
       {children}
     </button>
   );

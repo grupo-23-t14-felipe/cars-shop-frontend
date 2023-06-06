@@ -77,10 +77,10 @@
   }
 
   .btn-outline-2-big {
-    @apply button-big text-grey0 border-2 border-grey4;
+    @apply button-big text-grey0 border-2 border-grey4 hover:text-grey10 hover:bg-grey1 hover:border-grey1;
   }
   .btn-outline-2-medium {
-    @apply button-medium text-grey0 border-2 border-grey4;
+    @apply button-medium text-grey0 border-2 border-grey4 hover:text-grey10 hover:bg-grey1 hover:border-grey1;
   }
 
   .btn-outline-brand-1-big {

@@ -2,11 +2,13 @@
 
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
+import { NavBar } from "@/components/Navbar";
 import { Select } from "@chakra-ui/react";
 
 export const Home = () => {
   return (
     <>
+      <NavBar />
       <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-grey4">
         <Button type="submit" className="btn-alert-big">
           testando button
