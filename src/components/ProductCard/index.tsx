@@ -55,12 +55,14 @@ interface IProductCardProps {
 
 export const ProductCard = ({ car = card }: IProductCardProps) => {
   return (
-    <li className="w-[312px] h-[350px] list-none flex flex-col gap-4 cursor-pointer">
+    <li className="max-w-[312px] min-w-[290px] h-[350px] list-none flex flex-col gap-4 cursor-pointer">
       <figure className="bg-grey7 h-[152px] overflow-hidden flex justify-center items-center">
-        <img src={car!.galleries[0].img_url} alt={car!.brand} className=" h-[152px]" />
+        <img src={car!.galleries[0].img_url} alt={car!.model} className=" h-[152px]" />
       </figure>
 
-      <h2 className="heading-7-600 text-grey1">{car!.brand}</h2>
+      <h2 className="heading-7-600 text-grey1">
+        {car!.brand} - {car!.model}
+      </h2>
 
       <p className="body-2-400 text-grey2 line-clamp-2 h-[46px]">{car!.description}</p>
 
