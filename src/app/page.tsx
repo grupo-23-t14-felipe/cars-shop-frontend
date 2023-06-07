@@ -3,6 +3,7 @@
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { NavBar } from "@/components/Navbar";
+import { ProductCard } from "@/components/ProductCard";
 import { Select } from "@chakra-ui/react";
 
 export const Home = () => {
@@ -17,6 +18,8 @@ export const Home = () => {
         <input className="input-outline input-placeholder" placeholder="testando input outline" />
 
         <input className="input-default input-placeholder" placeholder="testando input default" />
+
+        <ProductCard />
 
         <Select placeholder="Select option" focusBorderColor="none" className="select-default">
           <option value="option1">Option 1</option>

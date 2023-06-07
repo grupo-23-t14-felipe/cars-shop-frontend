@@ -48,5 +48,5 @@ module.exports = {
       }
     }
   },
-  plugins: []
+  plugins: [require("@neojp/tailwindcss-line-clamp-utilities")]
 };
