@@ -1,11 +1,11 @@
-const card = {
+const cars = {
   brand: "Nissan",
   model: "Skyline GTR R35",
   year: 2015,
   fuel_type: "Diesel",
   mileage: 60000,
   color: "black",
-  on_discount: false,
+  on_discount: true,
   value: 500000,
   description:
     "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur adipisci praesentium inventore dolorum laudantium veniam a quaerat corrupti? Consectetur a alias eveniet suscipit? Debitis ducimus eveniet non fuga, praesentium sed.",
@@ -53,12 +53,17 @@ interface IProductCardProps {
   car?: ICars;
 }
 
-export const ProductCard = ({ car = card }: IProductCardProps) => {
+export const ProductCard = ({ car = cars }: IProductCardProps) => {
   return (
-    <li className="max-w-[312px] min-w-[290px] h-[350px] list-none flex flex-col gap-4 cursor-pointer">
+    <li className="max-w-[312px] min-w-[290px] h-[350px] list-none flex flex-col gap-4 cursor-pointer relative">
       <figure className="bg-grey7 h-[152px] overflow-hidden flex justify-center items-center">
         <img src={car!.galleries[0].img_url} alt={car!.model} className=" h-[152px]" />
       </figure>
+      {car.on_discount && (
+        <div className="w-4 h-7 border-[1px] border-[#48a382] bg-random7 rounded rounded-tr-none flex justify-center items-center text-whiteFixed input-label absolute top-0 right-0 z-10">
+          $
+        </div>
+      )}
 
       <h2 className="heading-7-600 text-grey1">
         {car!.brand} - {car!.model}
