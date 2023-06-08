@@ -5,7 +5,7 @@ import { MdKeyboardArrowUp } from "react-icons/md";
 export const Footer = () => {
   return (
     <footer className="bg-grey0">
-      <div className="px-[1.875rem] py-11 flex flex-col gap-[3.75rem] justify-between items-center sm:flex-row sm:gap-0 duration-300">
+      <div className="px-4 sm:px-[1.875rem] lg:px-[3.75rem] py-11 flex flex-col gap-[3.75rem] justify-between items-center sm:flex-row sm:gap-0 duration-300">
         <figure>
           <Image src={logo_white} alt="logo" />
         </figure>
