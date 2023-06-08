@@ -396,8 +396,8 @@ export const Home = () => {
         <section className="flex justify-between gap-7">
           <FilterHome className="hidden lg:flex lg:flex-col w-full max-w-[454px] pl-4 sm:pl-[1.875rem] gap-9 xl:w-1/4 2xl:w-full" />
           <section className="flex h-min flex-nowrap overflow-x-scroll pl-[1.875rem] pr-4 sm:pr-[1.875rem] lg:pr-[3.75rem] gap-12 mb-20 lg:overflow-auto lg:flex-wrap xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
-            {cars.map((car) => (
-              <ProductCard car={car} />
+            {cars.map((car, index) => (
+              <ProductCard key={index} car={car} />
             ))}
           </section>
         </section>
