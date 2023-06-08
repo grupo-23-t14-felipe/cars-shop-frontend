@@ -58,7 +58,7 @@ export const NavBar = () => {
   return (
     <header
       className={clsx(
-        "flex-col px-4 sm:px-[1.875rem] justify-between items-center border-b-2 border-b-grey6 bg-grey10 overflow-hidden duration-300",
+        "flex-col px-4 sm:px-[1.875rem] lg:px-[3.75rem] justify-between items-center border-b-2 border-b-grey6 bg-grey10 overflow-hidden duration-300",
         isOpen ? (user ? "h-[372px]" : "h-[264px]") : "h-[78px]"
       )}>
       <div className="w-full min-h-[78px] flex justify-between items-center">
