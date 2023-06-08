@@ -8,6 +8,7 @@ import { FilterHome } from "@/components/Filters";
 
 const cars = [
   {
+    id: "25f228f7-fb6e-4fcf-8814-61adc5ebfd05",
     brand: "Nissan",
     model: "Skyline GTR R35",
     year: 2015,
@@ -37,6 +38,7 @@ const cars = [
     ]
   },
   {
+    id: "25f228f7-fb6e-4fcf-8814-61adc5ebfd05",
     brand: "Nissan",
     model: "Skyline GTR R35",
     year: 2015,
@@ -66,6 +68,7 @@ const cars = [
     ]
   },
   {
+    id: "25f228f7-fb6e-4fcf-8814-61adc5ebfd05",
     brand: "Nissan",
     model: "Skyline GTR R35",
     year: 2015,
@@ -95,6 +98,7 @@ const cars = [
     ]
   },
   {
+    id: "25f228f7-fb6e-4fcf-8814-61adc5ebfd05",
     brand: "Nissan",
     model: "Skyline GTR R35",
     year: 2015,
@@ -124,6 +128,7 @@ const cars = [
     ]
   },
   {
+    id: "25f228f7-fb6e-4fcf-8814-61adc5ebfd05",
     brand: "Nissan",
     model: "Skyline GTR R35",
     year: 2015,
@@ -153,6 +158,7 @@ const cars = [
     ]
   },
   {
+    id: "25f228f7-fb6e-4fcf-8814-61adc5ebfd05",
     brand: "Nissan",
     model: "Skyline GTR R35",
     year: 2015,
@@ -182,6 +188,7 @@ const cars = [
     ]
   },
   {
+    id: "25f228f7-fb6e-4fcf-8814-61adc5ebfd05",
     brand: "Nissan",
     model: "Skyline GTR R35",
     year: 2015,
@@ -211,6 +218,7 @@ const cars = [
     ]
   },
   {
+    id: "25f228f7-fb6e-4fcf-8814-61adc5ebfd05",
     brand: "Nissan",
     model: "Skyline GTR R35",
     year: 2015,
@@ -240,6 +248,7 @@ const cars = [
     ]
   },
   {
+    id: "25f228f7-fb6e-4fcf-8814-61adc5ebfd05",
     brand: "Nissan",
     model: "Skyline GTR R35",
     year: 2015,
@@ -269,6 +278,7 @@ const cars = [
     ]
   },
   {
+    id: "25f228f7-fb6e-4fcf-8814-61adc5ebfd05",
     brand: "Nissan",
     model: "Skyline GTR R35",
     year: 2015,
@@ -298,6 +308,7 @@ const cars = [
     ]
   },
   {
+    id: "25f228f7-fb6e-4fcf-8814-61adc5ebfd05",
     brand: "Nissan",
     model: "Skyline GTR R35",
     year: 2015,
@@ -327,6 +338,7 @@ const cars = [
     ]
   },
   {
+    id: "25f228f7-fb6e-4fcf-8814-61adc5ebfd05",
     brand: "Nissan",
     model: "Skyline GTR R35",
     year: 2015,
@@ -376,8 +388,8 @@ export const Home = () => {
 
       <main className="py-14 pb-20 flex flex-col container-1">
         <section className="flex justify-between gap-7">
-          <FilterHome className="hidden lg:flex lg:flex-col w-full max-w-[454px] pl-4 sm:pl-[1.875rem] lg:gap-9" />
-          <section className="flex h-min flex-nowrap overflow-scroll px-4 sm:px-[1.875rem] lg:px-[3.75rem] gap-12 mb-20  lg:overflow-auto  lg:flex-wrap">
+          <FilterHome className="hidden lg:flex lg:flex-col w-full max-w-[454px] pl-4 sm:pl-[1.875rem] lg:gap-9 xl:w-1/4 2xl:w-full" />
+          <section className="flex h-min flex-nowrap overflow-scroll pl-[1.875rem] pr-4 sm:pr-[1.875rem] lg:pr-[3.75rem] gap-12 mb-20 lg:overflow-auto lg:flex-wrap xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
             {cars.map((car) => (
               <ProductCard car={car} />
             ))}
