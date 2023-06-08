@@ -1,6 +1,11 @@
 import { Button } from "../Button";
 
-export const FilterHome = ({ className }: { className?: string }) => {
+interface IFilterHome {
+  className?: string;
+  maxWidthButtons?: string;
+}
+
+export const FilterHome = ({ className, maxWidthButtons = "max-w-[125px]" }: IFilterHome) => {
   return (
     <section className={className}>
       <div className="flex flex-col gap-4">
@@ -155,10 +160,12 @@ export const FilterHome = ({ className }: { className?: string }) => {
       <div className="flex flex-col gap-4">
         <h3 className="heading-4-600 text-black">Km</h3>
         <div className="flex gap-6 pl-2">
-          <Button className="heading-7-600 bg-grey5 text-grey3 flex justify-center items-center py-[0.4rem] w-full max-w-[125px]">
+          <Button
+            className={`heading-7-600 bg-grey5 text-grey3 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`}>
             Mínima
           </Button>
-          <Button className="heading-7-600 bg-grey5 text-grey3 flex justify-center items-center py-[0.4rem] w-full max-w-[125px]">
+          <Button
+            className={`heading-7-600 bg-grey5 text-grey3 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`}>
             Máxima
           </Button>
         </div>
@@ -167,10 +174,12 @@ export const FilterHome = ({ className }: { className?: string }) => {
       <div className="flex flex-col gap-4">
         <h3 className="heading-4-600 text-black">Preço</h3>
         <div className="flex gap-6 pl-2">
-          <Button className="heading-7-600 bg-grey5 text-grey3 flex justify-center items-center py-[0.4rem] w-full max-w-[125px]">
+          <Button
+            className={`heading-7-600 bg-grey5 text-grey3 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`}>
             Mínima
           </Button>
-          <Button className="heading-7-600 bg-grey5 text-grey3 flex justify-center items-center py-[0.4rem] w-full max-w-[125px]">
+          <Button
+            className={`heading-7-600 bg-grey5 text-grey3 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`}>
             Máxima
           </Button>
         </div>

@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { NavBar } from "@/components/Navbar";
@@ -5,6 +7,8 @@ import { ProductCard } from "@/components/ProductCard";
 import background from "@/assets/bg_header.png";
 import Image from "next/image";
 import { FilterHome } from "@/components/Filters";
+import { ModalFilter } from "@/components/ModalFilter";
+import { useDisclosure } from "@chakra-ui/react";
 
 const cars = [
   {
@@ -370,6 +374,8 @@ const cars = [
 ];
 
 export const Home = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <>
       <NavBar />
@@ -388,8 +394,8 @@ export const Home = () => {
 
       <main className="py-14 pb-20 flex flex-col container-1">
         <section className="flex justify-between gap-7">
-          <FilterHome className="hidden lg:flex lg:flex-col w-full max-w-[454px] pl-4 sm:pl-[1.875rem] lg:gap-9 xl:w-1/4 2xl:w-full" />
-          <section className="flex h-min flex-nowrap overflow-scroll pl-[1.875rem] pr-4 sm:pr-[1.875rem] lg:pr-[3.75rem] gap-12 mb-20 lg:overflow-auto lg:flex-wrap xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
+          <FilterHome className="hidden lg:flex lg:flex-col w-full max-w-[454px] pl-4 sm:pl-[1.875rem] gap-9 xl:w-1/4 2xl:w-full" />
+          <section className="flex h-min flex-nowrap overflow-x-scroll pl-[1.875rem] pr-4 sm:pr-[1.875rem] lg:pr-[3.75rem] gap-12 mb-20 lg:overflow-auto lg:flex-wrap xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
             {cars.map((car) => (
               <ProductCard car={car} />
             ))}
@@ -397,11 +403,13 @@ export const Home = () => {
         </section>
 
         <div className="flex justify-center mb-12 lg:hidden">
-          <Button className="btn-brand1-big w-[279px]">Filtros</Button>
+          <Button className="btn-brand1-big w-[279px]" onClick={onOpen}>
+            Filtros
+          </Button>
         </div>
 
         <div className="flex flex-col md:flex-row justify-center items-center gap-5">
-          {/* <Button className="text-brand2 heading-5-600 hover:scale-105 duration-300">
+          {/* <Button className="text-brand2 heading-5-600 hover:text-brand1 duration-300">
             {"<"} Anterior
           </Button> */}
 
@@ -409,13 +417,14 @@ export const Home = () => {
             <span className="text-grey3">1</span> de 2
           </p>
 
-          <Button className="text-brand2 heading-5-600 hover:scale-105 duration-300">
+          <Button className="text-brand2 heading-5-600 hover:text-brand1 duration-300">
             Seguinte {">"}
           </Button>
         </div>
       </main>
 
       <Footer />
+      <ModalFilter isOpen={isOpen} onClose={onClose} />
     </>
   );
 };
