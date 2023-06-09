@@ -63,7 +63,7 @@
   }
 
   .body-1-600 {
-    @apply text-[1rem] font-inter font-bold;
+    @apply text-[1rem] font-inter font-semibold;
   }
 
   .body-2-400 {

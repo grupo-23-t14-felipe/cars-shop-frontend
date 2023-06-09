@@ -47,3 +47,55 @@
   scroll-behavior: smooth;
   list-style: none;
 }
+
+.vehicle-detail-page {
+  background: linear-gradient(var(--brand1) 22%, var(--grey8) 22%, var(--grey8) 100%);
+}
+
+.background-random1 {
+  background-color: var(--random1);
+}
+
+.background-random2 {
+  background-color: var(--random2);
+}
+
+.background-random3 {
+  background-color: var(--random3);
+}
+
+.background-random4 {
+  background-color: var(--random4);
+}
+
+.background-random5 {
+  background-color: var(--random5);
+}
+
+.background-random6 {
+  background-color: var(--random6);
+}
+
+.background-random7 {
+  background-color: var(--random7);
+}
+
+.background-random8 {
+  background-color: var(--random8);
+}
+
+.background-random9 {
+  background-color: var(--random9);
+}
+
+.background-random10 {
+  background-color: var(--random10);
+}
+
+.background-random11 {
+  background-color: var(--random11);
+}
+
+.background-random12 {
+  background-color: var(--random12);
+}
