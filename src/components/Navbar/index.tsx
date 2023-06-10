@@ -63,7 +63,9 @@ export const NavBar = () => {
       )}>
       <div className="w-full min-h-[78px] flex justify-between items-center">
         <figure>
-          <Image src={logo_colored} alt="logo" />
+          <Link href={"/"}>
+            <Image src={logo_colored} alt="logo" />
+          </Link>
         </figure>
         <nav className="sm:hidden flex justify-center items-center">
           <Button onClick={() => setIsOpen(!isOpen)}>
