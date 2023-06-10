@@ -1,4 +1,6 @@
+import { useDisclosure } from "@chakra-ui/react";
 import Link from "next/link";
+import { ModalSwiper } from "../ModalSwiperImages";
 
 export interface ICars {
   id: string;
@@ -28,18 +30,22 @@ interface IProductCardProps {
 }
 
 export const ProductCard = ({ car }: IProductCardProps) => {
-  return (
-    <li className="max-w-[312px] min-w-[290px] h-[350px] cursor-pointer">
-      <Link href={`/vehicle/${car.id}`} className="flex flex-col gap-4 relative">
-        <figure className="bg-grey7 h-[152px] overflow-hidden flex justify-center items-center">
-          <img src={car.galleries[0].img_url} alt={car.model} className=" h-[152px]" />
-        </figure>
-        {car.on_discount && (
-          <div className="w-4 h-7 border-[1px] border-[#48a382] bg-random7 rounded rounded-tr-none flex justify-center items-center text-whiteFixed input-label absolute top-0 right-0 z-10">
-            $
-          </div>
-        )}
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
+  return (
+    <li className="max-w-[312px] min-w-[290px] h-[350px] cursor-pointer relative">
+      <figure
+        className="bg-grey7 h-[152px] overflow-hidden flex justify-center items-center"
+        onClick={onOpen}>
+        <img src={car.galleries[0].img_url} alt={car.model} className=" h-[152px]" />
+      </figure>
+
+      {car.on_discount && (
+        <div className="w-4 h-7 border-[1px] border-[#48a382] bg-random7 rounded rounded-tr-none flex justify-center items-center text-whiteFixed input-label absolute top-0 right-0 z-10">
+          $
+        </div>
+      )}
+      <Link href={`/vehicle/${car.id}`} className="flex flex-col gap-4 mt-4 text-start">
         <h2 className="heading-7-600 text-grey1">
           {car.brand} - {car.model}
         </h2>
@@ -67,6 +73,8 @@ export const ProductCard = ({ car }: IProductCardProps) => {
           </p>
         </div>
       </Link>
+
+      <ModalSwiper car={car} isOpen={isOpen} onClose={onClose} />
     </li>
   );
 };
