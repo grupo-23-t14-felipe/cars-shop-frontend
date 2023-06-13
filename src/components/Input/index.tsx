@@ -1,4 +1,4 @@
-import { HTMLInputTypeAttribute } from "react";
+import { ChangeEventHandler, HTMLInputTypeAttribute } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 
 interface IInputProps {
@@ -15,6 +15,7 @@ interface IInputProps {
   inputChecked?: boolean;
   disable?: boolean;
   value?: string | number;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
 export const Input = ({
@@ -30,7 +31,8 @@ export const Input = ({
   labelFor,
   inputChecked,
   disable,
-  value
+  value,
+  onChange
 }: IInputProps) => {
   return (
     <>
@@ -48,6 +50,7 @@ export const Input = ({
         className={inputClass}
         checked={inputChecked}
         disabled={disable}
+        onChange={onChange}
       />
     </>
   );

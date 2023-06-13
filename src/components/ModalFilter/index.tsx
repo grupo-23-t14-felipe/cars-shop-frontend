@@ -19,7 +19,7 @@ export const ModalFilter = ({ isOpen, onClose }: IModalFilter) => {
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent className="w-full p-6 flex flex-col gap-8 max-w-[520px]">
+        <ModalContent className="w-11/12 p-6 flex flex-col gap-8 max-w-[520px]">
           <ModalHeader className="p-0 heading-7-500 text-grey1">Filtro</ModalHeader>
           <ModalCloseButton />
           <ModalBody className="p-0">
