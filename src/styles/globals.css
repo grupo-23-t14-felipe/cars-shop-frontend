@@ -48,7 +48,11 @@
   list-style: none;
 }
 
-.vehicle-detail-page {
+.container-default {
+  @apply max-w-[78rem] w-full mx-auto;
+}
+
+.background-detail-page {
   background: linear-gradient(var(--brand1) 22%, var(--grey8) 22%, var(--grey8) 100%);
 }
 

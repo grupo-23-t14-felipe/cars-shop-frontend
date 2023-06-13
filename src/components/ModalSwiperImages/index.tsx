@@ -41,8 +41,8 @@ export const ModalSwiper = ({ car, isOpen, onClose }: IModalSwiper) => {
               }}
               modules={[EffectFade, Navigation, Pagination]}
               className="mySwiper">
-              {car.galleries.map((gallery) => (
-                <SwiperSlide>
+              {car.galleries.map((gallery, index) => (
+                <SwiperSlide key={index}>
                   <img src={gallery.img_url} />
                 </SwiperSlide>
               ))}

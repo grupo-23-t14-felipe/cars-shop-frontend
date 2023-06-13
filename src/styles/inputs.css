@@ -32,4 +32,8 @@
   .select-default {
     @apply rounded border-2 border-grey7 focus:text-grey1 focus:border-2 focus:border-brand1 focus:bg-grey9 outline-none hover:border-grey7;
   }
+
+  .fieldset-radios input:checked + label {
+    @apply border-brand1 text-whiteFixed bg-brand1;
+  }
 }
