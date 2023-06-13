@@ -7,9 +7,14 @@ interface IInputProps {
   inputType: HTMLInputTypeAttribute;
   inputName?: string;
   placeHolder?: string;
-  inputDefaultValue?: string;
+  inputDefaultValue?: string | number;
   register?: UseFormRegisterReturn;
   inputClass?: string;
+  inputId?: string;
+  labelFor?: string;
+  inputChecked?: boolean;
+  disable?: boolean;
+  value?: string | number;
 }
 
 export const Input = ({
@@ -20,18 +25,29 @@ export const Input = ({
   placeHolder,
   inputDefaultValue,
   register,
-  inputClass
+  inputClass,
+  inputId,
+  labelFor,
+  inputChecked,
+  disable,
+  value
 }: IInputProps) => {
   return (
     <>
-      <label className={labelClass}>{labelChildren}</label>
+      <label htmlFor={labelFor} className={labelClass}>
+        {labelChildren}
+      </label>
       <input
+        id={inputId}
         type={inputType}
         name={inputName}
         placeholder={placeHolder}
         defaultValue={inputDefaultValue}
+        value={value}
         {...register}
         className={inputClass}
+        checked={inputChecked}
+        disabled={disable}
       />
     </>
   );

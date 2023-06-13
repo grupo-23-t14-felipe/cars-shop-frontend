@@ -8,6 +8,7 @@ export const cars = [
     mileage: 60000,
     color: "black",
     on_discount: true,
+    is_published: true,
     value: 500000,
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur adipisci praesentium inventore dolorum laudantium veniam a quaerat corrupti? Consectetur a alias eveniet suscipit? Debitis ducimus eveniet non fuga, praesentium sed.",
@@ -60,6 +61,7 @@ export const cars = [
     mileage: 60000,
     color: "black",
     on_discount: true,
+    is_published: false,
     value: 500000,
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur adipisci praesentium inventore dolorum laudantium veniam a quaerat corrupti? Consectetur a alias eveniet suscipit? Debitis ducimus eveniet non fuga, praesentium sed.",
@@ -112,6 +114,7 @@ export const cars = [
     mileage: 60000,
     color: "black",
     on_discount: true,
+    is_published: true,
     value: 500000,
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur adipisci praesentium inventore dolorum laudantium veniam a quaerat corrupti? Consectetur a alias eveniet suscipit? Debitis ducimus eveniet non fuga, praesentium sed.",
@@ -164,6 +167,7 @@ export const cars = [
     mileage: 60000,
     color: "black",
     on_discount: true,
+    is_published: true,
     value: 500000,
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur adipisci praesentium inventore dolorum laudantium veniam a quaerat corrupti? Consectetur a alias eveniet suscipit? Debitis ducimus eveniet non fuga, praesentium sed.",
@@ -216,6 +220,7 @@ export const cars = [
     mileage: 60000,
     color: "black",
     on_discount: true,
+    is_published: true,
     value: 500000,
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur adipisci praesentium inventore dolorum laudantium veniam a quaerat corrupti? Consectetur a alias eveniet suscipit? Debitis ducimus eveniet non fuga, praesentium sed.",
@@ -268,6 +273,7 @@ export const cars = [
     mileage: 60000,
     color: "black",
     on_discount: true,
+    is_published: true,
     value: 500000,
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur adipisci praesentium inventore dolorum laudantium veniam a quaerat corrupti? Consectetur a alias eveniet suscipit? Debitis ducimus eveniet non fuga, praesentium sed.",
@@ -320,6 +326,7 @@ export const cars = [
     mileage: 60000,
     color: "black",
     on_discount: true,
+    is_published: true,
     value: 500000,
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur adipisci praesentium inventore dolorum laudantium veniam a quaerat corrupti? Consectetur a alias eveniet suscipit? Debitis ducimus eveniet non fuga, praesentium sed.",
@@ -372,6 +379,7 @@ export const cars = [
     mileage: 60000,
     color: "black",
     on_discount: true,
+    is_published: true,
     value: 500000,
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur adipisci praesentium inventore dolorum laudantium veniam a quaerat corrupti? Consectetur a alias eveniet suscipit? Debitis ducimus eveniet non fuga, praesentium sed.",
@@ -424,6 +432,7 @@ export const cars = [
     mileage: 60000,
     color: "black",
     on_discount: true,
+    is_published: true,
     value: 500000,
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur adipisci praesentium inventore dolorum laudantium veniam a quaerat corrupti? Consectetur a alias eveniet suscipit? Debitis ducimus eveniet non fuga, praesentium sed.",
@@ -476,6 +485,7 @@ export const cars = [
     mileage: 60000,
     color: "black",
     on_discount: true,
+    is_published: true,
     value: 500000,
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur adipisci praesentium inventore dolorum laudantium veniam a quaerat corrupti? Consectetur a alias eveniet suscipit? Debitis ducimus eveniet non fuga, praesentium sed.",
@@ -528,6 +538,7 @@ export const cars = [
     mileage: 60000,
     color: "black",
     on_discount: true,
+    is_published: true,
     value: 500000,
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur adipisci praesentium inventore dolorum laudantium veniam a quaerat corrupti? Consectetur a alias eveniet suscipit? Debitis ducimus eveniet non fuga, praesentium sed.",
@@ -580,6 +591,7 @@ export const cars = [
     mileage: 60000,
     color: "black",
     on_discount: true,
+    is_published: true,
     value: 500000,
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur adipisci praesentium inventore dolorum laudantium veniam a quaerat corrupti? Consectetur a alias eveniet suscipit? Debitis ducimus eveniet non fuga, praesentium sed.",

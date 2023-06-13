@@ -11,6 +11,7 @@ export interface ICars {
   mileage: number;
   color: string;
   on_discount: boolean;
+  is_published: boolean;
   value: number;
   description: string;
   user: IUser;
