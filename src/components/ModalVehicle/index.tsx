@@ -120,8 +120,10 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
       const newObjCarSelect = {
         fipe_price: carSelected?.value,
         ...carSelected,
-        year: parseInt(carSelected!.year)
+        year: parseInt(carSelected!.year),
+        fuel_type: carSelected?.fuel
       };
+      delete newObjCarSelect.fuel;
       delete newObjCarSelect.id;
       delete newObjCarSelect.name;
 
