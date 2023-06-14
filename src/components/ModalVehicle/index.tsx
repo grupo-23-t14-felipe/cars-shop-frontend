@@ -215,7 +215,7 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
                       ? "Gasolina / Etanol"
                       : carSelected && carSelected.fuel === 2
                       ? "Híbrido"
-                      : carSelected && carSelected.fuel === 2
+                      : carSelected && carSelected.fuel === 3
                       ? "Elétrico"
                       : ""
                   }
