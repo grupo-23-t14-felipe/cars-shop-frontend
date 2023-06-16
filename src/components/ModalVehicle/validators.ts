@@ -9,11 +9,6 @@ export const createAnnoucementSchema = z
       .min(1)
       .transform((value) => parseInt(value)),
     color: z.string().max(30).min(3),
-    value: z
-      .string()
-      .max(10)
-      .min(1)
-      .transform((value) => parseInt(value)),
     description: z.string()
   })
   .required();
