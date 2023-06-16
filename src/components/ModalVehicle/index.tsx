@@ -20,7 +20,6 @@ import { FiUploadCloud } from "react-icons/fi";
 import { useDropzone } from "react-dropzone";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TCreateAnnoucement, createAnnoucementSchema } from "./validators";
-import { error } from "console";
 
 interface IModalVehicleProps {
   isOpen: boolean;
@@ -85,6 +84,11 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
   });
 
   const getModels = async (brand: string) => {
+    if (!brand) {
+      setModels(undefined);
+      return;
+    }
+
     const result = await axios.get(`https://kenzie-kars.herokuapp.com/cars?brand=${brand}`);
 
     setModels(result.data);
@@ -113,19 +117,67 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
     mode: "onChange"
   });
 
-  const submit: SubmitErrorHandler<TCreateAnnoucement> = (data) => {
+  const submit: SubmitErrorHandler<TCreateAnnoucement> = async (data) => {
     if (imgs.length === 0) {
       setError("img", { type: "required", message: "Envie ao menos 1 imagem" });
     } else {
       const newObjCarSelect = {
         fipe_price: carSelected?.value,
         ...carSelected,
-        year: parseInt(carSelected!.year)
+        year: parseInt(carSelected!.year),
+        fuel_type: carSelected?.fuel
       };
+      delete newObjCarSelect.fuel;
       delete newObjCarSelect.id;
       delete newObjCarSelect.name;
 
-      const newData = { ...newObjCarSelect, ...data, img_default: imgs[0], gallery: imgs };
+      const newData = {
+        ...newObjCarSelect,
+        ...data,
+        img_default: imgs[0],
+        gallery: new Array()
+      };
+
+      if (imgs.length > 1) {
+        const requestImgs = async (img: File): Promise<any> => {
+          return new Promise(async (resolve, reject) => {
+            const gallery = new FormData();
+            gallery.append("file", img);
+            gallery.append("upload_preset", "jgbdewxg");
+
+            const response = await axios.post(
+              "https://api.cloudinary.com/v1_1/dv4egxu7a/image/upload",
+              gallery
+            );
+
+            resolve(response.data);
+            reject(response);
+          });
+        };
+
+        const imgsGallery = imgs.map(async (img) => {
+          if (img === imgs[0]) {
+            return undefined;
+          }
+          return await requestImgs(img.file);
+        });
+
+        const results = await Promise.all(imgsGallery);
+        results.filter(
+          (obj: undefined | { secure_url: string }) => obj && newData.gallery.push(obj.secure_url)
+        );
+      }
+
+      const imgDefault = new FormData();
+      imgDefault.append("file", newData.img_default.file);
+      imgDefault.append("upload_preset", "jgbdewxg");
+
+      const resultImgDefault = await axios.post(
+        "https://api.cloudinary.com/v1_1/dv4egxu7a/image/upload",
+        imgDefault
+      );
+
+      newData.img_default = resultImgDefault.data.secure_url;
 
       console.log(newData);
     }
@@ -215,7 +267,7 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
                       ? "Gasolina / Etanol"
                       : carSelected && carSelected.fuel === 2
                       ? "Híbrido"
-                      : carSelected && carSelected.fuel === 2
+                      : carSelected && carSelected.fuel === 3
                       ? "Elétrico"
                       : ""
                   }
