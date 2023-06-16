@@ -38,6 +38,15 @@ const LoginForm = () => {
             </div>
           </div>
           </form>
+          <div>
+            <button type="submit" className="user-form-button">
+              Entrar
+            </button>
+          </div>
+
+          <Link href={"/register"} className="user-form-link">
+            Ir para o cadastro
+          </Link>
     </>
   );
 };
