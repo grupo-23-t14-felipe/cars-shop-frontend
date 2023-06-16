@@ -29,5 +29,5 @@ const registerSchema = z
     path: ["confirm"]
   });
 
-export type RegisterData = z.infer<typeof registerSchema>;
+export type TRegisterData = z.infer<typeof registerSchema>;
 export default registerSchema;

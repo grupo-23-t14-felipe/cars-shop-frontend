@@ -4,14 +4,17 @@ import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { Input } from "@/components/Input";
 import { NavBar } from "@/components/Navbar";
+import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 const Login = () => {
   const { register, handleSubmit } = useForm<{ email: string; password: string }>();
 
+  const { login } = useAuth();
+
   const submit: SubmitHandler<{ email: string; password: string }> = (data) => {
-    console.log(data);
+    login(data);
   };
 
   return (

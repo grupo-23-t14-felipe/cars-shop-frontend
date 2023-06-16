@@ -1,9 +1,9 @@
 "use client";
 
 import { SubmitHandler, useForm } from "react-hook-form";
-import registerSchema, { RegisterData } from "./validators";
+import registerSchema, { TRegisterData } from "./validators";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "@/context/authContext";
+import { useAuth } from "@/hooks/useAuth";
 import { NavBar } from "@/components/Navbar";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
@@ -13,6 +13,15 @@ import { PatternFormat } from "react-number-format";
 import axios from "axios";
 import { IResponseCepApi } from "./types";
 import clsx from "clsx";
+import { AuthProvider } from "@/context/AuthContext";
+
+const RegisterPage = () => {
+  return (
+    <AuthProvider>
+      <Register />
+    </AuthProvider>
+  );
+};
 
 const Register = () => {
   const [typeAccount, setTypeAccount] = useState(false);
@@ -28,11 +37,11 @@ const Register = () => {
     formState: { errors },
     setError,
     clearErrors
-  } = useForm<RegisterData>({
+  } = useForm<TRegisterData>({
     resolver: zodResolver(registerSchema)
   });
 
-  const onFormSubmit: SubmitHandler<RegisterData> = (formData) => {
+  const onFormSubmit: SubmitHandler<TRegisterData> = (formData) => {
     const regex = /\D/g;
     clearErrors("cpf");
     clearErrors("cellphone");
@@ -43,16 +52,25 @@ const Register = () => {
       setError("cellphone", { type: "required", message: "Digite seu CPF" });
     } else {
       const newFormData = {
-        ...formData,
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
         cpf: cpf.replace(regex, ""),
         cellphone: cellphone.replace(regex, ""),
+        birthday: formData.birthday,
+        description: formData.description,
+        imageUrl: "",
         is_seller: typeAccount,
-        street: resultCep?.logradouro,
-        state: resultCep?.uf,
-        city: resultCep?.localidade
+        address: {
+          street: resultCep?.logradouro,
+          state: resultCep?.uf,
+          city: resultCep?.localidade,
+          number: formData.number,
+          complement: formData.complement
+        }
       };
-      console.log(newFormData);
-      // registerUser(formData);
+
+      registerUser(newFormData);
     }
   };
 
@@ -77,7 +95,7 @@ const Register = () => {
   };
 
   return (
-    <>
+    <AuthProvider>
       <NavBar />
       <main className="bg-grey7 flex items-center justify-center pt-11 pb-24 px-4">
         <form
@@ -321,8 +339,8 @@ const Register = () => {
         </form>
       </main>
       <Footer />
-    </>
+    </AuthProvider>
   );
 };
 
-export default Register;
+export default RegisterPage;
