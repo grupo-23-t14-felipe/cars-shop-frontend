@@ -11,7 +11,7 @@ const registerSchema = z
     birthday: z.string(),
     description: z.string().optional(),
     cep: z.string().optional(),
-    number: z.string(),
+    number: z.string().max(8).min(1, "Digite o número do endereço"),
     complement: z.string().optional(),
     cpf: z.string().optional(),
     cellphone: z.string().optional(),

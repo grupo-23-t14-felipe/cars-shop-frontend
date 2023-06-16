@@ -61,12 +61,16 @@ const Register = () => {
     clearErrors("cep");
 
     if (cep.replace(regex, "").length < 8) {
-      setError("cep", { type: "required", message: "Digite seu CEP" });
+      return setError("cep", { type: "required", message: "Digite seu CEP" });
     }
     if (resultCep?.cep === cep) {
       return;
     } else if (cep.replace(regex, "").length === 8) {
       const response = await axios.get(`https://viacep.com.br/ws/${cep.replace(regex, "")}/json/`);
+
+      if (response.data.erro) {
+        return setError("cep", { type: "required", message: "Digite um CEP válido" });
+      }
 
       setResultCep(response.data);
     }
@@ -92,6 +96,9 @@ const Register = () => {
                 labelChildren="Nome"
                 register={register("name")}
               />
+              {errors.name && (
+                <p className="body-2-500 text-sm text-feedbackAlert1">{errors.name.message}</p>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -103,6 +110,9 @@ const Register = () => {
                 labelChildren="E-mail"
                 register={register("email")}
               />
+              {errors.email && (
+                <p className="body-2-500 text-sm text-feedbackAlert1">{errors.email.message}</p>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -114,6 +124,9 @@ const Register = () => {
                 value={cpf}
                 onChange={(e) => setCpf(e.target.value)}
               />
+              {errors.cpf && (
+                <p className="body-2-500 text-sm text-feedbackAlert1">{errors.cpf.message}</p>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -124,6 +137,9 @@ const Register = () => {
                 placeholder="(01) 91234-5678"
                 onChange={(e) => setCellphone(e.target.value)}
               />
+              {errors.cellphone && (
+                <p className="body-2-500 text-sm text-feedbackAlert1">{errors.cellphone.message}</p>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -135,6 +151,9 @@ const Register = () => {
                 labelClass="body-2-500 text-grey1"
                 register={register("birthday")}
               />
+              {errors.birthday && (
+                <p className="body-2-500 text-sm text-feedbackAlert1">{errors.birthday.message}</p>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -156,6 +175,9 @@ const Register = () => {
                 placeholder="00000-000"
                 onChange={async (e) => await consultCep(e.target.value)}
               />
+              {errors.cep && (
+                <p className="body-2-500 text-sm text-feedbackAlert1">{errors.cep.message}</p>
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-x-3">
@@ -202,11 +224,12 @@ const Register = () => {
             <div className="grid grid-cols-2 gap-x-3">
               <div className="flex flex-col gap-2">
                 <Input
-                  inputType="number"
+                  inputType="text"
                   placeHolder="Digitar número"
                   inputClass={clsx("input-outline", errors.number && "border-feedbackAlert1")}
                   labelClass="body-2-500 text-grey1"
                   labelChildren="Número"
+                  maxLength={8}
                   register={register("number")}
                 />
               </div>
@@ -233,15 +256,14 @@ const Register = () => {
                 value="true"
                 inputClass="absolute w-0 h-0"
                 labelClass="hidden"
-                inputChecked={typeAccount}
+                inputChecked={!typeAccount && true}
               />
               <label
                 htmlFor="buyer"
                 className={clsx(
-                  "relative button-big border-2 border-grey4 rounded text-center cursor-pointer px-0 w-full",
-                  !typeAccount && "bg-brand1 border-brand1 text-whiteFixed"
+                  "relative button-big border-2 border-grey4 rounded text-center cursor-pointer px-0 w-full"
                 )}
-                onClick={() => setTypeAccount(!typeAccount)}>
+                onClick={() => setTypeAccount(false)}>
                 Comprador
               </label>
 
@@ -256,8 +278,10 @@ const Register = () => {
               />
               <label
                 htmlFor="announcer"
-                className="relative button-big border-2 border-grey4 rounded text-center cursor-pointer px-0 w-full"
-                onClick={() => setTypeAccount(!typeAccount)}>
+                className={clsx(
+                  "relative button-big border-2 border-grey4 rounded text-center cursor-pointer px-0 w-full"
+                )}
+                onClick={() => setTypeAccount(true)}>
                 Anunciante
               </label>
             </fieldset>

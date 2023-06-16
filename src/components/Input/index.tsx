@@ -52,7 +52,7 @@ export const Input = ({
         className={inputClass}
         disabled={disable}
         onChange={onChange}
-        defaultChecked={inputChecked}
+        checked={inputChecked}
         maxLength={maxLength}
       />
     </>
