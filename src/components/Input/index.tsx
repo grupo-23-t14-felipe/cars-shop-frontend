@@ -15,6 +15,7 @@ interface IInputProps {
   inputChecked?: boolean;
   disable?: boolean;
   value?: string | number;
+  maxLength?: number;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
@@ -32,6 +33,7 @@ export const Input = ({
   inputChecked,
   disable,
   value,
+  maxLength,
   onChange
 }: IInputProps) => {
   return (
@@ -48,9 +50,10 @@ export const Input = ({
         value={value}
         {...register}
         className={inputClass}
-        checked={inputChecked}
         disabled={disable}
         onChange={onChange}
+        defaultChecked={inputChecked}
+        maxLength={maxLength}
       />
     </>
   );

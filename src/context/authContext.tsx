@@ -1,6 +1,5 @@
 import { LoginData } from "@/components/loginForm/validator";
-import { RegisterData } from "@/components/registerForm/validators";
-
+import { RegisterData } from "@/app/register/validators";
 
 // import api from "@/services/api";
 import { useRouter } from "next/router";
