@@ -11,15 +11,16 @@ import { Button } from "../Button";
 import { Input } from "../Input";
 import { ICars } from "../ProductCard";
 import { SubmitErrorHandler, useForm } from "react-hook-form";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { IListCars, IListModelCars } from "./types";
-import axios from "axios";
-import clsx from "clsx";
 import { MdOutlineClose } from "react-icons/md";
 import { FiUploadCloud } from "react-icons/fi";
 import { useDropzone } from "react-dropzone";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TCreateAnnoucement, createAnnoucementSchema } from "./validators";
+import { NumericFormat } from "react-number-format";
+import axios from "axios";
+import clsx from "clsx";
 
 interface IModalVehicleProps {
   isOpen: boolean;
@@ -33,6 +34,7 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
   const [models, setModels] = useState<IListModelCars[]>();
   const [carSelected, setCarSelected] = useState<IListModelCars>();
   const [imgs, setImgs] = useState<{ name: string; img_url: string; file: File }[]>([]);
+  const [value, setValue] = useState("");
 
   useEffect(() => {
     (() => {
@@ -118,7 +120,12 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
   });
 
   const submit: SubmitErrorHandler<TCreateAnnoucement> = async (data) => {
-    if (imgs.length === 0) {
+    const valueTreated = value.replace(/\D/g, "");
+    if (!valueTreated) {
+      setError("value", { type: "required", message: "Digite um valor para o carro" });
+    } else if (valueTreated.length > 10) {
+      setError("value", { type: "required", message: "Digite um valor de até R$ 10.000.000,00" });
+    } else if (imgs.length === 0) {
       setError("img", { type: "required", message: "Envie ao menos 1 imagem" });
     } else {
       const newObjCarSelect = {
@@ -135,7 +142,8 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
         ...newObjCarSelect,
         ...data,
         img_default: imgs[0],
-        gallery: new Array()
+        gallery: new Array(),
+        value: parseInt(valueTreated)
       };
 
       if (imgs.length > 1) {
@@ -329,18 +337,20 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
               </div>
 
               <div className="flex flex-col gap-2">
-                <Input
-                  inputType="number"
-                  inputName="value"
-                  register={register("value")}
-                  inputClass={clsx(
+                <label className="body-2-500 text-grey0">Preço</label>
+                <NumericFormat
+                  name="value"
+                  prefix="R$ "
+                  thousandSeparator="."
+                  decimalScale={2}
+                  decimalSeparator=","
+                  maxLength={16}
+                  className={clsx(
                     "input-outline",
                     errors.value ? "border-feedbackAlert1" : "border-grey7"
                   )}
-                  placeHolder="R$: 50.000,00"
-                  inputDefaultValue={car?.value}
-                  labelChildren="Preço"
-                  labelClass="body-2-500 text-grey0"
+                  placeholder="R$: 50.000,00"
+                  onChange={(e) => setValue(e.target.value)}
                 />
               </div>
             </fieldset>
