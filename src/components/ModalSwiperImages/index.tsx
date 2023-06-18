@@ -4,13 +4,11 @@ import {
   ModalContent,
   ModalHeader,
   ModalCloseButton,
-  ModalBody,
-  useDisclosure
+  ModalBody
 } from "@chakra-ui/react";
 import { ICars } from "../ProductCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Navigation, Pagination } from "swiper";
-import { Button } from "../Button";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
@@ -41,15 +39,15 @@ export const ModalSwiper = ({ car, isOpen, onClose }: IModalSwiper) => {
               }}
               modules={[EffectFade, Navigation, Pagination]}
               className="mySwiper">
-              {car.galleries.map((gallery, index) => (
+              {car.gallery.map((gallery, index) => (
                 <SwiperSlide key={index}>
-                  <img src={gallery.img_url} />
+                  <img src={gallery.imageUrl} />
                 </SwiperSlide>
               ))}
             </Swiper>
 
             <div className="flex justify-end items-end w-full">
-              <Link href={`/vehicle/${car.id}`} className="btn-brand1-big mt-6">
+              <Link href={`/vehicle/${car.uuid}`} className="btn-brand1-big mt-6">
                 Ver Anúncio
               </Link>
             </div>

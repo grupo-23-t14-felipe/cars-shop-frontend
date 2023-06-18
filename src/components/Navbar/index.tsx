@@ -15,20 +15,30 @@ import { HiMenu } from "react-icons/hi";
 import { GrFormClose } from "react-icons/gr";
 import { useState } from "react";
 import clsx from "clsx";
+import { useUser } from "@/hooks/useUser";
+import { IUser } from "@/context/UserContext/types";
 
-const UserLoggedLinks = ({ user }: any) => {
+const UserLoggedLinks = ({ user, loggout }: { user: IUser; loggout: () => void }) => {
   return (
     <>
-      <Link href={`/${user.name}`} className="body-1-400 text-grey2 hover:text-grey0 duration-300">
+      <Link
+        href={`/user/${user.uuid}`}
+        className="body-1-400 text-grey2 hover:text-grey0 duration-300">
         Editar Perfil
       </Link>
-      <Link href={`/${user.name}`} className="body-1-400 text-grey2 hover:text-grey0 duration-300">
+      <Link
+        href={`/user/${user.uuid}`}
+        className="body-1-400 text-grey2 hover:text-grey0 duration-300">
         Editar Endereço
       </Link>
-      <Link href={`/${user.name}`} className="body-1-400 text-grey2 hover:text-grey0 duration-300">
+      <Link
+        href={`/user/${user.uuid}`}
+        className="body-1-400 text-grey2 hover:text-grey0 duration-300">
         Meus Anúncios
       </Link>
-      <Button className="text-left body-1-400 text-grey2 hover:text-grey0 duration-300">
+      <Button
+        onClick={loggout}
+        className="text-left body-1-400 text-grey2 hover:text-grey0 duration-300">
         Sair
       </Button>
     </>
@@ -51,9 +61,7 @@ const LinksLoginAndRegister = () => {
 export const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const user: { name: string } | undefined = {
-    name: "samuel leão"
-  };
+  const { user, loggout } = useUser();
 
   return (
     <header
@@ -90,7 +98,7 @@ export const NavBar = () => {
 
                 <PopoverContent className="w-[200px]">
                   <PopoverBody className="flex flex-col gap-4 p-4">
-                    <UserLoggedLinks user={user} />
+                    <UserLoggedLinks user={user} loggout={loggout} />
                   </PopoverBody>
                 </PopoverContent>
               </Popover>
@@ -103,7 +111,7 @@ export const NavBar = () => {
       {isOpen ? (
         user ? (
           <div className="w-full py-8 flex flex-col gap-11 sm:hidden">
-            <UserLoggedLinks user={user} />
+            <UserLoggedLinks user={user} loggout={loggout} />
           </div>
         ) : (
           <div className="w-full py-8 flex flex-col gap-11 sm:hidden">

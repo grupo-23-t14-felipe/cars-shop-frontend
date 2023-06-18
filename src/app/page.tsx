@@ -3,16 +3,28 @@
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { NavBar } from "@/components/Navbar";
-import { ProductCard } from "@/components/ProductCard";
+import { ICars, ProductCard } from "@/components/ProductCard";
 import background from "@/assets/bg_header.png";
 import Image from "next/image";
 import { FilterHome } from "@/components/Filters";
 import { ModalFilter } from "@/components/ModalFilter";
 import { useDisclosure } from "@chakra-ui/react";
-import { cars } from "@/app/database";
+import { useEffect, useState } from "react";
+import { api } from "@/services/api";
 
 export const Home = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [cars, setCars] = useState<ICars[]>();
+
+  useEffect(() => {
+    (async () => {
+      const response = await api.get("/cars");
+
+      console.log(response);
+      setCars(response.data);
+    })();
+  }, []);
 
   return (
     <>
@@ -31,13 +43,11 @@ export const Home = () => {
       </header>
 
       <main className="py-14 pb-20 flex flex-col container-1">
-        <section className="flex justify-between gap-7">
-          <FilterHome className="hidden lg:flex lg:flex-col w-full max-w-[454px] pl-4 sm:pl-[1.875rem] gap-9 xl:w-1/4 2xl:w-full" />
-          <section className="flex h-min flex-nowrap overflow-x-scroll pl-[1.875rem] pr-4 sm:pr-[1.875rem] lg:pr-[3.75rem] gap-12 mb-20 lg:overflow-auto lg:flex-wrap xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
-            {cars.map((car, index) => (
-              <ProductCard key={index} car={car} />
-            ))}
-          </section>
+        <section className="flex gap-7">
+          <FilterHome className="hidden lg:flex lg:flex-col w-[62%] max-w-[454px] pl-4 sm:pl-[1.875rem] gap-9 xl:w-1/4 2xl:w-full" />
+          <ul className="flex flex-nowrap w-max h-min overflow-x-scroll pl-[1rem] pr-4 sm:pr-[1.875rem] lg:pr-[3.75rem] lg:pl-0 gap-6 mb-20 lg:overflow-auto lg:flex-wrap xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
+            {cars && cars.map((car, index) => <ProductCard key={index} car={car} />)}
+          </ul>
         </section>
 
         <div className="flex justify-center mb-12 lg:hidden">

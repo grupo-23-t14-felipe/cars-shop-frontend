@@ -15,14 +15,6 @@ import { IResponseCepApi } from "./types";
 import clsx from "clsx";
 import { AuthProvider } from "@/context/AuthContext";
 
-const RegisterPage = () => {
-  return (
-    <AuthProvider>
-      <Register />
-    </AuthProvider>
-  );
-};
-
 const Register = () => {
   const [typeAccount, setTypeAccount] = useState(false);
   const [cpf, setCpf] = useState("");
@@ -56,12 +48,13 @@ const Register = () => {
         email: formData.email,
         password: formData.password,
         cpf: cpf.replace(regex, ""),
-        cellphone: cellphone.replace(regex, ""),
+        celphone: cellphone.replace(regex, ""),
         birthday: formData.birthday,
         description: formData.description,
         imageUrl: "",
         is_seller: typeAccount,
         address: {
+          cep: resultCep?.cep.replace(regex, ""),
           street: resultCep?.logradouro,
           state: resultCep?.uf,
           city: resultCep?.localidade,
@@ -343,4 +336,4 @@ const Register = () => {
   );
 };
 
-export default RegisterPage;
+export default Register;

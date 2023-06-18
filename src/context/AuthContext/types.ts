@@ -12,12 +12,13 @@ export interface IRegisterNewData {
   email: string;
   password: string;
   cpf: string;
-  cellphone: string;
+  celphone: string;
   birthday: string;
   description: string | undefined;
   imageUrl: string;
   is_seller: boolean;
   address: {
+    cep: string | undefined;
     street: string | undefined;
     state: string | undefined;
     city: string | undefined;

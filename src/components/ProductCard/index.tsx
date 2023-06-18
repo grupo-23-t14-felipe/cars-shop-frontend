@@ -1,9 +1,10 @@
 import { useDisclosure } from "@chakra-ui/react";
 import Link from "next/link";
 import { ModalSwiper } from "../ModalSwiperImages";
+import { IUser } from "@/context/UserContext/types";
 
 export interface ICars {
-  id: string;
+  uuid: string;
   brand: string;
   model: string;
   year: number;
@@ -12,18 +13,16 @@ export interface ICars {
   color: string;
   on_discount: boolean;
   is_published: boolean;
+  img_default: string;
   value: number;
   description: string;
   user: IUser;
-  galleries: IGallery[];
-}
-
-export interface IUser {
-  name: string;
+  gallery: IGallery[];
+  comments: any;
 }
 
 export interface IGallery {
-  img_url: string;
+  imageUrl: string;
 }
 
 interface IProductCardProps {
@@ -34,11 +33,11 @@ export const ProductCard = ({ car }: IProductCardProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <li className="max-w-[312px] min-w-[290px] h-[350px] cursor-pointer relative">
+    <li className="max-w-[312px] min-w-[290px] h-min cursor-pointer relative">
       <figure
         className="bg-grey7 h-[152px] overflow-hidden flex justify-center items-center"
         onClick={onOpen}>
-        <img src={car.galleries[0].img_url} alt={car.model} className=" h-[152px]" />
+        <img src={car.img_default} alt={car.model} className=" h-[152px]" />
       </figure>
 
       {car.on_discount && (
@@ -46,12 +45,14 @@ export const ProductCard = ({ car }: IProductCardProps) => {
           $
         </div>
       )}
-      <Link href={`/vehicle/${car.id}`} className="flex flex-col gap-4 mt-4 text-start">
+      <Link href={`/vehicle/${car.uuid}`} className="flex flex-col gap-4 mt-4 text-start">
         <h2 className="heading-7-600 text-grey1">
           {car.brand} - {car.model}
         </h2>
 
-        <p className="body-2-400 text-grey2 line-clamp-2 h-[46px]">{car.description}</p>
+        {car.description && (
+          <p className="body-2-400 text-grey2 line-clamp-2 h-[46px]">{car.description}</p>
+        )}
 
         <div className="flex gap-2 items-center">
           <div className="w-8 h-8 rounded-full bg-brand2 flex justify-center items-center">
@@ -75,7 +76,7 @@ export const ProductCard = ({ car }: IProductCardProps) => {
         </div>
       </Link>
 
-      <ModalSwiper car={car} isOpen={isOpen} onClose={onClose} />
+      {car.gallery.length > 0 && <ModalSwiper car={car} isOpen={isOpen} onClose={onClose} />}
     </li>
   );
 };

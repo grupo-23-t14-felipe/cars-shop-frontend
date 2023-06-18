@@ -21,6 +21,7 @@ import { TCreateAnnoucement, createAnnoucementSchema } from "./validators";
 import { NumericFormat } from "react-number-format";
 import axios from "axios";
 import clsx from "clsx";
+import { useUser } from "@/hooks/useUser";
 
 interface IModalVehicleProps {
   isOpen: boolean;
@@ -35,6 +36,7 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
   const [carSelected, setCarSelected] = useState<IListModelCars>();
   const [imgs, setImgs] = useState<{ name: string; img_url: string; file: File }[]>([]);
   const [value, setValue] = useState("");
+  const { createAnnouncer } = useUser();
 
   useEffect(() => {
     (() => {
@@ -132,7 +134,7 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
         fipe_price: carSelected?.value,
         ...carSelected,
         year: parseInt(carSelected!.year),
-        fuel_type: carSelected?.fuel
+        fuel_type: String(carSelected?.fuel)
       };
       delete newObjCarSelect.fuel;
       delete newObjCarSelect.id;
@@ -143,7 +145,8 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
         ...data,
         img_default: imgs[0],
         gallery: new Array(),
-        value: parseInt(valueTreated)
+        value: parseInt(valueTreated),
+        is_active: true
       };
 
       if (imgs.length > 1) {
@@ -188,6 +191,7 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
       newData.img_default = resultImgDefault.data.secure_url;
 
       console.log(newData);
+      createAnnouncer(newData);
     }
   };
 
