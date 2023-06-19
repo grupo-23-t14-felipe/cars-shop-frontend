@@ -11,10 +11,10 @@ export interface ICars {
   fuel_type: string;
   mileage: number;
   color: string;
-  on_discount: boolean;
+  is_good_deal: boolean;
   is_published: boolean;
   img_default: string;
-  value: number;
+  value: string;
   description: string;
   user: IUser;
   gallery: IGallery[];
@@ -33,20 +33,20 @@ export const ProductCard = ({ car }: IProductCardProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <li className="max-w-[312px] min-w-[290px] h-min cursor-pointer relative">
+    <li className="max-w-[312px] w-full min-w-[290px] h-min cursor-pointer relative">
       <figure
         className="bg-grey7 h-[152px] overflow-hidden flex justify-center items-center"
         onClick={onOpen}>
         <img src={car.img_default} alt={car.model} className=" h-[152px]" />
       </figure>
 
-      {car.on_discount && (
+      {car.is_good_deal && (
         <div className="w-4 h-7 border-[1px] border-[#48a382] bg-random7 rounded rounded-tr-none flex justify-center items-center text-whiteFixed input-label absolute top-0 right-0 z-10">
           $
         </div>
       )}
       <Link href={`/vehicle/${car.uuid}`} className="flex flex-col gap-4 mt-4 text-start">
-        <h2 className="heading-7-600 text-grey1">
+        <h2 className="heading-7-600 text-grey1 truncate">
           {car.brand} - {car.model}
         </h2>
 
@@ -71,7 +71,7 @@ export const ProductCard = ({ car }: IProductCardProps) => {
           </div>
 
           <p className="heading-7-600 text-grey1">
-            {car.value.toLocaleString(undefined, { style: "currency", currency: "BRL" })}
+            {parseInt(car.value).toLocaleString(undefined, { style: "currency", currency: "BRL" })}
           </p>
         </div>
       </Link>

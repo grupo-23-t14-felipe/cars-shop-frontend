@@ -163,10 +163,10 @@ export const VehicleDetail = ({ params }: IVehicleDetailProps) => {
                     <div className="w-[77px] h-[77px] rounded-full bg-brand2 flex justify-center items-center">
                       <p className="text-whiteFixed font-medium text-2xl">
                         {carSelected &&
-                          carSelected!.user.name[0].toUpperCase() + carSelected &&
-                          carSelected!.user.name[
-                            carSelected && carSelected!.user.name.lastIndexOf(" ") + 1
-                          ].toUpperCase()}
+                          carSelected.user.name[0].toUpperCase() +
+                            carSelected.user.name[
+                              carSelected.user.name.lastIndexOf(" ") + 1
+                            ].toUpperCase()}
                       </p>
                     </div>
                     <p className="text-grey2 heading-6-600">

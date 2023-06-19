@@ -7,9 +7,10 @@ import { NavBar } from "@/components/Navbar";
 import { ICars, ProductCard } from "@/components/ProductCard";
 import { IUser } from "@/context/UserContext/types";
 import { useUser } from "@/hooks/useUser";
+import { api } from "@/services/api";
 import { useDisclosure } from "@chakra-ui/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IProfileProps {
   params: {
@@ -28,15 +29,13 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
 
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  fetch(`http://localhost:3000/users/${params.id}`)
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.length) {
-        setCar(data);
-        setOwnerPage(data[0].user);
-      }
-      console.log(data);
+  useEffect(() => {
+    api.get(`/users/${params.id}`).then((response) => {
+      setCar(response.data);
+      setOwnerPage(response.data[0].user);
+      console.log(response.data);
     });
+  }, []);
 
   return (
     <>

@@ -11,20 +11,23 @@ import { ModalFilter } from "@/components/ModalFilter";
 import { useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { api } from "@/services/api";
+import { useSearchParams } from "next/navigation";
 
 export const Home = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [cars, setCars] = useState<ICars[]>();
 
+  const searchParams = useSearchParams();
+
   useEffect(() => {
     (async () => {
-      const response = await api.get("/cars");
+      console.log(window.location.search);
+      const response = await api.get(`/cars${window.location.search}`);
 
-      console.log(response);
       setCars(response.data);
     })();
-  }, []);
+  }, [searchParams]);
 
   return (
     <>
@@ -44,7 +47,10 @@ export const Home = () => {
 
       <main className="py-14 pb-20 flex flex-col container-1">
         <section className="flex gap-7">
-          <FilterHome className="hidden lg:flex lg:flex-col w-[62%] max-w-[454px] pl-4 sm:pl-[1.875rem] gap-9 xl:w-1/4 2xl:w-full" />
+          <FilterHome
+            listCars={cars}
+            className="hidden lg:flex lg:flex-col lg:w-[37%] overflow-hidden max-w-[454px] pl-4 sm:pl-[1.875rem] gap-9 xl:w-1/4 2xl:w-full"
+          />
           <ul className="flex flex-nowrap w-max h-min overflow-x-scroll pl-[1rem] pr-4 sm:pr-[1.875rem] lg:pr-[3.75rem] lg:pl-0 gap-6 mb-20 lg:overflow-auto lg:flex-wrap xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
             {cars && cars.map((car, index) => <ProductCard key={index} car={car} />)}
           </ul>
@@ -72,7 +78,7 @@ export const Home = () => {
       </main>
 
       <Footer />
-      <ModalFilter isOpen={isOpen} onClose={onClose} />
+      <ModalFilter cars={cars} isOpen={isOpen} onClose={onClose} />
     </>
   );
 };

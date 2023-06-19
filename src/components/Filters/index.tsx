@@ -1,159 +1,167 @@
+"use client";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "../Button";
+import { ICars } from "../ProductCard";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import clsx from "clsx";
 
 interface IFilterHome {
   className?: string;
   maxWidthButtons?: string;
+  listCars?: ICars[];
 }
 
-export const FilterHome = ({ className, maxWidthButtons = "max-w-[125px]" }: IFilterHome) => {
+export const FilterHome = ({
+  className,
+  maxWidthButtons = "max-w-[125px]",
+  listCars
+}: IFilterHome) => {
+  const router = useRouter();
+  const pathName = usePathname();
+  const searchParams = useSearchParams()!;
+
+  const [brands, setBrands] = useState<string[]>();
+
+  useEffect(() => {
+    fetch("https://kenzie-kars.herokuapp.com/cars")
+      .then((response) => response.json())
+      .then((data) => {
+        setBrands(Object.keys(data));
+      });
+  }, []);
+
+  const setModel = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      if (params.get(name)) {
+        params.delete(name);
+
+        return params.toString();
+      } else {
+        params.set(name, value);
+
+        return params.toString();
+      }
+    },
+    [searchParams]
+  );
+
   return (
     <section className={className}>
       <div className="flex flex-col gap-4">
         <h3 className="heading-4-600 text-black">Marca</h3>
         <ul>
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">General Motors</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Fiat</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Ford</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Honda</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Porsche</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Volkswagen</Button>
-          </li>
+          {brands &&
+            brands.map((brnd, index) => (
+              <li key={index} className="heading-6-500 pl-2 -my-1">
+                <Button
+                  onClick={() => {
+                    router.push(pathName + "?" + setModel("brand", brnd));
+                  }}
+                  className={clsx(
+                    "duration-300 truncate",
+                    searchParams.get("brand") === brnd
+                      ? "text-brand1 hover:text-brand2"
+                      : "text-grey3 hover:text-grey0"
+                  )}>
+                  {brnd[0].toUpperCase() + brnd.substring(1)}
+                </Button>
+              </li>
+            ))}
         </ul>
       </div>
 
       <div className="flex flex-col gap-4">
         <h3 className="heading-4-600 text-black">Modelo</h3>
         <ul>
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Civic</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Corolla</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Cruze</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Fit</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Gol</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Ka</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Onix</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Porsche 718</Button>
-          </li>
+          {listCars &&
+            listCars.map((car, index) => (
+              <li key={index} className="heading-6-500 pl-2 -my-1">
+                <Button
+                  onClick={() => {
+                    router.push(pathName + "?" + setModel("model", car.model));
+                  }}
+                  className={clsx(
+                    "duration-300 truncate",
+                    searchParams.get("model") === car.model
+                      ? "text-brand1 hover:text-brand2"
+                      : "text-grey3 hover:text-grey0"
+                  )}>
+                  {car.model[0].toUpperCase() + car.model.substring(1)}
+                </Button>
+              </li>
+            ))}
         </ul>
       </div>
 
       <div className="flex flex-col gap-4">
         <h3 className="heading-4-600 text-black">Cor</h3>
         <ul>
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Azul</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Branco</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Cinza</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Prata</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Preto</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Verde</Button>
-          </li>
+          {listCars &&
+            listCars.map((car, index) => (
+              <li key={index} className="heading-6-500 pl-2 -my-1">
+                <Button
+                  onClick={() => {
+                    router.push(pathName + "?" + setModel("color", car.color));
+                  }}
+                  className={clsx(
+                    "duration-300 truncate",
+                    searchParams.get("color") === car.color
+                      ? "text-brand1 hover:text-brand2"
+                      : "text-grey3 hover:text-grey0"
+                  )}>
+                  {car.color[0].toUpperCase() + car.color.substring(1)}
+                </Button>
+              </li>
+            ))}
         </ul>
       </div>
 
       <div className="flex flex-col gap-4">
         <h3 className="heading-4-600 text-black">Ano</h3>
         <ul>
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">2022</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">2021</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">2018</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">2015</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">2013</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">2012</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">2010</Button>
-          </li>
+          {listCars &&
+            listCars.map((car, index) => (
+              <li
+                onClick={() => {
+                  router.push(pathName + "?" + setModel("year", car.year.toString()));
+                }}
+                key={index}
+                className="heading-6-500 pl-2 -my-1">
+                <Button
+                  className={clsx(
+                    "duration-300 truncate",
+                    searchParams.get("year") === car.year.toString()
+                      ? "text-brand1 hover:text-brand2"
+                      : "text-grey3 hover:text-grey0"
+                  )}>
+                  {car.year}
+                </Button>
+              </li>
+            ))}
         </ul>
       </div>
 
       <div className="flex flex-col gap-4">
         <h3 className="heading-4-600 text-black">Combustível</h3>
         <ul>
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Diesel</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Etanol</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Gasolina</Button>
-          </li>
-
-          <li className="heading-6-500 pl-2 -my-1">
-            <Button className="text-grey3 hover:text-grey0 duration-300">Flex</Button>
-          </li>
+          {["Flex", "Híbrido", "Elétrico"].map((fuel, index) => (
+            <li key={index} className="heading-6-500 pl-2 -my-1">
+              <Button
+                onClick={() => {
+                  router.push(pathName + "?" + setModel("fuelType", (index + 1).toString()));
+                }}
+                className={clsx(
+                  "duration-300 truncate",
+                  searchParams.get("fuelType") === index.toString()
+                    ? "text-brand1 hover:text-brand2"
+                    : "text-grey3 hover:text-grey0"
+                )}>
+                {fuel}
+              </Button>
+            </li>
+          ))}
         </ul>
       </div>
 
@@ -161,11 +169,27 @@ export const FilterHome = ({ className, maxWidthButtons = "max-w-[125px]" }: IFi
         <h3 className="heading-4-600 text-black">Km</h3>
         <div className="flex gap-6 pl-2">
           <Button
-            className={`heading-7-600 bg-grey5 text-grey3 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`}>
+            onClick={() => {
+              router.push(pathName + "?" + setModel("mileage", "mileageMin"));
+            }}
+            className={clsx(
+              `heading-7-600 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`,
+              searchParams.get("mileage") === "mileageMin"
+                ? "text-brand1 bg-brand4 border-2 border-brand1"
+                : "text-grey3 bg-grey5"
+            )}>
             Mínima
           </Button>
           <Button
-            className={`heading-7-600 bg-grey5 text-grey3 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`}>
+            onClick={() => {
+              router.push(pathName + "?" + setModel("mileage", "mileageMax"));
+            }}
+            className={clsx(
+              `heading-7-600 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`,
+              searchParams.get("mileage") === "mileageMax"
+                ? "text-brand1 bg-brand4 border-2 border-brand1"
+                : "text-grey3 bg-grey5"
+            )}>
             Máxima
           </Button>
         </div>
@@ -175,11 +199,27 @@ export const FilterHome = ({ className, maxWidthButtons = "max-w-[125px]" }: IFi
         <h3 className="heading-4-600 text-black">Preço</h3>
         <div className="flex gap-6 pl-2">
           <Button
-            className={`heading-7-600 bg-grey5 text-grey3 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`}>
+            onClick={() => {
+              router.push(pathName + "?" + setModel("value", "valueMin"));
+            }}
+            className={clsx(
+              `heading-7-600 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`,
+              searchParams.get("value") === "valueMin"
+                ? "text-brand1 bg-brand4 border-2 border-brand1"
+                : "text-grey3 bg-grey5"
+            )}>
             Mínima
           </Button>
           <Button
-            className={`heading-7-600 bg-grey5 text-grey3 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`}>
+            onClick={() => {
+              router.push(pathName + "?" + setModel("value", "valueMax"));
+            }}
+            className={clsx(
+              `heading-7-600 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`,
+              searchParams.get("value") === "valueMax"
+                ? "text-brand1 bg-brand4 border-2 border-brand1"
+                : "text-grey3 bg-grey5"
+            )}>
             Máxima
           </Button>
         </div>

@@ -63,6 +63,8 @@ export const NavBar = () => {
 
   const { user, loggout } = useUser();
 
+  console.log(user);
+
   return (
     <header
       className={clsx(
