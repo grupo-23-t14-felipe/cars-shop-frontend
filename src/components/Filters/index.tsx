@@ -226,15 +226,17 @@ export const FilterHome = ({
           </Button>
         </div>
       </div>
-      <div className="w-full flex justify-center items-center">
-        <Button
-          className="btn-brand1-big w-full max-w-[279px]"
-          onClick={() => {
-            router.replace("/");
-          }}>
-          Limpar filtro
-        </Button>
-      </div>
+      {searchParams.toString() && (
+        <div className="w-full flex justify-center items-center">
+          <Button
+            className="btn-brand1-big w-full max-w-[279px]"
+            onClick={() => {
+              router.replace("/");
+            }}>
+            Limpar filtro
+          </Button>
+        </div>
+      )}
     </section>
   );
 };
