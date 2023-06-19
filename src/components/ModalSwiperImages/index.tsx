@@ -41,7 +41,7 @@ export const ModalSwiper = ({ car, isOpen, onClose }: IModalSwiper) => {
               className="mySwiper">
               {car.gallery.map((gallery, index) => (
                 <SwiperSlide key={index}>
-                  <img src={gallery.imageUrl} />
+                  <img src={gallery.imageUrl} className="w-full h-full" />
                 </SwiperSlide>
               ))}
             </Swiper>

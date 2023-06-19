@@ -34,7 +34,7 @@ export const FilterHome = ({
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
 
-      if (params.get(name)) {
+      if (params.get(name) === value) {
         params.delete(name);
 
         return params.toString();
@@ -146,22 +146,24 @@ export const FilterHome = ({
       <div className="flex flex-col gap-4">
         <h3 className="heading-4-600 text-black">Combustível</h3>
         <ul>
-          {["Flex", "Híbrido", "Elétrico"].map((fuel, index) => (
-            <li key={index} className="heading-6-500 pl-2 -my-1">
-              <Button
-                onClick={() => {
-                  router.push(pathName + "?" + setModel("fuelType", (index + 1).toString()));
-                }}
-                className={clsx(
-                  "duration-300 truncate",
-                  searchParams.get("fuelType") === index.toString()
-                    ? "text-brand1 hover:text-brand2"
-                    : "text-grey3 hover:text-grey0"
-                )}>
-                {fuel}
-              </Button>
-            </li>
-          ))}
+          {["Flex", "Híbrido", "Elétrico"].map((fuel, index) => {
+            return (
+              <li key={index} className="heading-6-500 pl-2 -my-1">
+                <Button
+                  onClick={() => {
+                    router.push(pathName + "?" + setModel("fuelType", (index + 1).toString()));
+                  }}
+                  className={clsx(
+                    "duration-300 truncate",
+                    searchParams.get("fuelType") === (index + 1).toString()
+                      ? "text-brand1 hover:text-brand2"
+                      : "text-grey3 hover:text-grey0"
+                  )}>
+                  {fuel}
+                </Button>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
@@ -223,6 +225,15 @@ export const FilterHome = ({
             Máxima
           </Button>
         </div>
+      </div>
+      <div className="w-full flex justify-center items-center">
+        <Button
+          className="btn-brand1-big w-full max-w-[279px]"
+          onClick={() => {
+            router.replace("/");
+          }}>
+          Limpar filtro
+        </Button>
       </div>
     </section>
   );

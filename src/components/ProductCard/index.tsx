@@ -50,8 +50,12 @@ export const ProductCard = ({ car }: IProductCardProps) => {
           {car.brand} - {car.model}
         </h2>
 
-        {car.description && (
+        {car.description ? (
           <p className="body-2-400 text-grey2 line-clamp-2 h-[46px]">{car.description}</p>
+        ) : (
+          <p className="body-2-400 text-grey2 line-clamp-2 h-[46px]">
+            Este veículo não possui descrição
+          </p>
         )}
 
         <div className="flex gap-2 items-center">

@@ -12,8 +12,10 @@ import { useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export const Home = () => {
+  const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [cars, setCars] = useState<ICars[]>();
@@ -22,7 +24,6 @@ export const Home = () => {
 
   useEffect(() => {
     (async () => {
-      console.log(window.location.search);
       const response = await api.get(`/cars${window.location.search}`);
 
       setCars(response.data);
@@ -51,9 +52,28 @@ export const Home = () => {
             listCars={cars}
             className="hidden lg:flex lg:flex-col lg:w-[37%] overflow-hidden max-w-[454px] pl-4 sm:pl-[1.875rem] gap-9 xl:w-1/4 2xl:w-full"
           />
-          <ul className="flex flex-nowrap w-max h-min overflow-x-scroll pl-[1rem] pr-4 sm:pr-[1.875rem] lg:pr-[3.75rem] lg:pl-0 gap-6 mb-20 lg:overflow-auto lg:flex-wrap xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
-            {cars && cars.map((car, index) => <ProductCard key={index} car={car} />)}
-          </ul>
+          {cars?.length ? (
+            <ul className="flex flex-nowrap w-max h-min overflow-x-scroll pl-[1rem] pr-4 sm:pr-[1.875rem] lg:pr-[3.75rem] lg:pl-0 gap-6 mb-20 lg:overflow-auto lg:flex-wrap xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
+              {cars.map((car, index) => (
+                <ProductCard key={index} car={car} />
+              ))}
+            </ul>
+          ) : searchParams.toString() ? (
+            <div className="w-full pb-10 text-center">
+              <h2 className="heading-6-500">Não possuimos carro para este filtro</h2>
+              <Button
+                className="text-brand1 heading-7-500"
+                onClick={() => {
+                  router.replace("/");
+                }}>
+                Limpar filtro
+              </Button>
+            </div>
+          ) : (
+            <div className="w-full pb-10 text-center">
+              <h2>O Site ainda não possuí carros</h2>
+            </div>
+          )}
         </section>
 
         <div className="flex justify-center mb-12 lg:hidden">
