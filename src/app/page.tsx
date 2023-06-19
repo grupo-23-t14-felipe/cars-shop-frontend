@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export const Home = () => {
   const router = useRouter();
@@ -64,14 +65,14 @@ export const Home = () => {
               <Button
                 className="text-brand1 heading-7-500"
                 onClick={() => {
-                  router.replace("/");
+                  router.push("/");
                 }}>
                 Limpar filtro
               </Button>
             </div>
           ) : (
             <div className="w-full pb-10 text-center">
-              <h2>O Site ainda não possuí carros</h2>
+              <h2 className="heading-6-500">O Site ainda não possuí carros</h2>
             </div>
           )}
         </section>
