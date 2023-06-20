@@ -54,7 +54,7 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
               </div>
               <div className="flex gap-2">
                 {ownerPage && <p className="text-grey1 heading-6-600">{ownerPage.name}</p>}
-                {user?.uuid === params.id && user.is_seller && (
+                {ownerPage?.is_seller && (
                   <p className="body-2-500 text-brand1 rounded bg-brand4 text-center py-1 px-2">
                     Anunciante
                   </p>
@@ -75,6 +75,11 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
         </div>
 
         <section className="flex flex-col gap-[106px] pb-12 py-48 items-center">
+          {ownerPage?.uuid !== user?.uuid && (
+            <div className="flex w-full xl:w-11/12 px-4 -mt-36 -mb-11">
+              <h2 className="heading-5-600 text-grey0 text-left">Anúncios</h2>
+            </div>
+          )}
           <ul className="flex flex-nowrap w-full overflow-x-scroll pb-4 px-4 gap-12 lg:overflow-auto lg:flex-wrap lg:justify-center xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
             {car &&
               car.map((car, index) => (

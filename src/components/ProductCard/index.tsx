@@ -2,6 +2,9 @@ import { useDisclosure } from "@chakra-ui/react";
 import Link from "next/link";
 import { ModalSwiper } from "../ModalSwiperImages";
 import { IUser } from "@/context/UserContext/types";
+import { useUser } from "@/hooks/useUser";
+import { useParams } from "next/navigation";
+import clsx from "clsx";
 
 export interface ICars {
   uuid: string;
@@ -12,7 +15,7 @@ export interface ICars {
   mileage: number;
   color: string;
   is_good_deal: boolean;
-  is_published: boolean;
+  is_active: boolean;
   img_default: string;
   value: string;
   description: string;
@@ -31,6 +34,10 @@ interface IProductCardProps {
 
 export const ProductCard = ({ car }: IProductCardProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user } = useUser();
+  const params = useParams();
+
+  console.log(params);
 
   return (
     <li className="max-w-[312px] w-full min-w-[290px] h-min cursor-pointer relative">
@@ -39,6 +46,16 @@ export const ProductCard = ({ car }: IProductCardProps) => {
         onClick={onOpen}>
         <img src={car.img_default} alt={car.model} className=" h-[152px]" />
       </figure>
+
+      {params.id && user?.uuid && (
+        <div
+          className={clsx(
+            "text-whiteFixed body-2-500 text-center px-2 absolute top-3 left-3",
+            car.is_active ? "bg-brand1" : "bg-grey4"
+          )}>
+          {car.is_active ? "Ativo" : "Inativo"}
+        </div>
+      )}
 
       {car.is_good_deal && (
         <div className="w-4 h-7 border-[1px] border-[#48a382] bg-random7 rounded rounded-tr-none flex justify-center items-center text-whiteFixed input-label absolute top-0 right-0 z-10">
