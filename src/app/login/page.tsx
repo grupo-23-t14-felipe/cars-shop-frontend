@@ -3,13 +3,16 @@
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { Input } from "@/components/Input";
+import { ModalForgetPassword } from "@/components/ModalForgetPassword";
 import { NavBar } from "@/components/Navbar";
 import { useAuth } from "@/hooks/useAuth";
+import { useDisclosure } from "@chakra-ui/react";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 const Login = () => {
   const { register, handleSubmit } = useForm<{ email: string; password: string }>();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const { login } = useAuth();
 
@@ -51,7 +54,8 @@ const Login = () => {
           </div>
           <Button
             type="button"
-            className="body-2-500 text-grey2 mb-3 text-right hover:text-grey0 duration-300">
+            className="body-2-500 text-grey2 mb-3 text-right hover:text-grey0 duration-300"
+            onClick={onOpen}>
             Esqueci minha senha
           </Button>
 
@@ -69,6 +73,7 @@ const Login = () => {
         </form>
       </main>
       <Footer />
+      <ModalForgetPassword onClose={onClose} isOpen={isOpen} />
     </>
   );
 };
