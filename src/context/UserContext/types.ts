@@ -1,6 +1,6 @@
 export interface IUserProviderProps {
   user: IUser | undefined;
-  createAnnouncer: (data: any) => void;
+  createAnnouncer: (data: any) => Promise<boolean>;
   loggout: () => void;
 }
 

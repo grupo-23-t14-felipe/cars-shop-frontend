@@ -39,8 +39,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       const response = await api.post("/cars", data);
 
       console.log(response);
+      return true;
     } catch (error) {
       console.error(error);
+      return false;
     }
   };
 
