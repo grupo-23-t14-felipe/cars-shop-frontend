@@ -41,5 +41,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error(error);
     }
   };
-  return <AuthContext.Provider value={{ register, login }}>{children}</AuthContext.Provider>;
+
+  const resetPassword = async (data: { password: string }, token: string) => {
+    console.log(data, token);
+  };
+
+  const sendEmail = async (data: { email: string }) => {
+    console.log(data);
+
+    return true;
+    // try {
+    //   return true;
+    // } catch (error: any) {
+    //   return error.data.message;
+    // }
+  };
+  return (
+    <AuthContext.Provider value={{ register, login, resetPassword, sendEmail }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

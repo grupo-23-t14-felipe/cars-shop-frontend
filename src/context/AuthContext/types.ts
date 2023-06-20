@@ -1,6 +1,8 @@
 export interface IAuthProviderProps {
   register: (registerData: IRegisterNewData) => void;
   login: (loginData: ILoginData) => void;
+  resetPassword: (data: { password: string }, token: string) => void;
+  sendEmail: (data: { email: string }) => Promise<boolean | string>;
 }
 
 export interface ILoginData {
