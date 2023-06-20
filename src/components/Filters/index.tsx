@@ -38,6 +38,23 @@ export const FilterHome = ({
         params.delete(name);
 
         return params.toString();
+      } else if (
+        (name.includes("value") && searchParams.toString().includes("value")) ||
+        (name.includes("mileage") && searchParams.toString().includes("mileage"))
+      ) {
+        if (searchParams.toString().includes("mileage") && name.includes("mileage")) {
+          params.delete("mileageMin");
+          params.delete("mileageMax");
+
+          params.set(name, value);
+        }
+        if (searchParams.toString().includes("value") && name.includes("value")) {
+          params.delete("valueMin");
+          params.delete("valueMax");
+
+          params.set(name, value);
+        }
+        return params.toString();
       } else {
         params.set(name, value);
 
@@ -46,6 +63,9 @@ export const FilterHome = ({
     },
     [searchParams]
   );
+
+  const listColors: string[] = [];
+  const listYears: number[] = [];
 
   return (
     <section className={className}>
@@ -99,22 +119,28 @@ export const FilterHome = ({
         <h3 className="heading-4-600 text-black">Cor</h3>
         <ul>
           {listCars &&
-            listCars.map((car, index) => (
-              <li key={index} className="heading-6-500 pl-2 -my-1">
-                <Button
-                  onClick={() => {
-                    router.push(pathName + "?" + setModel("color", car.color));
-                  }}
-                  className={clsx(
-                    "duration-300 truncate",
-                    searchParams.get("color") === car.color
-                      ? "text-brand1 hover:text-brand2"
-                      : "text-grey3 hover:text-grey0"
-                  )}>
-                  {car.color[0].toUpperCase() + car.color.substring(1)}
-                </Button>
-              </li>
-            ))}
+            listCars.map((car, index) => {
+              if (!listColors.includes(car.color.toLowerCase())) {
+                listColors.push(car.color.toLowerCase());
+
+                return (
+                  <li key={index} className="heading-6-500 pl-2 -my-1">
+                    <Button
+                      onClick={() => {
+                        router.push(pathName + "?" + setModel("color", car.color));
+                      }}
+                      className={clsx(
+                        "duration-300 truncate",
+                        searchParams.get("color") === car.color
+                          ? "text-brand1 hover:text-brand2"
+                          : "text-grey3 hover:text-grey0"
+                      )}>
+                      {car.color[0].toUpperCase() + car.color.substring(1)}
+                    </Button>
+                  </li>
+                );
+              }
+            })}
         </ul>
       </div>
 
@@ -122,24 +148,29 @@ export const FilterHome = ({
         <h3 className="heading-4-600 text-black">Ano</h3>
         <ul>
           {listCars &&
-            listCars.map((car, index) => (
-              <li
-                onClick={() => {
-                  router.push(pathName + "?" + setModel("year", car.year.toString()));
-                }}
-                key={index}
-                className="heading-6-500 pl-2 -my-1">
-                <Button
-                  className={clsx(
-                    "duration-300 truncate",
-                    searchParams.get("year") === car.year.toString()
-                      ? "text-brand1 hover:text-brand2"
-                      : "text-grey3 hover:text-grey0"
-                  )}>
-                  {car.year}
-                </Button>
-              </li>
-            ))}
+            listCars.map((car, index) => {
+              if (!listYears.includes(car.year)) {
+                listYears.push(car.year);
+                return (
+                  <li
+                    onClick={() => {
+                      router.push(pathName + "?" + setModel("year", car.year.toString()));
+                    }}
+                    key={index}
+                    className="heading-6-500 pl-2 -my-1">
+                    <Button
+                      className={clsx(
+                        "duration-300 truncate",
+                        searchParams.get("year") === car.year.toString()
+                          ? "text-brand1 hover:text-brand2"
+                          : "text-grey3 hover:text-grey0"
+                      )}>
+                      {car.year}
+                    </Button>
+                  </li>
+                );
+              }
+            })}
         </ul>
       </div>
 
@@ -172,11 +203,11 @@ export const FilterHome = ({
         <div className="flex gap-6 pl-2">
           <Button
             onClick={() => {
-              router.push(pathName + "?" + setModel("mileage", "mileageMin"));
+              router.push(pathName + "?" + setModel("mileageMin", "true"));
             }}
             className={clsx(
               `heading-7-600 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`,
-              searchParams.get("mileage") === "mileageMin"
+              searchParams.has("mileageMin")
                 ? "text-brand1 bg-brand4 border-2 border-brand1"
                 : "text-grey3 bg-grey5"
             )}>
@@ -184,11 +215,11 @@ export const FilterHome = ({
           </Button>
           <Button
             onClick={() => {
-              router.push(pathName + "?" + setModel("mileage", "mileageMax"));
+              router.push(pathName + "?" + setModel("mileageMax", "true"));
             }}
             className={clsx(
               `heading-7-600 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`,
-              searchParams.get("mileage") === "mileageMax"
+              searchParams.has("mileageMax")
                 ? "text-brand1 bg-brand4 border-2 border-brand1"
                 : "text-grey3 bg-grey5"
             )}>
@@ -202,11 +233,11 @@ export const FilterHome = ({
         <div className="flex gap-6 pl-2">
           <Button
             onClick={() => {
-              router.push(pathName + "?" + setModel("value", "valueMin"));
+              router.push(pathName + "?" + setModel("valueMin", "true"));
             }}
             className={clsx(
               `heading-7-600 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`,
-              searchParams.get("value") === "valueMin"
+              searchParams.has("valueMin")
                 ? "text-brand1 bg-brand4 border-2 border-brand1"
                 : "text-grey3 bg-grey5"
             )}>
@@ -214,11 +245,11 @@ export const FilterHome = ({
           </Button>
           <Button
             onClick={() => {
-              router.push(pathName + "?" + setModel("value", "valueMax"));
+              router.push(pathName + "?" + setModel("valueMax", "true"));
             }}
             className={clsx(
               `heading-7-600 flex justify-center items-center py-[0.4rem] w-full ${maxWidthButtons}`,
-              searchParams.get("value") === "valueMax"
+              searchParams.has("valueMax")
                 ? "text-brand1 bg-brand4 border-2 border-brand1"
                 : "text-grey3 bg-grey5"
             )}>
