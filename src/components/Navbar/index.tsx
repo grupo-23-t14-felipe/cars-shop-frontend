@@ -51,7 +51,7 @@ const LinksLoginAndRegister = () => {
       <Link href={"/login"} className="body-1-600 text-grey2 hover:text-grey0 duration-300">
         Fazer Login
       </Link>
-      <Link href={"/register"} className="btn-outline-2-big">
+      <Link href={"/register"} className="btn-outline-2-big text-center">
         Cadastrar
       </Link>
     </>
@@ -63,8 +63,6 @@ export const NavBar = () => {
 
   const { user, loggout } = useUser();
 
-  console.log(user);
-
   return (
     <header
       className={clsx(
@@ -74,7 +72,7 @@ export const NavBar = () => {
       <div className="w-full min-h-[78px] flex justify-between items-center">
         <figure>
           <Link href={"/"}>
-            <Image src={logo_colored} alt="logo" />
+            <Image src={logo_colored} alt="logo" priority={true} />
           </Link>
         </figure>
         <nav className="sm:hidden flex justify-center items-center">

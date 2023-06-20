@@ -5,7 +5,6 @@ import "../styles/inputs.css";
 
 import { Inter } from "next/font/google";
 import { Providers } from "./provider";
-import { UserProvider } from "@/context/UserContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +17,7 @@ export const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="pt-BR">
       <body className={inter.className}>
-        <UserProvider>
-          <Providers>{children}</Providers>
-        </UserProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

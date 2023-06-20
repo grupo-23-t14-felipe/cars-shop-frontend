@@ -13,9 +13,11 @@ interface IInputProps {
   inputId?: string;
   labelFor?: string;
   inputChecked?: boolean;
+  inputDefaultChecked?: boolean;
   disable?: boolean;
   value?: string | number;
   maxLength?: number;
+  readOnly?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
@@ -34,6 +36,8 @@ export const Input = ({
   disable,
   value,
   maxLength,
+  inputDefaultChecked,
+  readOnly,
   onChange
 }: IInputProps) => {
   return (
@@ -54,6 +58,8 @@ export const Input = ({
         onChange={onChange}
         checked={inputChecked}
         maxLength={maxLength}
+        defaultChecked={inputDefaultChecked}
+        readOnly={readOnly}
       />
     </>
   );

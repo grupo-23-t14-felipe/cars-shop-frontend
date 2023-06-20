@@ -9,24 +9,24 @@ import jwtDecode from "jwt-decode";
 export const UserContext = createContext<IUserProviderProps>({} as IUserProviderProps);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<IUser>();
-
   const cookies = parseCookies();
 
   const [token, setToken] = useState<string | undefined>(cookies.token_kenzie_cars);
+
+  const [user, setUser] = useState<IUser | undefined>();
 
   if (token) {
     api.defaults.headers.common.Authorization = `Bearer ${token}`;
   }
 
-  useEffect(() => {
-    (async () => {
-      if (token) {
-        const decoded: IDecodeProps = jwtDecode(token);
+  console.log(user, "user");
 
-        setUser(decoded.user);
-      }
-    })();
+  useEffect(() => {
+    if (token) {
+      const decoded: IDecodeProps = jwtDecode(token);
+
+      setUser(decoded.user);
+    }
   }, []);
 
   const loggout = () => {
@@ -36,9 +36,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const createAnnouncer = async (data: any) => {
     try {
-      const response = await api.post("/cars", data);
+      await api.post("/cars", data);
 
-      console.log(response);
       return true;
     } catch (error) {
       console.error(error);
@@ -47,7 +46,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <UserContext.Provider value={{ createAnnouncer, user, loggout }}>
+    <UserContext.Provider value={{ createAnnouncer, user, loggout, setToken, setUser }}>
       {children}
     </UserContext.Provider>
   );

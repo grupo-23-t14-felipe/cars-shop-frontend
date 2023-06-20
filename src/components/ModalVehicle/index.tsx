@@ -11,7 +11,7 @@ import { Button } from "../Button";
 import { Input } from "../Input";
 import { ICars } from "../ProductCard";
 import { SubmitErrorHandler, useForm } from "react-hook-form";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 import { IListCars, IListModelCars } from "./types";
 import { MdOutlineClose } from "react-icons/md";
 import { FiUploadCloud } from "react-icons/fi";
@@ -22,21 +22,25 @@ import { NumericFormat } from "react-number-format";
 import axios from "axios";
 import clsx from "clsx";
 import { useUser } from "@/hooks/useUser";
+import { api } from "@/services/api";
+import { useParams } from "next/navigation";
 
 interface IModalVehicleProps {
   isOpen: boolean;
   onClose: () => void;
   edit: boolean;
   car?: ICars;
+  setCar: Dispatch<SetStateAction<ICars[] | undefined>>;
 }
 
-export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps) => {
+export const ModalVehicle = ({ isOpen, onClose, edit, car, setCar }: IModalVehicleProps) => {
   const [allCars, setAllCars] = useState<IListCars>();
   const [models, setModels] = useState<IListModelCars[]>();
   const [carSelected, setCarSelected] = useState<IListModelCars>();
   const [imgs, setImgs] = useState<{ name: string; img_url: string; file: File }[]>([]);
   const [value, setValue] = useState("");
   const [success, setSuccess] = useState(false);
+  const params = useParams();
   const { createAnnouncer } = useUser();
 
   useEffect(() => {
@@ -191,11 +195,12 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
 
       newData.img_default = resultImgDefault.data.secure_url;
 
-      console.log(newData);
       const result = await createAnnouncer(newData);
       if (result) {
         setSuccess(true);
-        setTimeout(() => {
+        setTimeout(async () => {
+          await api.get(`/users/${params.id}`).then((response) => setCar(response.data));
+
           onClose();
           setSuccess(false);
         }, 3000);
@@ -384,12 +389,12 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
 
                   <Input
                     inputType="radio"
-                    inputName="is_published"
+                    inputName="is_active"
                     inputId="active"
                     value="true"
                     inputClass="absolute w-0 h-0"
                     labelClass="hidden"
-                    inputChecked={car?.is_published}
+                    inputChecked={car?.is_active}
                   />
                   <label
                     htmlFor="active"
@@ -399,12 +404,12 @@ export const ModalVehicle = ({ isOpen, onClose, edit, car }: IModalVehicleProps)
 
                   <Input
                     inputType="radio"
-                    inputName="is_published"
+                    inputName="is_active"
                     inputId="inative"
                     value="false"
                     inputClass="absolute w-0 h-0"
                     labelClass="hidden"
-                    inputChecked={car?.is_published}
+                    inputChecked={car?.is_active}
                   />
                   <label
                     htmlFor="inative"

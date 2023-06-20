@@ -13,7 +13,6 @@ import { PatternFormat } from "react-number-format";
 import axios from "axios";
 import { IResponseCepApi } from "./types";
 import clsx from "clsx";
-import { AuthProvider } from "@/context/AuthContext";
 
 const Register = () => {
   const [typeAccount, setTypeAccount] = useState(false);
@@ -88,7 +87,7 @@ const Register = () => {
   };
 
   return (
-    <AuthProvider>
+    <>
       <NavBar />
       <main className="bg-grey8 flex items-center justify-center pt-11 pb-24 px-4">
         <form
@@ -268,6 +267,7 @@ const Register = () => {
                 inputClass="absolute w-0 h-0"
                 labelClass="hidden"
                 inputChecked={!typeAccount && true}
+                readOnly={true}
               />
               <label
                 htmlFor="buyer"
@@ -286,6 +286,7 @@ const Register = () => {
                 inputClass="absolute w-0 h-0"
                 labelClass="hidden"
                 inputChecked={typeAccount}
+                readOnly={true}
               />
               <label
                 htmlFor="announcer"
@@ -332,7 +333,7 @@ const Register = () => {
         </form>
       </main>
       <Footer />
-    </AuthProvider>
+    </>
   );
 };
 

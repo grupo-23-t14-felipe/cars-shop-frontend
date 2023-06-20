@@ -13,9 +13,17 @@ import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { UserProvider } from "@/context/UserContext";
 
-export const Home = () => {
+const Home = () => {
+  return (
+    <UserProvider>
+      <HomePage />
+    </UserProvider>
+  );
+};
+
+const HomePage = () => {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
 

@@ -1,7 +1,11 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface IUserProviderProps {
   user: IUser | undefined;
   createAnnouncer: (data: any) => Promise<boolean>;
   loggout: () => void;
+  setToken: Dispatch<SetStateAction<string | undefined>>;
+  setUser: Dispatch<SetStateAction<IUser | undefined>>;
 }
 
 export interface IDecodeProps {

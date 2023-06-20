@@ -55,8 +55,6 @@ export const VehicleDetail = ({ params }: IVehicleDetailProps) => {
     })();
   }, []);
 
-  console.log(carSelected);
-
   const { user } = useUser();
 
   const [message, setMessage] = useState("");
@@ -71,8 +69,6 @@ export const VehicleDetail = ({ params }: IVehicleDetailProps) => {
     if (!user) {
       router.push("/login");
     }
-
-    console.log(data);
   };
 
   return (
@@ -115,7 +111,7 @@ export const VehicleDetail = ({ params }: IVehicleDetailProps) => {
 
                     <p className="heading-7-600 text-grey1">
                       {carSelected &&
-                        carSelected?.value.toLocaleString(undefined, {
+                        parseInt(carSelected?.value).toLocaleString(undefined, {
                           style: "currency",
                           currency: "BRL"
                         })}

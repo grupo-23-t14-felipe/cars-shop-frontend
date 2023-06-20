@@ -37,8 +37,6 @@ export const ProductCard = ({ car }: IProductCardProps) => {
   const { user } = useUser();
   const params = useParams();
 
-  console.log(params);
-
   return (
     <li className="max-w-[312px] w-full min-w-[290px] h-min cursor-pointer relative">
       <figure

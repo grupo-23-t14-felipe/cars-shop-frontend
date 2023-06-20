@@ -33,7 +33,6 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
     api.get(`/users/${params.id}`).then((response) => {
       setCar(response.data);
       setOwnerPage(response.data[0].user);
-      console.log(response.data);
     });
   }, []);
 
@@ -120,7 +119,13 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
       </main>
       <Footer />
       {isOpen && (
-        <ModalVehicle isOpen={isOpen} onClose={onClose} edit={defineModal} car={carSelected} />
+        <ModalVehicle
+          isOpen={isOpen}
+          onClose={onClose}
+          edit={defineModal}
+          car={carSelected}
+          setCar={setCar}
+        />
       )}
     </>
   );
