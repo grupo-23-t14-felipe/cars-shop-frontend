@@ -66,6 +66,7 @@ export const FilterHome = ({
 
   const listColors: string[] = [];
   const listYears: number[] = [];
+  const listModels: string[] = [];
 
   return (
     <section className={className}>
@@ -96,22 +97,28 @@ export const FilterHome = ({
         <h3 className="heading-4-600 text-black">Modelo</h3>
         <ul>
           {listCars &&
-            listCars.map((car, index) => (
-              <li key={index} className="heading-6-500 pl-2 -my-1">
-                <Button
-                  onClick={() => {
-                    router.push(pathName + "?" + setModel("model", car.model));
-                  }}
-                  className={clsx(
-                    "duration-300 truncate",
-                    searchParams.get("model") === car.model
-                      ? "text-brand1 hover:text-brand2"
-                      : "text-grey3 hover:text-grey0"
-                  )}>
-                  {car.model[0].toUpperCase() + car.model.substring(1)}
-                </Button>
-              </li>
-            ))}
+            listCars.map((car, index) => {
+              if (!listModels.includes(car.model.toLowerCase())) {
+                listModels.push(car.model.toLowerCase());
+
+                return (
+                  <li key={index} className="heading-6-500 pl-2 -my-1">
+                    <Button
+                      onClick={() => {
+                        router.push(pathName + "?" + setModel("model", car.model));
+                      }}
+                      className={clsx(
+                        "duration-300 truncate",
+                        searchParams.get("model") === car.model
+                          ? "text-brand1 hover:text-brand2"
+                          : "text-grey3 hover:text-grey0"
+                      )}>
+                      {car.model[0].toUpperCase() + car.model.substring(1)}
+                    </Button>
+                  </li>
+                );
+              }
+            })}
         </ul>
       </div>
 

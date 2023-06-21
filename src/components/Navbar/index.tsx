@@ -18,12 +18,9 @@ import clsx from "clsx";
 import { useUser } from "@/hooks/useUser";
 import { IUser } from "@/context/UserContext/types";
 import { UserProvider } from "@/context/UserContext";
-import { usePathname } from "next/navigation";
 import { ModalEditAddress } from "../ModalEditAddress";
 
 const UserLoggedLinks = ({ user, loggout }: { user: IUser; loggout: () => void }) => {
-  const pathName = usePathname();
-
   return (
     <>
       <Button className="body-1-400 text-grey2 hover:text-grey0 duration-300 text-left">
@@ -31,11 +28,13 @@ const UserLoggedLinks = ({ user, loggout }: { user: IUser; loggout: () => void }
       </Button>
       {/*Colocar o modal de editar o perfil no lugar*/}
       <ModalEditAddress />
-      <Link
-        href={`/user/${user.uuid}`}
-        className="body-1-400 text-grey2 hover:text-grey0 duration-300">
-        Meus Anúncios
-      </Link>
+      {user.is_seller && (
+        <Link
+          href={`/user/${user.uuid}`}
+          className="body-1-400 text-grey2 hover:text-grey0 duration-300">
+          Meus Anúncios
+        </Link>
+      )}
 
       <Button
         onClick={loggout}
@@ -76,7 +75,7 @@ const Header = () => {
     <header
       className={clsx(
         "flex-col px-4 sm:px-[1.875rem] lg:px-[3.75rem] justify-between items-center border-b-2 border-b-grey6 bg-grey10 overflow-hidden duration-300",
-        isOpen ? (user ? "h-[372px]" : "h-[264px]") : "h-[78px]"
+        isOpen ? (user ? (user.is_seller ? "h-[372px]" : "h-[304px]") : "h-[264px]") : "h-[78px]"
       )}>
       <div className="w-full min-h-[78px] flex justify-between items-center">
         <figure>
