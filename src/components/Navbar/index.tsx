@@ -17,6 +17,7 @@ import { useState } from "react";
 import clsx from "clsx";
 import { useUser } from "@/hooks/useUser";
 import { IUser } from "@/context/UserContext/types";
+import { UserProvider } from "@/context/UserContext";
 
 const UserLoggedLinks = ({ user, loggout }: { user: IUser; loggout: () => void }) => {
   return (
@@ -59,6 +60,14 @@ const LinksLoginAndRegister = () => {
 };
 
 export const NavBar = () => {
+  return (
+    <UserProvider>
+      <Header />
+    </UserProvider>
+  );
+};
+
+const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { user, loggout } = useUser();

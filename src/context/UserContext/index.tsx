@@ -19,8 +19,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     api.defaults.headers.common.Authorization = `Bearer ${token}`;
   }
 
-  console.log(user, "user");
-
   useEffect(() => {
     if (token) {
       const decoded: IDecodeProps = jwtDecode(token);
@@ -31,6 +29,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const loggout = () => {
     destroyCookie(undefined, "token_kenzie_cars");
+    setToken(undefined);
     setUser(undefined);
   };
 
