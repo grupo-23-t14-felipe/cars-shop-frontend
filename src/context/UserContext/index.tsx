@@ -2,7 +2,7 @@
 
 import { api } from "@/services/api";
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { IDecodeProps, IUser, IUserProviderProps } from "./types";
+import { IAddress, IDecodeProps, IUser, IUserProviderProps } from "./types";
 import { parseCookies, destroyCookie } from "nookies";
 import jwtDecode from "jwt-decode";
 
@@ -44,8 +44,27 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const updateAddress = async (data: IAddress) => {
+    try {
+      const result: { data: IAddress } = await api.patch(`user/${user?.uuid}/address`);
+
+      const newAddressUser = {
+        ...user!,
+        address: result.data
+      };
+
+      setUser(newAddressUser);
+
+      return true;
+    } catch (error: any) {
+      console.error(error);
+      return error.data.message;
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ createAnnouncer, user, loggout, setToken, setUser }}>
+    <UserContext.Provider
+      value={{ createAnnouncer, user, loggout, setToken, setUser, updateAddress }}>
       {children}
     </UserContext.Provider>
   );

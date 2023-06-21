@@ -18,25 +18,25 @@ import clsx from "clsx";
 import { useUser } from "@/hooks/useUser";
 import { IUser } from "@/context/UserContext/types";
 import { UserProvider } from "@/context/UserContext";
+import { usePathname } from "next/navigation";
+import { ModalEditAddress } from "../ModalEditAddress";
 
 const UserLoggedLinks = ({ user, loggout }: { user: IUser; loggout: () => void }) => {
+  const pathName = usePathname();
+
   return (
     <>
-      <Link
-        href={`/user/${user.uuid}`}
-        className="body-1-400 text-grey2 hover:text-grey0 duration-300">
+      <Button className="body-1-400 text-grey2 hover:text-grey0 duration-300 text-left">
         Editar Perfil
-      </Link>
-      <Link
-        href={`/user/${user.uuid}`}
-        className="body-1-400 text-grey2 hover:text-grey0 duration-300">
-        Editar Endereço
-      </Link>
+      </Button>
+      {/*Colocar o modal de editar o perfil no lugar*/}
+      <ModalEditAddress />
       <Link
         href={`/user/${user.uuid}`}
         className="body-1-400 text-grey2 hover:text-grey0 duration-300">
         Meus Anúncios
       </Link>
+
       <Button
         onClick={loggout}
         className="text-left body-1-400 text-grey2 hover:text-grey0 duration-300">
