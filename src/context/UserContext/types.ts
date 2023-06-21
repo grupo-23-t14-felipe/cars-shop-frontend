@@ -6,6 +6,7 @@ export interface IUserProviderProps {
   loggout: () => void;
   setToken: Dispatch<SetStateAction<string | undefined>>;
   setUser: Dispatch<SetStateAction<IUser | undefined>>;
+  updateAddress: (data: IAddress) => Promise<boolean | string>;
 }
 
 export interface IDecodeProps {
