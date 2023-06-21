@@ -31,9 +31,7 @@ export const ModalEditAddress = () => {
     handleSubmit,
     formState: { errors },
     setError,
-    clearErrors,
-    getValues,
-    setValue
+    clearErrors
   } = useForm<TEditAddress>({
     resolver: zodResolver(editAddressSchema),
     mode: "onChange"
@@ -59,7 +57,6 @@ export const ModalEditAddress = () => {
   const consultCep = async (cep: string) => {
     const regex = /\D/g;
     clearErrors("cep");
-    setValue("cep", cep.replace(regex, ""));
 
     if (cep.replace(regex, "").length < 8) {
       return setError("cep", { type: "required", message: "Digite seu CEP" });
