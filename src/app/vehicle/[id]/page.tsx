@@ -4,6 +4,7 @@ import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { NavBar } from "@/components/Navbar";
 import { ICars } from "@/components/ProductCard";
+import { UserProvider } from "@/context/UserContext";
 import { useUser } from "@/hooks/useUser";
 import { api } from "@/services/api";
 import {
@@ -44,7 +45,15 @@ const calcDatePost = (date: string) => {
   }
 };
 
-export const VehicleDetail = ({ params }: IVehicleDetailProps) => {
+const VehicleDetail = ({ params }: IVehicleDetailProps) => {
+  return (
+    <UserProvider>
+      <VehicleDetailPage params={params} />
+    </UserProvider>
+  );
+};
+
+const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
   const router = useRouter();
 
   const [carSelected, setCarSelected] = useState<ICars>();
