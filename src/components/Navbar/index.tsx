@@ -19,15 +19,15 @@ import { useUser } from "@/hooks/useUser";
 import { IUser } from "@/context/UserContext/types";
 import { UserProvider } from "@/context/UserContext";
 import { ModalEditAddress } from "../ModalEditAddress";
+import { ModalEditProfile } from "../ModalEditProfile";
 
 const UserLoggedLinks = ({ user, loggout }: { user: IUser; loggout: () => void }) => {
   return (
     <>
-      <Button className="body-1-400 text-grey2 hover:text-grey0 duration-300 text-left">
-        Editar Perfil
-      </Button>
-      {/*Colocar o modal de editar o perfil no lugar*/}
+      <ModalEditProfile />
+
       <ModalEditAddress />
+
       {user.is_seller && (
         <Link
           href={`/user/${user.uuid}`}

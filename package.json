@@ -23,6 +23,7 @@
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.4",
     "framer-motion": "^10.12.16",
+    "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",
     "next": "13.4.4",
     "nookies": "^2.5.2",
@@ -39,6 +40,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@neojp/tailwindcss-line-clamp-utilities": "^1.0.1"
+    "@neojp/tailwindcss-line-clamp-utilities": "^1.0.1",
+    "@types/jsonwebtoken": "^9.0.2"
   }
 }
