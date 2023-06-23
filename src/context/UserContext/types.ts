@@ -7,6 +7,8 @@ export interface IUserProviderProps {
   setToken: Dispatch<SetStateAction<string | undefined>>;
   setUser: Dispatch<SetStateAction<IUser | undefined>>;
   updateAddress: (data: IAddress) => Promise<boolean | string>;
+  updateUser: (data: IUserUpdate) => Promise<boolean | string>;
+  deleteUser: () => Promise<boolean | string>;
 }
 
 export interface IDecodeProps {
@@ -24,6 +26,15 @@ export interface IUser {
   imageUrl: string;
   is_seller: boolean;
   address: IAddress;
+}
+
+export interface IUserUpdate {
+  name: string;
+  email: string;
+  cpf: string;
+  celphone: string;
+  birthday: string;
+  description: string;
 }
 
 export interface IAddress {
