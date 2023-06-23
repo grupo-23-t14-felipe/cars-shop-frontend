@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { ModalVehicle } from "@/components/ModalVehicle";
 import { NavBar } from "@/components/Navbar";
 import { ICars, ProductCard } from "@/components/ProductCard";
+import { UserProvider } from "@/context/UserContext";
 import { IUser } from "@/context/UserContext/types";
 import { useUser } from "@/hooks/useUser";
 import { api } from "@/services/api";
@@ -17,6 +18,14 @@ interface IProfileProps {
     id: string;
   };
 }
+
+const ProfileDetail = ({ params }: IProfileProps) => {
+  return (
+    <UserProvider>
+      <ProfileDetailPage params={params} />
+    </UserProvider>
+  );
+};
 
 const ProfileDetailPage = ({ params }: IProfileProps) => {
   const [defineModal, setDefineModal] = useState<boolean>(true);
@@ -73,16 +82,18 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
           </section>
         </div>
 
-        <section className="flex flex-col gap-[106px] pb-12 py-48 items-center">
+        <section className="flex flex-col gap-16 pt-12 pb-48 lg:py-20 lg:gap-20 items-center">
           {ownerPage?.uuid !== user?.uuid && (
-            <div className="flex w-full xl:w-11/12 px-4 -mt-36 -mb-11">
+            <div className="flex w-full xl:w-11/12 px-4">
               <h2 className="heading-5-600 text-grey0 text-left">Anúncios</h2>
             </div>
           )}
           <ul className="flex flex-nowrap w-full overflow-x-scroll pb-4 px-4 gap-12 lg:overflow-auto lg:flex-wrap lg:justify-center xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
             {car &&
               car.map((car, index) => (
-                <div key={index} className="flex flex-col gap-4 max-w-[312px] min-w-[290px]">
+                <div
+                  key={index}
+                  className="flex flex-col gap-4 max-w-[312px] lg:w-full min-w-[290px]">
                   <ProductCard car={car} />
                   {user?.uuid === params.id && (
                     <div className="flex gap-4 flex-wrap">
@@ -130,4 +141,4 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
     </>
   );
 };
-export default ProfileDetailPage;
+export default ProfileDetail;

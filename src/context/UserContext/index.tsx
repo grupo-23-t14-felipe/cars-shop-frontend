@@ -5,10 +5,12 @@ import { ReactNode, createContext, useEffect, useState } from "react";
 import { IAddress, IDecodeProps, IUser, IUserProviderProps } from "./types";
 import { parseCookies, destroyCookie } from "nookies";
 import jwtDecode from "jwt-decode";
+import { useRouter } from "next/navigation";
 
 export const UserContext = createContext<IUserProviderProps>({} as IUserProviderProps);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
+  const router = useRouter();
   const cookies = parseCookies();
 
   const [token, setToken] = useState<string | undefined>(cookies.token_kenzie_cars);
@@ -24,6 +26,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       const decoded: IDecodeProps = jwtDecode(token);
 
       setUser(decoded.user);
+      router.refresh();
     }
   }, []);
 
@@ -31,6 +34,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     destroyCookie(undefined, "token_kenzie_cars");
     setToken(undefined);
     setUser(undefined);
+    router.refresh();
   };
 
   const createAnnouncer = async (data: any) => {
