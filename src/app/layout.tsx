@@ -1,3 +1,4 @@
+"use client";
 import "../styles/globals.css";
 import "../styles/typograph.css";
 import "../styles/buttons.css";

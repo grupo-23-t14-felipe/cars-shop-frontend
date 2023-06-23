@@ -26,7 +26,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       const decoded: IDecodeProps = jwtDecode(token);
 
       setUser(decoded.user);
-      router.refresh();
+      window.location.reload();
     }
   }, []);
 
@@ -34,6 +34,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     destroyCookie(undefined, "token_kenzie_cars");
     setToken(undefined);
     setUser(undefined);
+    window.location.reload();
   };
 
   const createAnnouncer = async (data: any) => {
