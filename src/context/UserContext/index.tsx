@@ -6,7 +6,6 @@ import { IAddress, IDecodeProps, IUser, IUserProviderProps, IUserUpdate } from "
 import { parseCookies, destroyCookie, setCookie } from "nookies";
 import jwtDecode from "jwt-decode";
 import { useRouter } from "next/navigation";
-import jwt from "jsonwebtoken";
 
 export const UserContext = createContext<IUserProviderProps>({} as IUserProviderProps);
 
@@ -35,7 +34,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     destroyCookie(undefined, "token_kenzie_cars");
     setToken(undefined);
     setUser(undefined);
-    router.refresh();
   };
 
   const createAnnouncer = async (data: any) => {
@@ -77,15 +75,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         ...user!,
         ...result.data
       };
-
-      const tokenUpdate: string = jwt.sign({ user: user }, process.env.SECRET_KEY!, {
-        expiresIn: process.env.EXPIRES_IN,
-        subject: String(user?.uuid)
-      });
-
-      setCookie(undefined, "token_kenzie_cars", tokenUpdate, {
-        maxAge: 60 * 60 * 24
-      });
 
       setUser(updatedUser);
 
