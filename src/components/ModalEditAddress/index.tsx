@@ -37,7 +37,7 @@ export const ModalEditAddress = () => {
     mode: "onChange"
   });
 
-  const submit: SubmitHandler<TEditAddress> = (data) => {
+  const submit: SubmitHandler<TEditAddress> = async (data) => {
     const regex = /\D/g;
 
     const newData = {
@@ -50,8 +50,10 @@ export const ModalEditAddress = () => {
       complement: data.complement || user!.address.complement
     };
 
-    console.log(newData);
-    // updateAddress(newData);
+    const result = await updateAddress(newData);
+    if (result) {
+      onClose();
+    }
   };
 
   const consultCep = async (cep: string) => {

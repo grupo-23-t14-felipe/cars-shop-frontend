@@ -55,7 +55,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const updateAddress = async (data: IAddress) => {
     try {
-      const result: { data: IAddress } = await api.patch(`user/${user?.uuid}/address`, data);
+      const result: { data: IAddress } = await api.patch(`users/address/${user?.uuid}`, data);
 
       const newAddressUser = {
         ...user!,
