@@ -1,3 +1,5 @@
+"use client";
+
 import { useRouter } from "next/navigation";
 import { ReactNode, createContext } from "react";
 import { IAuthProviderProps, ILoginData, IRegisterNewData } from "./types";

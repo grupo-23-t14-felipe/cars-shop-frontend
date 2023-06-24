@@ -12,7 +12,10 @@ export interface IUserProviderProps {
 }
 
 export interface IDecodeProps {
-  user: IUser;
+  email: string;
+  exp: number;
+  iat: number;
+  sub: string;
 }
 
 export interface IUser {

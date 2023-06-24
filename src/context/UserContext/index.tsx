@@ -3,32 +3,37 @@
 import { api } from "@/services/api";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { IAddress, IDecodeProps, IUser, IUserProviderProps, IUserUpdate } from "./types";
-import { parseCookies, destroyCookie, setCookie } from "nookies";
+import { parseCookies, destroyCookie } from "nookies";
 import jwtDecode from "jwt-decode";
-import { useRouter } from "next/navigation";
 
 export const UserContext = createContext<IUserProviderProps>({} as IUserProviderProps);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const router = useRouter();
   const cookies = parseCookies();
 
   const [token, setToken] = useState<string | undefined>(cookies.token_kenzie_cars);
 
-  const [user, setUser] = useState<IUser | undefined>();
+  const [user, setUser] = useState<IUser | undefined>(undefined);
 
   if (token) {
     api.defaults.headers.common.Authorization = `Bearer ${token}`;
   }
 
   useEffect(() => {
-    if (token) {
-      const decoded: IDecodeProps = jwtDecode(token);
+    (async () => {
+      if (token) {
+        const decoded: IDecodeProps = jwtDecode(token);
 
-      setUser(decoded.user);
-      window.location.reload();
-    }
-  }, []);
+        await getUser(decoded.sub);
+      }
+    })();
+  }, [token]);
+
+  const getUser = async (uuid: string) => {
+    const response = await api.get(`/users/${uuid}`);
+
+    setUser(response.data);
+  };
 
   const loggout = () => {
     destroyCookie(undefined, "token_kenzie_cars");
@@ -70,8 +75,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     try {
       const result: { data: IUser } = await api.patch(`users/${user?.uuid}`, data);
 
-      console.log(result);
-
       const updatedUser = {
         ...user!,
         ...result.data
@@ -92,8 +95,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
       setToken(undefined);
       setUser(undefined);
-
-      router.refresh();
 
       return true;
     } catch (error: any) {

@@ -59,14 +59,6 @@ const LinksLoginAndRegister = () => {
 };
 
 export const NavBar = () => {
-  return (
-    <UserProvider>
-      <Header />
-    </UserProvider>
-  );
-};
-
-const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { user, loggout } = useUser();

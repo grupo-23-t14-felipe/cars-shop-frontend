@@ -39,7 +39,7 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   useEffect(() => {
-    api.get(`/users/${params.id}`).then((response) => {
+    api.get(`/users/cars/${params.id}`).then((response) => {
       setCar(response.data);
       setOwnerPage(response.data[0].user);
     });

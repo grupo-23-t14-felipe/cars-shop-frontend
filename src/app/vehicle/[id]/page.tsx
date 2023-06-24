@@ -4,7 +4,6 @@ import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { NavBar } from "@/components/Navbar";
 import { ICars } from "@/components/ProductCard";
-import { UserProvider } from "@/context/UserContext";
 import { useUser } from "@/hooks/useUser";
 import { api } from "@/services/api";
 import {
@@ -21,6 +20,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { UserProvider } from "@/context/UserContext";
 
 interface IVehicleDetailProps {
   params: {
@@ -56,21 +56,19 @@ const VehicleDetail = ({ params }: IVehicleDetailProps) => {
 const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
   const router = useRouter();
 
+  const { user } = useUser();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const [carSelected, setCarSelected] = useState<ICars>();
+  const [message, setMessage] = useState("");
+  const [imgDefault, setImgDefault] = useState<string | undefined>("");
 
   useEffect(() => {
     (() => {
       api.get(`/cars/${params.id}`).then((response) => setCarSelected(response.data));
     })();
   }, []);
-
-  const { user } = useUser();
-
-  const [message, setMessage] = useState("");
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [imgDefault, setImgDefault] = useState<string | undefined>("");
 
   const { handleSubmit, register } = useForm<{ comment: string }>();
 
@@ -140,7 +138,7 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
                 </section>
               </div>
 
-              <div className="lg:max-w-[440px] lg:w-[35.5%] flex flex-col gap-8 lg:absolute lg:right-0">
+              <div className="lg:max-w-[440px] lg:w-[35.5%] flex flex-col gap-8 mb-16 lg:absolute lg:right-0">
                 <section className="bg-grey10 rounded p-9 flex flex-col">
                   <h2 className="heading-6-600 mb-9">Fotos</h2>
                   <ul className="flex flex-wrap justify-evenly gap-x-1.5 gap-y-12 w-full ">
@@ -163,7 +161,7 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
                   </ul>
                 </section>
 
-                <section className="flex flex-col bg-grey10 rounded py-10 px-7 gap-7 items-center">
+                <section className="flex flex-col bg-grey10 rounded py-10 px-7 gap-7 items-center max-h-[905px]">
                   <div className="flex flex-col gap-7 items-center justify-center">
                     <div className="w-[77px] h-[77px] rounded-full bg-brand2 flex justify-center items-center">
                       <p className="text-whiteFixed font-medium text-2xl">
@@ -179,7 +177,7 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
                     </p>
                   </div>
 
-                  <p className="body-1-400 text-grey2 text-center">
+                  <p className="body-1-400 text-grey2 text-center max-h-[600px] overflow-y-auto">
                     {carSelected && carSelected?.user.description}
                   </p>
 
