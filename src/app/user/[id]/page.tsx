@@ -3,6 +3,7 @@
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { ModalCreateVehicle } from "@/components/ModalCreateVehicle";
+import { ModalEditVehicle } from "@/components/ModalEditVehicle";
 import { NavBar } from "@/components/Navbar";
 import { ICars, ProductCard } from "@/components/ProductCard";
 import { UserProvider } from "@/context/UserContext";
@@ -84,7 +85,7 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
                   <ProductCard car={car} />
                   {user?.uuid === params.id && (
                     <div className="flex gap-4 flex-wrap">
-                      <Button className="btn-outline-1-medium">Editar</Button>
+                      <ModalEditVehicle setCar={setCar} carToEdit={car} />
                       <Link href={`/vehicle/${car.uuid}`} className="btn-outline-1-medium">
                         Ver detalhes
                       </Link>

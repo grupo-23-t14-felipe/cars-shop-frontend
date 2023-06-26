@@ -2,7 +2,14 @@
 
 import { api } from "@/services/api";
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { IAddress, IDecodeProps, IUser, IUserProviderProps, IUserUpdate } from "./types";
+import {
+  IAddress,
+  IAnnouncer,
+  IDecodeProps,
+  IUser,
+  IUserProviderProps,
+  IUserUpdate
+} from "./types";
 import { parseCookies, destroyCookie } from "nookies";
 import jwtDecode from "jwt-decode";
 
@@ -42,9 +49,31 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     window.location.reload();
   };
 
-  const createAnnouncer = async (data: any) => {
+  const createAnnouncer = async (data: IAnnouncer) => {
     try {
       await api.post("/cars", data);
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  const updateAnnouncer = async (data: IAnnouncer, uuid: string) => {
+    try {
+      await api.patch(`/cars/${uuid}`, data);
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  const deleteImgOfAd = async (uuid: string) => {
+    try {
+      await api.delete(`/cars/${uuid}/gallery`);
 
       return true;
     } catch (error) {
@@ -113,7 +142,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setUser,
         updateAddress,
         deleteUser,
-        updateUser
+        updateUser,
+        updateAnnouncer,
+        deleteImgOfAd
       }}>
       {children}
     </UserContext.Provider>

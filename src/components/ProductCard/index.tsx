@@ -25,6 +25,7 @@ export interface ICars {
 }
 
 export interface IGallery {
+  uuid: string;
   imageUrl: string;
 }
 
