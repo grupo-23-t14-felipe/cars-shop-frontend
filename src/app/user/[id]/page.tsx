@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
-import { ModalVehicle } from "@/components/ModalVehicle";
+import { ModalCreateVehicle } from "@/components/ModalCreateVehicle";
 import { NavBar } from "@/components/Navbar";
 import { ICars, ProductCard } from "@/components/ProductCard";
 import { UserProvider } from "@/context/UserContext";
@@ -28,15 +28,10 @@ const ProfileDetail = ({ params }: IProfileProps) => {
 };
 
 const ProfileDetailPage = ({ params }: IProfileProps) => {
-  const [defineModal, setDefineModal] = useState<boolean>(true);
-
-  const [carSelected, setCarSelected] = useState<ICars>();
   const [car, setCar] = useState<ICars[]>();
   const [ownerPage, setOwnerPage] = useState<IUser>();
 
   const { user } = useUser();
-
-  const { isOpen, onClose, onOpen } = useDisclosure();
 
   useEffect(() => {
     api.get(`/users/cars/${params.id}`).then((response) => {
@@ -70,15 +65,7 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
               </div>
               {ownerPage && <p className="text-grey2 body-1-400">{ownerPage.description}</p>}
             </div>
-            {user?.uuid === params.id && (
-              <Button
-                className="btn-outline-brand-1-big w-fit"
-                onClick={() => {
-                  onOpen(), setDefineModal(false);
-                }}>
-                Criar anúncio
-              </Button>
-            )}
+            {user?.uuid === params.id && <ModalCreateVehicle setCar={setCar} />}
           </section>
         </div>
 
@@ -97,13 +84,7 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
                   <ProductCard car={car} />
                   {user?.uuid === params.id && (
                     <div className="flex gap-4 flex-wrap">
-                      <Button
-                        className="btn-outline-1-medium"
-                        onClick={() => {
-                          onOpen(), setCarSelected(car), setDefineModal(true);
-                        }}>
-                        Editar
-                      </Button>
+                      <Button className="btn-outline-1-medium">Editar</Button>
                       <Link href={`/vehicle/${car.uuid}`} className="btn-outline-1-medium">
                         Ver detalhes
                       </Link>
@@ -129,15 +110,6 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
         </section>
       </main>
       <Footer />
-      {isOpen && (
-        <ModalVehicle
-          isOpen={isOpen}
-          onClose={onClose}
-          edit={defineModal}
-          car={carSelected}
-          setCar={setCar}
-        />
-      )}
     </>
   );
 };
