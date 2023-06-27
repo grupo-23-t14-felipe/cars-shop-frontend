@@ -44,19 +44,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const resetPassword = async (data: { password: string }, token: string) => {
-    console.log(data, token);
+  const resetPassword = async (data: { password: string; confirm: string }, token: string) => {
+    try {
+      await api.patch(`/users/reset-password/${token}`, {
+        new_password: data.password
+      });
+      return true;
+    } catch (error: any) {
+      console.error(error);
+      return error.data.message;
+    }
   };
 
   const sendEmail = async (data: { email: string }) => {
-    console.log(data);
-
-    return true;
-    // try {
-    //   return true;
-    // } catch (error: any) {
-    //   return error.data.message;
-    // }
+    try {
+      await api.post("/users/reset-password", data);
+      return true;
+    } catch (error: any) {
+      console.error(error);
+      return error.data.message;
+    }
   };
   return (
     <AuthContext.Provider value={{ register, login, resetPassword, sendEmail }}>

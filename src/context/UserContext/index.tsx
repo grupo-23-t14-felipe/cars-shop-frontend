@@ -61,7 +61,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateAnnouncer = async (data: IAnnouncer, uuid: string) => {
-    console.log(data);
     try {
       await api.patch(`/cars/${uuid}`, data);
 
@@ -144,6 +143,16 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const createComment = async (data: { comment: string }, uuidCar: string) => {
+    try {
+      await api.post(`/cars/comments/${uuidCar}`, data);
+      return true;
+    } catch (error: any) {
+      console.error(error);
+      return error.data.message;
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -157,7 +166,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         updateUser,
         updateAnnouncer,
         deleteImgOfAd,
-        deleteAd
+        deleteAd,
+        createComment
       }}>
       {children}
     </UserContext.Provider>

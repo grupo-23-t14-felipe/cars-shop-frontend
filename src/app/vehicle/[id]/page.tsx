@@ -73,6 +73,7 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
   const { handleSubmit, register } = useForm<{ comment: string }>();
 
   const submit: SubmitHandler<{ comment: string }> = (data) => {
+    console.log(data);
     if (!user) {
       router.push("/login");
     }
