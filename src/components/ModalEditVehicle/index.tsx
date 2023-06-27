@@ -249,7 +249,7 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
           await api.get(`/users/cars/${params.id}`).then((response) => setCar(response.data));
 
           onClose();
-        }, 3000);
+        }, 1000);
       }
     }
   };

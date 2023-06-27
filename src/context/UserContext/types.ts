@@ -13,7 +13,8 @@ export interface IUserProviderProps {
   deleteUser: () => Promise<boolean | string>;
   deleteImgOfAd: (uuid: string) => Promise<boolean>;
   deleteAd: (uuid: string) => Promise<boolean>;
-  createComment: (data: { comment: string }, uuidCar: string) => Promise<boolean>;
+  createComment: (data: { description: string }, uuidCar: string) => Promise<boolean>;
+  deleteComment: (uuidComment: string) => Promise<boolean>;
 }
 
 export interface IAnnouncer {

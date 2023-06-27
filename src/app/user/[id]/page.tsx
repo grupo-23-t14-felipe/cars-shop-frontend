@@ -77,7 +77,7 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
             </div>
           )}
           <ul className="flex flex-nowrap w-full overflow-x-scroll pb-4 px-4 gap-12 lg:overflow-auto lg:flex-wrap lg:justify-center xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
-            {car &&
+            {car ? (
               car.map((car, index) => (
                 <div
                   key={index}
@@ -92,22 +92,27 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
                     </div>
                   )}
                 </div>
-              ))}
+              ))
+            ) : (
+              <h2 className="heading-5-600">Você não possuí carros anunciados</h2>
+            )}
           </ul>
 
-          <div className="flex flex-col md:flex-row justify-center items-center gap-5">
-            {/* <Button className="text-brand2 heading-5-600 hover:text-brand1 duration-300">
+          {car && (
+            <div className="flex flex-col md:flex-row justify-center items-center gap-5">
+              {/* <Button className="text-brand2 heading-5-600 hover:text-brand1 duration-300">
             {"<"} Anterior
           </Button> */}
 
-            <p className="heading-5-600 text-grey4">
-              <span className="text-grey3">1</span> de 2
-            </p>
+              <p className="heading-5-600 text-grey4">
+                <span className="text-grey3">1</span> de 2
+              </p>
 
-            <Button className="text-brand2 heading-5-600 hover:text-brand1 duration-300">
-              Seguinte {">"}
-            </Button>
-          </div>
+              <Button className="text-brand2 heading-5-600 hover:text-brand1 duration-300">
+                Seguinte {">"}
+              </Button>
+            </div>
+          )}
         </section>
       </main>
       <Footer />

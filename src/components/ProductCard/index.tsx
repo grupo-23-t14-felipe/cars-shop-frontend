@@ -21,12 +21,19 @@ export interface ICars {
   description: string;
   user: IUser;
   gallery: IGallery[];
-  comments: any;
+  comments: IComments[];
 }
 
 export interface IGallery {
   uuid: string;
   imageUrl: string;
+}
+
+export interface IComments {
+  user: IUser;
+  description: string;
+  addedIn: string;
+  uuid: string;
 }
 
 interface IProductCardProps {

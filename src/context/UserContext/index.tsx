@@ -131,7 +131,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const deleteUser = async () => {
     try {
-      await api.delete(`/users/${token}`);
+      await api.delete(`/users/${user?.uuid}`);
 
       setToken(undefined);
       setUser(undefined);
@@ -143,9 +143,21 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const createComment = async (data: { comment: string }, uuidCar: string) => {
+  const createComment = async (data: { description: string }, uuidCar: string) => {
     try {
       await api.post(`/cars/comments/${uuidCar}`, data);
+
+      return true;
+    } catch (error: any) {
+      console.error(error);
+      return error.data.message;
+    }
+  };
+
+  const deleteComment = async (uuidComment: string) => {
+    try {
+      await api.delete(`/cars/comments/${uuidComment}`);
+
       return true;
     } catch (error: any) {
       console.error(error);
@@ -167,7 +179,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         updateAnnouncer,
         deleteImgOfAd,
         deleteAd,
-        createComment
+        createComment,
+        deleteComment
       }}>
       {children}
     </UserContext.Provider>

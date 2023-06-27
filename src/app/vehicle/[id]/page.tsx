@@ -18,9 +18,10 @@ import {
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { UserProvider } from "@/context/UserContext";
+import { HiOutlineTrash } from "react-icons/hi";
 
 interface IVehicleDetailProps {
   params: {
@@ -42,6 +43,8 @@ const calcDatePost = (date: string) => {
     return `há ${Math.floor(days / 30)} meses`;
   } else if (days > 30) {
     return "há 1 mês";
+  } else if (days === 0) {
+    return "hoje";
   }
 };
 
@@ -56,7 +59,7 @@ const VehicleDetail = ({ params }: IVehicleDetailProps) => {
 const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
   const router = useRouter();
 
-  const { user } = useUser();
+  const { user, createComment, deleteComment } = useUser();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -66,16 +69,33 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
 
   useEffect(() => {
     (() => {
-      api.get(`/cars/${params.id}`).then((response) => setCarSelected(response.data));
+      getCarByParams(params.id);
     })();
   }, []);
 
-  const { handleSubmit, register } = useForm<{ comment: string }>();
+  const getCarByParams = (id: string) => {
+    api.get(`/cars/${id}`).then((response) => setCarSelected(response.data));
+  };
 
-  const submit: SubmitHandler<{ comment: string }> = (data) => {
-    console.log(data);
+  const { handleSubmit, register } = useForm<{ description: string }>();
+
+  const submit: SubmitHandler<{ description: string }> = async (data) => {
     if (!user) {
       router.push("/login");
+    } else {
+      const result = await createComment(data, params.id);
+
+      if (result) {
+        getCarByParams(params.id);
+        setMessage("");
+      }
+    }
+  };
+
+  const buttonDeleteComment = async (uuidComment: string) => {
+    const result = await deleteComment(uuidComment);
+    if (result) {
+      getCarByParams(params.id);
     }
   };
 
@@ -191,40 +211,53 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
               </div>
             </section>
 
-            <section className="flex flex-col gap-8 lg:max-w-[61.5%]">
-              <section className="bg-grey10 py-9 px-7 sm:px-11 mt-4 lg:mt-0">
-                <h2 className="text-grey1 heading-6-600 mb-6">Comentários</h2>
+            <section className="flex flex-col gap-8 lg:max-w-[61.5%] overflow-hidden">
+              <section className="bg-grey10 max-h-[600px] overflow-y-auto mt-4 lg:mt-0 relative">
+                <div className="bg-grey10 w-full px-7 pt-9 pb-6 sm:px-11 sticky right-0 left-0 -top-1 z-10 flex items-center">
+                  <h2 className="text-grey1 text-center heading-6-600">Comentários</h2>
+                </div>
 
-                <ul className="flex flex-col gap-11">
+                <ul className="flex flex-col gap-11 px-7 pb-9 sm:px-11">
                   {carSelected.comments.length ? (
-                    carSelected.comments.map((comment: any, index: number) => {
+                    carSelected.comments.map((comment, index) => {
                       const corRandom = `background-random${Math.floor(Math.random() * 12) + 1}`;
 
                       return (
                         <li key={index} className="flex flex-col gap-3">
-                          <div className="flex gap-2 items-center">
-                            <div
-                              className={clsx(
-                                `w-8 h-8 rounded-full flex justify-center items-center`,
-                                corRandom
-                              )}>
-                              <p className="text-whiteFixed font-medium text-sm">
-                                {comment.user.name[0].toUpperCase() +
-                                  comment.user.name[
-                                    comment.user.name.lastIndexOf(" ") + 1
-                                  ].toUpperCase()}
-                              </p>
+                          <div className="flex justify-between">
+                            <div className="flex gap-2 items-center">
+                              <div
+                                className={clsx(
+                                  `w-8 h-8 rounded-full flex justify-center items-center`,
+                                  corRandom
+                                )}>
+                                <p className="text-whiteFixed font-medium text-sm">
+                                  {comment.user.name[0].toUpperCase() +
+                                    comment.user.name[
+                                      comment.user.name.lastIndexOf(" ") + 1
+                                    ].toUpperCase()}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <p className="text-grey1 body-2-500">{comment.user.name}</p>
+                                <p className="text-grey4 p-0 m-0">•</p>
+                                <p className="text-grey3 body-2-400 text-xs">
+                                  {calcDatePost(comment.addedIn)}
+                                </p>
+                              </div>
                             </div>
-                            <p className="text-grey1 body-2-500">{comment.user.name}</p>
-                            <p className="text-grey4">•</p>
-                            <p className="text-grey3 body-2-400 text-xs">
-                              {calcDatePost(comment.added_in)}
-                            </p>
+                            {user?.uuid === comment.user.uuid && (
+                              <Button
+                                onClick={() => buttonDeleteComment(comment.uuid)}
+                                className="text-grey3 hover:text-feedbackAlert1 duration-300 relative after:absolute after:top-0 after:right-0 after:content-[''] after:text-[12px] after:w-max after:duration-700 after:text-transparent hover:after:content-['Excluir_comentário'] hover:after:-top-3 hover:after:text-feedbackAlert1">
+                                <HiOutlineTrash size={14} />
+                              </Button>
+                            )}
                           </div>
 
-                          <div>
-                            <p className="text-grey2 body-2-400">{comment.decription}</p>
-                          </div>
+                          <p className="text-grey2 body-2-400 max-h-28 overflow-y-auto">
+                            {comment.description}
+                          </p>
                         </li>
                       );
                     })
@@ -250,15 +283,20 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
                   onSubmit={handleSubmit(submit)}
                   className="mt-4 flex flex-col items-start gap-6 md:border-2 md:border-grey7 md:rounded md:items-end md:p-3">
                   <textarea
-                    {...register("comment")}
-                    defaultValue={message}
+                    {...register("description")}
+                    onChange={(e) => setMessage(e.target.value)}
+                    value={message}
                     placeholder="Digitar comentário"
                     className="input-placeholder text-grey2 p-3 resize-none border-2 border-grey7 rounded placeholder:text-grey3 w-full max-h-[150px] min-h-[128px] focus:outline-none md:border-none"
                   />
                   <Button
                     type="submit"
-                    className={clsx(user ? "btn-brand1-big" : "btn-disable-big cursor-default")}
-                    disable={user ? false : true}>
+                    className={clsx(
+                      "relative",
+                      user
+                        ? "btn-brand1-big"
+                        : "btn-outline-2-big cursor-default after:absolute after:content-[''] after:top-0 after:right-0 after:opacity-0 after:text-[12px] after:text-grey2 after:w-max hover:after:content-['Precisa_estar_logado_para_comentar!'] hover:after:-top-6 hover:after:opacity-100 after:duration-300"
+                    )}>
                     Comentar
                   </Button>
                 </form>
