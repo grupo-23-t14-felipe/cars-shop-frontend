@@ -93,8 +93,10 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
                   )}
                 </div>
               ))
-            ) : (
+            ) : user?.uuid === params.id ? (
               <h2 className="heading-5-600">Você não possuí carros anunciados</h2>
+            ) : (
+              <h2 className="heading-5-600">Vendedor não possuí carros anunciados</h2>
             )}
           </ul>
 

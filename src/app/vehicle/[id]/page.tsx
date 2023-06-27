@@ -295,7 +295,7 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
                       "relative",
                       user
                         ? "btn-brand1-big"
-                        : "btn-outline-2-big cursor-default after:absolute after:content-[''] after:top-0 after:right-0 after:opacity-0 after:text-[12px] after:text-grey2 after:w-max hover:after:content-['Precisa_estar_logado_para_comentar!'] hover:after:-top-6 hover:after:opacity-100 after:duration-300"
+                        : "btn-disable-big cursor-default after:absolute after:content-[''] after:top-0 after:right-0 after:opacity-0 after:text-[12px] after:text-grey2 after:w-max hover:after:content-['Precisa_estar_logado_para_comentar!'] hover:after:-top-6 hover:after:opacity-100 after:duration-300"
                     )}>
                     Comentar
                   </Button>
