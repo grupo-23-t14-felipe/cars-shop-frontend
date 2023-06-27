@@ -28,6 +28,7 @@ import axios from "axios";
 import clsx from "clsx";
 import { ImgListCard } from "../ImgListCard";
 import { type } from "os";
+import { ModalButtonDeleteAd } from "../ModalDeleteVehicle";
 
 interface IModalVehicleProps {
   setCar: Dispatch<SetStateAction<ICars[] | undefined>>;
@@ -39,7 +40,7 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
 
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const { updateAnnouncer } = useUser();
+  const { updateAnnouncer, deleteAd } = useUser();
 
   const [allCars, setAllCars] = useState<IListCars>();
   const [models, setModels] = useState<IListModelCars[]>();
@@ -250,6 +251,18 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
           onClose();
         }, 3000);
       }
+    }
+  };
+
+  const deleteVehicle = async (uuid: string) => {
+    const result = await deleteAd(uuid);
+
+    if (result) {
+      setTimeout(async () => {
+        await api.get(`/users/cars/${params.id}`).then((response) => setCar(response.data));
+
+        onClose();
+      }, 1000);
     }
   };
 
@@ -557,9 +570,10 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
               </ul>
 
               <div className="flex gap-3">
-                <Button type="button" className="btn-negative-big w-full">
-                  Excluir anúncio
-                </Button>
+                <ModalButtonDeleteAd
+                  uuid={carToEdit.uuid}
+                  onClick={() => deleteVehicle(carToEdit.uuid)}
+                />
                 <Button type="submit" className="btn-brand1-big w-full">
                   Salvar alterações
                 </Button>

@@ -61,6 +61,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateAnnouncer = async (data: IAnnouncer, uuid: string) => {
+    console.log(data);
     try {
       await api.patch(`/cars/${uuid}`, data);
 
@@ -68,6 +69,17 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       console.error(error);
       return false;
+    }
+  };
+
+  const deleteAd = async (uuid: string) => {
+    try {
+      await api.delete(`/cars/${uuid}`);
+
+      return true;
+    } catch (error: any) {
+      console.error(error);
+      return error.data.message;
     }
   };
 
@@ -127,7 +139,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
       return true;
     } catch (error: any) {
-      console.log(error);
+      console.error(error);
       return error.data.message;
     }
   };
@@ -144,7 +156,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         deleteUser,
         updateUser,
         updateAnnouncer,
-        deleteImgOfAd
+        deleteImgOfAd,
+        deleteAd
       }}>
       {children}
     </UserContext.Provider>
