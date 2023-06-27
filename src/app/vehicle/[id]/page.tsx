@@ -249,7 +249,7 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
                             {user?.uuid === comment.user.uuid && (
                               <Button
                                 onClick={() => buttonDeleteComment(comment.uuid)}
-                                className="text-grey3 hover:text-feedbackAlert1 duration-300 relative after:absolute after:top-0 after:right-0 after:content-[''] after:text-[12px] after:w-max after:duration-700 after:text-transparent hover:after:content-['Excluir_comentário'] hover:after:-top-3 hover:after:text-feedbackAlert1">
+                                className="text-grey3 hover:text-feedbackAlert1 duration-300 relative after:absolute after:top-0 after:right-0 after:content-[''] after:z-20 after:text-[12px] after:w-max after:duration-700 after:text-transparent hover:after:content-['Excluir_comentário'] hover:after:-top-3 hover:after:text-feedbackAlert1">
                                 <HiOutlineTrash size={14} />
                               </Button>
                             )}

@@ -31,17 +31,20 @@ export const ModalSwiper = ({ car, isOpen, onClose }: IModalSwiper) => {
           <ModalCloseButton />
           <ModalBody className="p-0">
             <Swiper
+              slidesPerView={1}
               spaceBetween={30}
-              effect={"fade"}
-              navigation={true}
+              loop={true}
               pagination={{
                 clickable: true
               }}
-              modules={[EffectFade, Navigation, Pagination]}
+              navigation={true}
+              modules={[Pagination, Navigation]}
               className="mySwiper">
               {car.gallery.map((gallery, index) => (
-                <SwiperSlide key={index}>
-                  <img src={gallery.imageUrl} className="w-full h-full" />
+                <SwiperSlide key={index} className="overflow-hidden">
+                  <figure className="bg-grey7 h-[472px] max-w-[472px] w-full flex justify-center items-center">
+                    <img src={gallery.imageUrl} className="h-full w-full object-contain" />
+                  </figure>
                 </SwiperSlide>
               ))}
             </Swiper>
