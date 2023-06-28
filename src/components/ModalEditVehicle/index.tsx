@@ -56,6 +56,7 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
       }
   >("");
   const [gallery, setGallery] = useState<any[]>([]);
+  const [buttonDisable, setButtonDisable] = useState(true);
 
   useEffect(() => {
     if (isOpen) {
@@ -266,6 +267,14 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
     }
   };
 
+  const checkHaveChanges = (valueDefault: string | number, valueChanged: string | number) => {
+    if (valueDefault !== valueChanged) {
+      setButtonDisable(false);
+    } else {
+      setButtonDisable(true);
+    }
+  };
+
   return (
     <>
       <Button onClick={onOpen} className="btn-outline-1-medium">
@@ -290,6 +299,7 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
                     required={true}
                     {...register("brand")}
                     onChange={(e) => {
+                      checkHaveChanges(carToEdit.brand, e.target.value);
                       getModels(e.target.value);
                     }}
                     placeholder="Selecione uma marca">
@@ -318,6 +328,7 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
                     disabled={models ? false : true}
                     required={true}
                     onChange={(e) => {
+                      checkHaveChanges(carToEdit.model, e.target.value);
                       setSelectedCar(e.target.value);
                     }}
                     placeholder="Selecione um modelo">
@@ -392,6 +403,9 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
                     labelChildren="Quilometragem"
                     labelClass="body-2-500 text-grey0"
                     inputDefaultValue={carToEdit.mileage}
+                    onChange={(e) => {
+                      checkHaveChanges(String(carToEdit.mileage), e.target.value);
+                    }}
                   />
                 </div>
 
@@ -410,6 +424,9 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
                     inputDefaultValue={
                       carToEdit.color[0].toUpperCase() + carToEdit.color.substring(1)
                     }
+                    onChange={(e) => {
+                      checkHaveChanges(carToEdit.color.toLowerCase(), e.target.value.toLowerCase());
+                    }}
                   />
                 </div>
 
@@ -442,14 +459,20 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
                     thousandSeparator="."
                     decimalScale={2}
                     decimalSeparator=","
-                    maxLength={16}
+                    maxLength={13}
                     className={clsx(
                       "input-outline",
                       errors.value ? "border-feedbackAlert1" : "border-grey7"
                     )}
                     placeholder="R$: 50.000,00"
                     defaultValue={`${carToEdit.value.slice(0, -2)},00`}
-                    onChange={(e) => setCarValue(e.target.value)}
+                    onChange={(e) => {
+                      checkHaveChanges(
+                        carToEdit.value.slice(0, -3),
+                        e.target.value.replace(/\D/g, "")
+                      );
+                      setCarValue(e.target.value);
+                    }}
                   />
                 </div>
               </fieldset>
@@ -461,6 +484,9 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
                   className="input-outline resize-none h-20 body-1-400 text-grey2"
                   placeholder="Descrição do veículo"
                   defaultValue={carToEdit.description}
+                  onChange={(e) => {
+                    checkHaveChanges(carToEdit.description, e.target.value);
+                  }}
                 />
               </div>
 
@@ -476,6 +502,9 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
                   labelClass="hidden"
                   inputDefaultChecked={carToEdit?.is_active}
                   register={register("is_active")}
+                  onChange={(e) => {
+                    checkHaveChanges(String(carToEdit.is_active), e.target.value);
+                  }}
                 />
                 <label
                   htmlFor="active"
@@ -492,6 +521,9 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
                   labelClass="hidden"
                   inputDefaultChecked={!carToEdit?.is_active}
                   register={register("is_active")}
+                  onChange={(e) => {
+                    checkHaveChanges(String(carToEdit.is_active), e.target.value);
+                  }}
                 />
                 <label
                   htmlFor="inative"
@@ -574,7 +606,9 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
                   uuid={carToEdit.uuid}
                   onClick={() => deleteVehicle(carToEdit.uuid)}
                 />
-                <Button type="submit" className="btn-brand1-big w-full">
+                <Button
+                  type="submit"
+                  className={clsx("w-full", buttonDisable ? "btn-disable-big" : "btn-brand1-big")}>
                   Salvar alterações
                 </Button>
               </div>
