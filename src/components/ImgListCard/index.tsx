@@ -11,6 +11,7 @@ interface IImgListCardProps {
   objName: string | number;
   imgUuid?: string;
   deleteImg?: boolean;
+  callImgRemove?: (uuidImg: string) => void;
 }
 
 export const ImgListCard = ({
@@ -19,7 +20,8 @@ export const ImgListCard = ({
   imgAlt,
   objName,
   imgUuid,
-  deleteImg = false
+  deleteImg = false,
+  callImgRemove
 }: IImgListCardProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -36,7 +38,12 @@ export const ImgListCard = ({
         <MdOutlineClose size={16} color="red" />
       </Button>
 
-      <ModalButtonDeleteImg imageUuid={imgUuid} isOpen={isOpen} onClose={onClose} />
+      <ModalButtonDeleteImg
+        imageUuid={imgUuid}
+        isOpen={isOpen}
+        onClose={onClose}
+        callFuncRemoveImg={callImgRemove!}
+      />
     </li>
   );
 };

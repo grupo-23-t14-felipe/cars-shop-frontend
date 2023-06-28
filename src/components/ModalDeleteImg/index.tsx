@@ -16,16 +16,27 @@ interface IModalButtonDeleteImgProps {
   imageUuid?: string;
   isOpen: boolean;
   onClose: () => void;
+  callFuncRemoveImg: (uuidImg: string) => void;
 }
 
 export const ModalButtonDeleteImg = ({
   imageUuid,
   isOpen,
-  onClose
+  onClose,
+  callFuncRemoveImg
 }: IModalButtonDeleteImgProps) => {
   const cancelRef: any = useRef();
 
   const { deleteImgOfAd } = useUser();
+
+  const deleteImg = async (imageUuid: string) => {
+    const result = await deleteImgOfAd(imageUuid);
+
+    if (result) {
+      callFuncRemoveImg(imageUuid);
+      onClose();
+    }
+  };
 
   return (
     <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
@@ -47,10 +58,7 @@ export const ModalButtonDeleteImg = ({
             <Button type="button" className="btn-negative-big" onClick={onClose}>
               Cancelar
             </Button>
-            <Button
-              type="button"
-              className="btn-alert-big"
-              onClick={() => deleteImgOfAd(imageUuid!)}>
+            <Button type="button" className="btn-alert-big" onClick={() => deleteImg(imageUuid!)}>
               Sim, excluir imagem
             </Button>
           </AlertDialogFooter>

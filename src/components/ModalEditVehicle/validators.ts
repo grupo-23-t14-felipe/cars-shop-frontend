@@ -16,7 +16,8 @@ export const createAnnoucementSchema = z
       } else {
         return false;
       }
-    })
+    }),
+    img: z.any().optional()
   })
   .required();
 

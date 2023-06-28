@@ -27,7 +27,6 @@ import { useParams } from "next/navigation";
 import axios from "axios";
 import clsx from "clsx";
 import { ImgListCard } from "../ImgListCard";
-import { type } from "os";
 import { ModalButtonDeleteAd } from "../ModalDeleteVehicle";
 
 interface IModalVehicleProps {
@@ -55,7 +54,7 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
         file: File;
       }
   >("");
-  const [gallery, setGallery] = useState<any[]>([]);
+  const [gallery, setGallery] = useState<{ uuid: string; imageUrl: string }[]>([]);
   const [buttonDisable, setButtonDisable] = useState(true);
 
   useEffect(() => {
@@ -103,6 +102,15 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
       reader.onload = () => {
         if (acceptedFiles === null || acceptedFiles.length === 0) return;
 
+        if (acceptedFiles[0].size > 10485760) {
+          setError("img", { type: "required", message: "Esta imagem ultrapassa os 10mb" });
+
+          setTimeout(() => {
+            clearErrors("img");
+          }, 3000);
+          return;
+        }
+
         const nameFile = acceptedFiles[0].name;
 
         if (!imgs.some((obj) => obj.name === nameFile)) {
@@ -112,6 +120,8 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
               img_url: reader.result,
               file: acceptedFiles[0]
             };
+
+            setButtonDisable(false);
 
             if (imgCape) {
               setImgs([...imgs, obj]);
@@ -124,6 +134,7 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
     },
     [imgs, imgCape, gallery]
   );
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
@@ -157,7 +168,16 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
       const newListImg = imgs.filter((obj) => obj.name !== nameImg);
 
       setImgs(newListImg);
+      if (!newListImg.length) {
+        setButtonDisable(true);
+      }
     }
+  };
+
+  const imgHasRemoved = (uuidImg: string) => {
+    const newGallery = gallery.filter((img) => img.uuid !== uuidImg);
+
+    setGallery(newGallery);
   };
 
   const {
@@ -173,6 +193,10 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
   });
 
   const submit: SubmitErrorHandler<TCreateAnnoucement> = async (data) => {
+    if (buttonDisable) {
+      return;
+    }
+
     const valueTreated = carValue.replace(/\D/g, "");
 
     if (!valueTreated) {
@@ -191,13 +215,17 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
             gallery.append("file", img);
             gallery.append("upload_preset", "jgbdewxg");
 
-            const response = await axios.post(
-              "https://api.cloudinary.com/v1_1/dv4egxu7a/image/upload",
-              gallery
-            );
+            try {
+              const response = await axios.post(
+                "https://api.cloudinary.com/v1_1/dv4egxu7a/image/upload",
+                gallery
+              );
 
-            resolve(response.data);
-            reject(response);
+              resolve(response.data);
+              reject(response);
+            } catch (error: any) {
+              console.error(error);
+            }
           });
         };
 
@@ -248,6 +276,9 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
       if (result) {
         setTimeout(async () => {
           await api.get(`/users/cars/${params.id}`).then((response) => setCar(response.data));
+
+          setButtonDisable(true);
+          setImgs([]);
 
           onClose();
         }, 1000);
@@ -564,7 +595,7 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
 
                   {errors.img && (
                     <p className="text-feedbackAlert1 text-base pt-2 text-center">
-                      Envie ao menos 1 imagem
+                      {String(errors.img.message)}
                     </p>
                   )}
                 </div>
@@ -587,6 +618,7 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
                     objName="Imagem da galeria"
                     deleteImg={true}
                     imgUuid={car.uuid}
+                    callImgRemove={imgHasRemoved}
                   />
                 ))}
                 {imgs &&
@@ -608,7 +640,8 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
                 />
                 <Button
                   type="submit"
-                  className={clsx("w-full", buttonDisable ? "btn-disable-big" : "btn-brand1-big")}>
+                  className={clsx("w-full", buttonDisable ? "btn-disable-big" : "btn-brand1-big")}
+                  disable={buttonDisable}>
                   Salvar alterações
                 </Button>
               </div>

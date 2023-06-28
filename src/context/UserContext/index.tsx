@@ -84,7 +84,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const deleteImgOfAd = async (uuid: string) => {
     try {
-      await api.delete(`/cars/${uuid}/gallery`);
+      await api.delete(`/cars/gallery/${uuid}`);
 
       return true;
     } catch (error) {
