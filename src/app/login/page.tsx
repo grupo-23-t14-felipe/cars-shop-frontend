@@ -8,16 +8,25 @@ import { NavBar } from "@/components/Navbar";
 import { useAuth } from "@/hooks/useAuth";
 import { useDisclosure } from "@chakra-ui/react";
 import Link from "next/link";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 const Login = () => {
   const { register, handleSubmit } = useForm<{ email: string; password: string }>();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const [invalidCredentials, setInvalidCredentials] = useState(false);
 
   const { login } = useAuth();
 
-  const submit: SubmitHandler<{ email: string; password: string }> = (data) => {
-    login(data);
+  const submit: SubmitHandler<{ email: string; password: string }> = async (data) => {
+    const result = await login(data);
+    if (result) {
+      setInvalidCredentials(true);
+
+      setTimeout(() => {
+        setInvalidCredentials(false);
+      }, 3000);
+    }
   };
 
   return (
@@ -50,6 +59,11 @@ const Login = () => {
                 labelClass="body-2-500 text-grey1"
                 inputClass="input-outline"
               />
+              {invalidCredentials && (
+                <p className="body-2-500 text-sm text-feedbackAlert1">
+                  Usuário e/ou senha inválidos
+                </p>
+              )}
             </div>
           </div>
           <Button

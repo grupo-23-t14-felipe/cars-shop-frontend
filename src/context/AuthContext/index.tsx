@@ -38,9 +38,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         maxAge: 60 * 60 * 24
       });
 
-      router.push("/");
+      return router.push("/");
     } catch (error) {
       console.error(error);
+      return error;
     }
   };
 
@@ -62,7 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return true;
     } catch (error: any) {
       console.error(error);
-      return error.data.message;
+      return "Email não cadastrado";
     }
   };
   return (

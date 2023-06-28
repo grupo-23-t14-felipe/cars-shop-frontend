@@ -36,7 +36,8 @@ export const ModalForgetPassword = ({ isOpen, onClose }: IModalForgetProps) => {
 
   const submit: SubmitHandler<TModalForget> = async (data) => {
     const result = await sendEmail(data);
-    if (result) {
+
+    if (result === true) {
       setSuccess(true);
       clearErrors("email");
       setTimeout(() => {
