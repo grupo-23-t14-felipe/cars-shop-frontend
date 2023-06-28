@@ -11,7 +11,8 @@ import { IUser } from "@/context/UserContext/types";
 import { useUser } from "@/hooks/useUser";
 import { api } from "@/services/api";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 interface IProfileProps {
   params: {
@@ -28,17 +29,35 @@ const ProfileDetail = ({ params }: IProfileProps) => {
 };
 
 const ProfileDetailPage = ({ params }: IProfileProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathName = usePathname();
+
   const [car, setCar] = useState<ICars[]>();
   const [ownerPage, setOwnerPage] = useState<IUser>();
+  const [pagination, setPagination] = useState<{ count: number; page: number }>();
 
   const { user } = useUser();
 
   useEffect(() => {
-    api.get(`/users/cars/${params.id}`).then((response) => {
-      setCar(response.data);
-      setOwnerPage(response.data[0].user);
+    api.get(`/users/cars/${params.id}${window.location.search}`).then((response) => {
+      setCar(response.data.data.cars);
+      setOwnerPage(response.data.data);
+
+      setPagination({ count: response.data.count, page: response.data.page });
     });
-  }, []);
+  }, [searchParams]);
+
+  const setNextPage = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   return (
     <>
@@ -99,19 +118,32 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
             )}
           </ul>
 
-          {car && (
+          {pagination && (
             <div className="flex flex-col md:flex-row justify-center items-center gap-5">
-              {/* <Button className="text-brand2 heading-5-600 hover:text-brand1 duration-300">
-            {"<"} Anterior
-          </Button> */}
+              {pagination.page > 1 && (
+                <Button
+                  onClick={() => {
+                    router.push(pathName + "?" + setNextPage("page", String(pagination.page - 1)));
+                  }}
+                  className="text-brand2 heading-5-600 hover:text-brand1 duration-300">
+                  {"<"} Anterior
+                </Button>
+              )}
 
               <p className="heading-5-600 text-grey4">
-                <span className="text-grey3">1</span> de 2
+                <span className="text-grey3">{pagination.page}</span> de{" "}
+                {Math.ceil(pagination.count / 12)}
               </p>
 
-              <Button className="text-brand2 heading-5-600 hover:text-brand1 duration-300">
-                Seguinte {">"}
-              </Button>
+              {pagination.page < Math.ceil(pagination.count / 12) && (
+                <Button
+                  onClick={() => {
+                    router.push(pathName + "?" + setNextPage("page", String(pagination.page + 1)));
+                  }}
+                  className="text-brand2 heading-5-600 hover:text-brand1 duration-300">
+                  Seguinte {">"}
+                </Button>
+              )}
             </div>
           )}
         </section>

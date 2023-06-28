@@ -9,9 +9,9 @@ import Image from "next/image";
 import { FilterHome } from "@/components/Filters";
 import { ModalFilter } from "@/components/ModalFilter";
 import { useDisclosure } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { api } from "@/services/api";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { UserProvider } from "@/context/UserContext";
 
@@ -25,19 +25,32 @@ const Home = () => {
 
 const HomePage = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathName = usePathname();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [cars, setCars] = useState<ICars[]>();
-
-  const searchParams = useSearchParams();
+  const [pagination, setPagination] = useState<{ count: number; page: number }>();
 
   useEffect(() => {
     (async () => {
       const response = await api.get(`/cars${window.location.search}`);
 
-      setCars(response.data);
+      setCars(response.data.data);
+      setPagination({ count: response.data.count, page: response.data.page });
     })();
   }, [searchParams]);
+
+  const setNextPage = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   return (
     <>
@@ -91,19 +104,34 @@ const HomePage = () => {
           </Button>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-center items-center gap-5">
-          {/* <Button className="text-brand2 heading-5-600 hover:text-brand1 duration-300">
-            {"<"} Anterior
-          </Button> */}
+        {pagination && (
+          <div className="flex flex-col md:flex-row justify-center items-center gap-5">
+            {pagination.page > 1 && (
+              <Button
+                onClick={() => {
+                  router.push(pathName + "?" + setNextPage("page", String(pagination.page - 1)));
+                }}
+                className="text-brand2 heading-5-600 hover:text-brand1 duration-300">
+                {"<"} Anterior
+              </Button>
+            )}
 
-          <p className="heading-5-600 text-grey4">
-            <span className="text-grey3">1</span> de 2
-          </p>
+            <p className="heading-5-600 text-grey4">
+              <span className="text-grey3">{pagination.page}</span> de{" "}
+              {Math.ceil(pagination.count / 12)}
+            </p>
 
-          <Button className="text-brand2 heading-5-600 hover:text-brand1 duration-300">
-            Seguinte {">"}
-          </Button>
-        </div>
+            {pagination.page < Math.ceil(pagination.count / 12) && (
+              <Button
+                onClick={() => {
+                  router.push(pathName + "?" + setNextPage("page", String(pagination.page + 1)));
+                }}
+                className="text-brand2 heading-5-600 hover:text-brand1 duration-300">
+                Seguinte {">"}
+              </Button>
+            )}
+          </div>
+        )}
       </main>
 
       <Footer />
