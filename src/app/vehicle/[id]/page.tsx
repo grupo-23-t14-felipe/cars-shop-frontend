@@ -18,35 +18,18 @@ import {
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { UserProvider } from "@/context/UserContext";
 import { HiOutlineTrash } from "react-icons/hi";
+import { getRandomColor } from "@/utils/getRandomColor";
+import { calcDatePost } from "@/utils/calcDatePost";
 
 interface IVehicleDetailProps {
   params: {
     id: string;
   };
 }
-
-const calcDatePost = (date: string) => {
-  let dateComment = new Date(date).getTime();
-  let dateNow = new Date().getTime();
-  let diff = dateNow - dateComment;
-  let days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-  if (days > 730) {
-    return `há ${Math.floor(days / 365)} anos`;
-  } else if (days > 365) {
-    return "há 1 ano";
-  } else if (days > 60) {
-    return `há ${Math.floor(days / 30)} meses`;
-  } else if (days > 30) {
-    return "há 1 mês";
-  } else if (days === 0) {
-    return "hoje";
-  }
-};
 
 const VehicleDetail = ({ params }: IVehicleDetailProps) => {
   return (
@@ -220,8 +203,6 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
                 <ul className="flex flex-col gap-11 px-7 pb-9 sm:px-11">
                   {carSelected.comments.length ? (
                     carSelected.comments.map((comment, index) => {
-                      const corRandom = `background-random${Math.floor(Math.random() * 12) + 1}`;
-
                       return (
                         <li key={index} className="flex flex-col gap-3">
                           <div className="flex justify-between">
@@ -229,7 +210,7 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
                               <div
                                 className={clsx(
                                   `w-8 h-8 rounded-full flex justify-center items-center`,
-                                  corRandom
+                                  getRandomColor()
                                 )}>
                                 <p className="text-whiteFixed font-medium text-sm">
                                   {comment.user.name[0].toUpperCase() +
