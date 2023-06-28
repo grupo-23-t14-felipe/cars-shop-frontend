@@ -55,6 +55,7 @@ export interface IUser {
   imageUrl: string;
   is_seller: boolean;
   address: IAddress;
+  randomColor: string;
 }
 
 export interface IUserUpdate {

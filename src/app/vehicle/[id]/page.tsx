@@ -24,6 +24,7 @@ import { UserProvider } from "@/context/UserContext";
 import { HiOutlineTrash } from "react-icons/hi";
 import { getRandomColor } from "@/utils/getRandomColor";
 import { calcDatePost } from "@/utils/calcDatePost";
+import { comment } from "postcss";
 
 interface IVehicleDetailProps {
   params: {
@@ -56,8 +57,28 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
     })();
   }, []);
 
-  const getCarByParams = (id: string) => {
-    api.get(`/cars/${id}`).then((response) => setCarSelected(response.data));
+  const getCarByParams = async (id: string) => {
+    const response = await api.get(`/cars/${id}`);
+
+    const result: ICars = response.data;
+
+    if (!carSelected) {
+      result.comments.map((comment) => {
+        if (!comment.user.randomColor) {
+          comment.user.randomColor = getRandomColor();
+        }
+      });
+    } else {
+      result.comments.map((comment, index) => {
+        if (carSelected.comments[index] === undefined) {
+          comment.user.randomColor = getRandomColor();
+        } else {
+          comment.user.randomColor = carSelected.comments[index].user.randomColor;
+        }
+      });
+    }
+
+    setCarSelected(result);
   };
 
   const { handleSubmit, register } = useForm<{ description: string }>();
@@ -210,7 +231,7 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
                               <div
                                 className={clsx(
                                   `w-8 h-8 rounded-full flex justify-center items-center`,
-                                  getRandomColor()
+                                  comment.user.randomColor
                                 )}>
                                 <p className="text-whiteFixed font-medium text-sm">
                                   {comment.user.name[0].toUpperCase() +

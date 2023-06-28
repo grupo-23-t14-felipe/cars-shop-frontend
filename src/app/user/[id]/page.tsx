@@ -10,7 +10,6 @@ import { UserProvider } from "@/context/UserContext";
 import { IUser } from "@/context/UserContext/types";
 import { useUser } from "@/hooks/useUser";
 import { api } from "@/services/api";
-import { useDisclosure } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
