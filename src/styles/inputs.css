@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .font-inter {
+    font-family: "Inter", sans-serif;
+  }
+
+  .input-outline {
+    @apply border-2 border-grey7 bg-transparent placeholder:text-grey3 rounded px-4 py-3 focus:text-grey1 focus:border-2 focus:border-brand1 focus:bg-grey9 outline-none duration-300;
+  }
+  .input-default {
+    @apply bg-grey8 border-2 border-grey8 placeholder:text-grey3 rounded px-4 py-3 focus:text-grey1 focus:border-2 focus:border-brand1 focus:bg-grey9 outline-none duration-300;
+  }
+
+  .input-placeholder {
+    @apply placeholder:text-grey2 placeholder:font-normal placeholder:font-inter placeholder:text-base;
+  }
+
+  .input-label {
+    @apply text-grey2 font-inter font-medium text-sm;
+  }
+
+  .textarea-outline {
+    @apply border-2 border-grey7 bg-transparent placeholder:text-grey3 rounded px-4 py-3 focus:text-grey1 focus:border-2 focus:border-brand1 focus:bg-grey9 outline-none duration-300;
+  }
+  .textarea-default {
+    @apply bg-grey8 border-2 border-grey7 placeholder:text-grey3 rounded px-4 py-3 focus:text-grey1 focus:border-2 focus:border-brand1 focus:bg-grey9 outline-none duration-300;
+  }
+
+  .select-default {
+    @apply rounded border-2 border-grey7 focus:text-grey1 focus:border-2 focus:border-brand1 focus:bg-grey9 outline-none hover:border-grey7;
+  }
+
+  .fieldset-radios input:checked + label {
+    @apply border-brand1 text-whiteFixed bg-brand1;
+  }
+}
