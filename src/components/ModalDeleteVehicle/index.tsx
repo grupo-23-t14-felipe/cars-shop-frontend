@@ -10,16 +10,13 @@ import {
 } from "@chakra-ui/react";
 import { MouseEventHandler, useRef } from "react";
 import { Button } from "../Button";
-import { useUser } from "@/hooks/useUser";
 
 export const ModalButtonDeleteAd = ({
-  uuid,
   onClick
 }: {
   uuid: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }) => {
-  const { deleteAd } = useUser();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef: any = useRef();
 

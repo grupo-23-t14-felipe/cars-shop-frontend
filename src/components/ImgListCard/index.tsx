@@ -3,6 +3,7 @@ import { Button } from "../Button";
 import { MouseEventHandler } from "react";
 import { ModalButtonDeleteImg } from "../ModalDeleteImg";
 import { useDisclosure } from "@chakra-ui/react";
+import Image from "next/image";
 
 interface IImgListCardProps {
   onClick?: MouseEventHandler<HTMLLIElement>;
@@ -28,7 +29,7 @@ export const ImgListCard = ({
   return (
     <li className="w-28 relative group/item cursor-pointer" onClick={deleteImg ? onOpen : onClick}>
       <figure className="w-28 h-28 flex justify-center items-center rounded bg-grey7 group-hover/item:bg-grey5 duration-300 overflow-hidden">
-        <img src={imgUrl} alt={imgAlt} className="object-contain" />
+        <Image src={imgUrl} alt={imgAlt} width={28} height={28} style={{ objectFit: "contain" }} />
       </figure>
       <p className="truncate body-2-400 text-xs text-grey2">{objName}</p>
 

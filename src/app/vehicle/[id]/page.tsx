@@ -24,7 +24,7 @@ import { UserProvider } from "@/context/UserContext";
 import { HiOutlineTrash } from "react-icons/hi";
 import { getRandomColor } from "@/utils/getRandomColor";
 import { calcDatePost } from "@/utils/calcDatePost";
-import { comment } from "postcss";
+import Image from "next/image";
 
 interface IVehicleDetailProps {
   params: {
@@ -103,6 +103,11 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
     }
   };
 
+  const imageStyle = {
+    width: "auto",
+    maxHeight: "355px"
+  };
+
   return (
     <>
       <NavBar />
@@ -118,10 +123,13 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
                       setImgDefault(carSelected && carSelected?.img_default);
                       onOpen();
                     }}>
-                    <img
+                    <Image
                       src={carSelected && carSelected?.img_default}
                       alt={carSelected && carSelected?.model}
-                      className="h-[355px] object-contain"
+                      width={1920}
+                      height={1080}
+                      style={imageStyle}
+                      priority={true}
                     />
                   </figure>
                 </section>
@@ -176,10 +184,12 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
                             setImgDefault(gallery.imageUrl);
                             onOpen();
                           }}>
-                          <img
+                          <Image
                             src={gallery.imageUrl}
                             alt={carSelected && carSelected.model}
-                            className="object-contain h-[108px] w-full cursor-pointer"
+                            width={108}
+                            height={108}
+                            style={{ width: "auto", maxHeight: "108px" }}
                           />
                         </figure>
                       ))}
@@ -338,8 +348,16 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
           <ModalHeader className="p-0 heading-7-500 text-grey1">Imagem do veículo</ModalHeader>
           <ModalCloseButton />
           <ModalBody className="p-0">
-            <figure>
-              <img src={imgDefault} alt={carSelected && carSelected?.model} />
+            <figure className="h-[355px] bg-grey7 rounded flex justify-center items-center overflow-hidden">
+              {carSelected?.model && (
+                <Image
+                  src={imgDefault!}
+                  alt={carSelected!.model}
+                  width={520}
+                  height={355}
+                  style={{ width: "auto", maxHeight: "355px" }}
+                />
+              )}
             </figure>
           </ModalBody>
         </ModalContent>

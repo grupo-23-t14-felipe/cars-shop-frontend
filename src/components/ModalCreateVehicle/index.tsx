@@ -8,6 +8,7 @@ import {
   Select,
   useDisclosure
 } from "@chakra-ui/react";
+import Image from "next/image";
 import { Button } from "../Button";
 import { Input } from "../Input";
 import { ICars } from "../ProductCard";
@@ -50,10 +51,8 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
         .then((data) => {
           setAllCars(data);
         });
-
-      setSuccess(false);
     })();
-  }, []);
+  }, [isOpen]);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -152,25 +151,24 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
         ...newObjCarSelect,
         ...data,
         img_default: imgs[0],
-        gallery: new Array(),
+        gallery: [] as any[],
         value: parseInt(valueTreated),
         is_active: true
       };
 
       if (imgs.length > 1) {
         const requestImgs = async (img: File): Promise<any> => {
-          return new Promise(async (resolve, reject) => {
+          return new Promise((resolve, reject) => {
             const gallery = new FormData();
             gallery.append("file", img);
             gallery.append("upload_preset", "hil8tskt");
 
-            const response = await axios.post(
-              `https://api.cloudinary.com/v1_1/da3v0st5x/image/upload`,
-              gallery
-            );
-
-            resolve(response.data);
-            reject(response);
+            axios
+              .post(`https://api.cloudinary.com/v1_1/da3v0st5x/image/upload`, gallery)
+              .then((response) => {
+                resolve(response.data);
+                reject(response);
+              });
           });
         };
 
@@ -212,7 +210,18 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
         }, 3000);
       }
     }
+    setAllCars(undefined);
+    setSuccess(false);
+    setModels(undefined);
+    setCarSelected(undefined);
+    setImgs([]);
     setLoadingButton(false);
+  };
+
+  const imageStyle = {
+    "max-height": "112px",
+    height: "auto",
+    width: "auto"
   };
 
   return (
@@ -242,7 +251,8 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
                     {...register("brand")}
                     onChange={(e) => {
                       getModels(e.target.value);
-                    }}>
+                    }}
+                    defaultValue={undefined}>
                     {allCars &&
                       Object.keys(allCars).map((model, index) => (
                         <option value={model} key={index}>
@@ -430,7 +440,13 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
                         className="w-28 relative group/item cursor-pointer"
                         onClick={() => removeImg(obj.name)}>
                         <figure className="w-28 h-28 flex justify-center items-center rounded bg-grey7 group-hover/item:bg-grey5 duration-300 overflow-hidden">
-                          <img src={obj.img_url} alt={obj.img_url} className="object-contain" />
+                          <Image
+                            src={obj.img_url}
+                            alt={obj.img_url}
+                            width={28}
+                            height={28}
+                            style={imageStyle}
+                          />
                         </figure>
                         <p className="truncate body-2-400 text-xs text-grey2">{obj.name}</p>
                         <Button

@@ -5,6 +5,7 @@ import { IUser } from "@/context/UserContext/types";
 import { useUser } from "@/hooks/useUser";
 import { useParams } from "next/navigation";
 import clsx from "clsx";
+import Image from "next/image";
 
 export interface ICars {
   uuid: string;
@@ -45,12 +46,17 @@ export const ProductCard = ({ car }: IProductCardProps) => {
   const { user } = useUser();
   const params = useParams();
 
+  const imageStyle = {
+    height: "152px",
+    width: "auto"
+  };
+
   return (
     <li className="max-w-[312px] w-full min-w-[290px] h-min cursor-pointer relative">
       <figure
         className="bg-grey7 h-[152px] overflow-hidden flex justify-center items-center"
         onClick={onOpen}>
-        <img src={car.img_default} alt={car.model} className=" h-[152px]" />
+        <Image src={car.img_default} alt={car.model} width={250} height={152} style={imageStyle} />
       </figure>
 
       {params.id && user?.uuid && (

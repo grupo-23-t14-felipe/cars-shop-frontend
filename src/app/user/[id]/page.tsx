@@ -94,7 +94,7 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
               <h2 className="heading-5-600 text-grey0 text-left">Anúncios</h2>
             </div>
           )}
-          <ul className="flex flex-nowrap w-full overflow-x-scroll pb-4 px-4 gap-12 lg:overflow-auto lg:flex-wrap lg:justify-center xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
+          <ul className="flex flex-nowrap w-full overflow-x-auto pb-4 px-4 gap-12 lg:overflow-auto lg:flex-wrap lg:justify-center xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
             {car ? (
               car.map((car, index) => (
                 <div
@@ -130,10 +130,12 @@ const ProfileDetailPage = ({ params }: IProfileProps) => {
                 </Button>
               )}
 
-              <p className="heading-5-600 text-grey4">
-                <span className="text-grey3">{pagination.page}</span> de{" "}
-                {Math.ceil(pagination.count / 12)}
-              </p>
+              {pagination.count > 12 && (
+                <p className="heading-5-600 text-grey4">
+                  <span className="text-grey3">{pagination.page}</span> de{" "}
+                  {Math.ceil(pagination.count / 12)}
+                </p>
+              )}
 
               {pagination.page < Math.ceil(pagination.count / 12) && (
                 <Button

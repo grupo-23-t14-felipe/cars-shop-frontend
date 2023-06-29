@@ -1,8 +1,8 @@
 export const calcDatePost = (date: string) => {
-  let dateComment = new Date(date).getTime();
-  let dateNow = new Date().getTime();
-  let diff = dateNow - dateComment;
-  let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const dateComment = new Date(date).getTime();
+  const dateNow = new Date().getTime();
+  const diff = dateNow - dateComment;
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
   if (days > 730) {
     return `há ${Math.floor(days / 365)} anos`;

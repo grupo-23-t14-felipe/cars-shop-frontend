@@ -8,12 +8,13 @@ import {
 } from "@chakra-ui/react";
 import { ICars } from "../ProductCard";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectFade, Navigation, Pagination } from "swiper";
+import { Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Link from "next/link";
+import Image from "next/image";
 
 interface IModalSwiper {
   car: ICars;
@@ -43,7 +44,13 @@ export const ModalSwiper = ({ car, isOpen, onClose }: IModalSwiper) => {
               {car.gallery.map((gallery, index) => (
                 <SwiperSlide key={index} className="overflow-hidden">
                   <figure className="bg-grey7 h-[472px] max-w-[472px] w-full flex justify-center items-center">
-                    <img src={gallery.imageUrl} className="h-full w-full object-contain" />
+                    <Image
+                      src={gallery.imageUrl}
+                      alt="Image gallery"
+                      width={472}
+                      height={472}
+                      style={{ height: "100%", width: "100%", objectFit: "contain" }}
+                    />
                   </figure>
                 </SwiperSlide>
               ))}

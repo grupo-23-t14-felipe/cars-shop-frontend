@@ -211,19 +211,18 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
 
       if (imgs.length > 0) {
         const requestImgs = async (img: File): Promise<any> => {
-          return new Promise(async (resolve, reject) => {
+          return new Promise((resolve, reject) => {
             const gallery = new FormData();
             gallery.append("file", img);
             gallery.append("upload_preset", "hil8tskt");
 
             try {
-              const response = await axios.post(
-                `https://api.cloudinary.com/v1_1/da3v0st5x/image/upload`,
-                gallery
-              );
-
-              resolve(response.data);
-              reject(response);
+              axios
+                .post(`https://api.cloudinary.com/v1_1/da3v0st5x/image/upload`, gallery)
+                .then((response) => {
+                  resolve(response.data);
+                  reject(response);
+                });
             } catch (error: any) {
               console.error(error);
             }

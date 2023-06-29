@@ -9,7 +9,7 @@ export const editProfileSchema = z.object({
   cpf: z.string().optional(),
   cellphone: z.string().optional(),
   birthday: z.string(),
-  description: z.string().optional(),
+  description: z.string().optional()
 });
 
 export type TEditProfile = z.infer<typeof editProfileSchema>;

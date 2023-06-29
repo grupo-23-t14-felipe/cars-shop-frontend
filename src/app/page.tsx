@@ -116,10 +116,12 @@ const HomePage = () => {
               </Button>
             )}
 
-            <p className="heading-5-600 text-grey4">
-              <span className="text-grey3">{pagination.page}</span> de{" "}
-              {Math.ceil(pagination.count / 12)}
-            </p>
+            {pagination.count > 12 && (
+              <p className="heading-5-600 text-grey4">
+                <span className="text-grey3">{pagination.page}</span> de{" "}
+                {Math.ceil(pagination.count / 12)}
+              </p>
+            )}
 
             {pagination.page < Math.ceil(pagination.count / 12) && (
               <Button

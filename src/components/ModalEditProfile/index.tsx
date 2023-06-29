@@ -13,7 +13,7 @@ import { PatternFormat } from "react-number-format";
 import clsx from "clsx";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TEditProfile, editProfileSchema } from "./validators";
+import { editProfileSchema } from "./validators";
 import { useState } from "react";
 import { ButtonDelete } from "../ModalDelete";
 import { useUser } from "@/hooks/useUser";
