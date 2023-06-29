@@ -41,6 +41,7 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
   const [imgs, setImgs] = useState<{ name: string; img_url: string; file: File }[]>([]);
   const [value, setValue] = useState("");
   const [success, setSuccess] = useState(false);
+  const [loadingButton, setLoadingButton] = useState(false);
 
   useEffect(() => {
     (() => {
@@ -49,6 +50,8 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
         .then((data) => {
           setAllCars(data);
         });
+
+      setSuccess(false);
     })();
   }, []);
 
@@ -126,6 +129,7 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
   });
 
   const submit: SubmitErrorHandler<TCreateAnnoucement> = async (data) => {
+    setLoadingButton(true);
     const valueTreated = value.replace(/\D/g, "");
     if (!valueTreated) {
       setError("value", { type: "required", message: "Digite um valor para o carro" });
@@ -158,10 +162,10 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
           return new Promise(async (resolve, reject) => {
             const gallery = new FormData();
             gallery.append("file", img);
-            gallery.append("upload_preset", "jgbdewxg");
+            gallery.append("upload_preset", "hil8tskt");
 
             const response = await axios.post(
-              "https://api.cloudinary.com/v1_1/dv4egxu7a/image/upload",
+              `https://api.cloudinary.com/v1_1/da3v0st5x/image/upload`,
               gallery
             );
 
@@ -185,26 +189,30 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
 
       const imgDefault = new FormData();
       imgDefault.append("file", newData.img_default.file);
-      imgDefault.append("upload_preset", "jgbdewxg");
+      imgDefault.append("upload_preset", "hil8tskt");
 
       const resultImgDefault = await axios.post(
-        "https://api.cloudinary.com/v1_1/dv4egxu7a/image/upload",
+        `https://api.cloudinary.com/v1_1/da3v0st5x/image/upload`,
         imgDefault
       );
 
       newData.img_default = resultImgDefault.data.secure_url;
 
       const result = await createAnnouncer(newData);
+
       if (result) {
         setSuccess(true);
         setTimeout(async () => {
-          await api.get(`/users/cars/${params.id}`).then((response) => setCar(response.data));
+          await api
+            .get(`/users/cars/${params.id}${window.location.search}`)
+            .then((response) => setCar(response.data.data.cars));
 
           onClose();
           setSuccess(false);
         }, 3000);
       }
     }
+    setLoadingButton(false);
   };
 
   return (
@@ -439,8 +447,11 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
                   <Button type="button" className="btn-negative-big" onClick={() => onClose()}>
                     Cancelar
                   </Button>
-                  <Button type="submit" className="btn-brand1-big">
-                    Criar anúncio
+                  <Button
+                    type="submit"
+                    className={clsx(loadingButton ? "btn-disable-big" : "btn-brand1-big")}
+                    disable={loadingButton}>
+                    {loadingButton ? "Enviando..." : "Criar anúncio"}
                   </Button>
                 </div>
               </form>

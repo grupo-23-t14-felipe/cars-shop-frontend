@@ -17,18 +17,20 @@ import { useState } from "react";
 import clsx from "clsx";
 import { useUser } from "@/hooks/useUser";
 import { IUser } from "@/context/UserContext/types";
-import { UserProvider } from "@/context/UserContext";
 import { ModalEditAddress } from "../ModalEditAddress";
 import { ModalEditProfile } from "../ModalEditProfile";
+import { usePathname } from "next/navigation";
 
 const UserLoggedLinks = ({ user, loggout }: { user: IUser; loggout: () => void }) => {
+  const pathName = usePathname();
+
   return (
     <>
       <ModalEditProfile />
 
       <ModalEditAddress />
 
-      {user.is_seller && (
+      {user.is_seller && !pathName.includes("user") && (
         <Link
           href={`/user/${user.uuid}`}
           className="body-1-400 text-grey2 hover:text-grey0 duration-300">

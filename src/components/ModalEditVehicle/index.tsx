@@ -24,10 +24,10 @@ import { NumericFormat } from "react-number-format";
 import { useUser } from "@/hooks/useUser";
 import { api } from "@/services/api";
 import { useParams } from "next/navigation";
-import axios from "axios";
-import clsx from "clsx";
 import { ImgListCard } from "../ImgListCard";
 import { ModalButtonDeleteAd } from "../ModalDeleteVehicle";
+import axios from "axios";
+import clsx from "clsx";
 
 interface IModalVehicleProps {
   setCar: Dispatch<SetStateAction<ICars[] | undefined>>;
@@ -196,6 +196,7 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
     if (buttonDisable) {
       return;
     }
+    setButtonDisable(true);
 
     const valueTreated = carValue.replace(/\D/g, "");
 
@@ -213,11 +214,11 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
           return new Promise(async (resolve, reject) => {
             const gallery = new FormData();
             gallery.append("file", img);
-            gallery.append("upload_preset", "jgbdewxg");
+            gallery.append("upload_preset", "hil8tskt");
 
             try {
               const response = await axios.post(
-                "https://api.cloudinary.com/v1_1/dv4egxu7a/image/upload",
+                `https://api.cloudinary.com/v1_1/da3v0st5x/image/upload`,
                 gallery
               );
 
@@ -261,10 +262,10 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
       if (typeof imgCape === "object") {
         const imgDefault = new FormData();
         imgDefault.append("file", imgCape.file);
-        imgDefault.append("upload_preset", "jgbdewxg");
+        imgDefault.append("upload_preset", "hil8tskt");
 
         const resultImgDefault = await axios.post(
-          "https://api.cloudinary.com/v1_1/dv4egxu7a/image/upload",
+          `https://api.cloudinary.com/v1_1/da3v0st5x/image/upload`,
           imgDefault
         );
 
@@ -284,6 +285,7 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
         }, 1000);
       }
     }
+    setButtonDisable(false);
   };
 
   const deleteVehicle = async (uuid: string) => {
@@ -291,7 +293,9 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
 
     if (result) {
       setTimeout(async () => {
-        await api.get(`/users/cars/${params.id}`).then((response) => setCar(response.data));
+        await api
+          .get(`/users/cars/${params.id}${window.location.search}`)
+          .then((response) => setCar(response.data.data.cars));
 
         onClose();
       }, 1000);
