@@ -1,4 +1,4 @@
-# Projeto Final - M6 - Kenzie Academy Brasil
+# Projeto Final FrontEnd - M6 - Kenzie Academy Brasil
 
 ## Sobre o Projeto
 O projeto Kenzie Cars é umprojeto full stack desenvolvido em grupo para finalização do modulo 6 do curso de Desenvolvimento Fullstack da Kenzie Academy.
