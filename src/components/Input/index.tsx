@@ -1,4 +1,4 @@
-import { ChangeEventHandler, HTMLInputTypeAttribute } from "react";
+import { ChangeEventHandler, HTMLInputTypeAttribute, LegacyRef } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 
 interface IInputProps {
@@ -19,6 +19,7 @@ interface IInputProps {
   maxLength?: number;
   readOnly?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  ref?: LegacyRef<HTMLInputElement> | undefined;
 }
 
 export const Input = ({
@@ -38,7 +39,8 @@ export const Input = ({
   maxLength,
   inputDefaultChecked,
   readOnly,
-  onChange
+  onChange,
+  ref
 }: IInputProps) => {
   return (
     <>
@@ -47,6 +49,7 @@ export const Input = ({
       </label>
       <input
         id={inputId}
+        ref={ref}
         type={inputType}
         name={inputName}
         placeholder={placeHolder}
