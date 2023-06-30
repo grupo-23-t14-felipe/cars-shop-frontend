@@ -199,7 +199,13 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
       const result = await createAnnouncer(newData);
 
       if (result) {
+        setAllCars(undefined);
+        setCarSelected(undefined);
+        setModels(undefined);
+        setImgs([]);
+        setLoadingButton(false);
         setSuccess(true);
+
         setTimeout(async () => {
           await api
             .get(`/users/cars/${params.id}${window.location.search}`)
@@ -210,16 +216,10 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
         }, 3000);
       }
     }
-    setAllCars(undefined);
-    setSuccess(false);
-    setModels(undefined);
-    setCarSelected(undefined);
-    setImgs([]);
-    setLoadingButton(false);
   };
 
   const imageStyle = {
-    "max-height": "112px",
+    maxHeight: "112px",
     height: "auto",
     width: "auto"
   };

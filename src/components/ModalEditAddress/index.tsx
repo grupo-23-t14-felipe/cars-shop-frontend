@@ -125,7 +125,7 @@ export const ModalEditAddress = () => {
                     inputType="text"
                     labelChildren="Estado"
                     inputClass="input-outline cursor-not-allowed"
-                    inputDefaultValue={resultCep ? resultCep.uf : user?.address.state}
+                    value={resultCep ? resultCep.uf : user?.address.state}
                     disable={true}
                   />
                 </div>
@@ -134,7 +134,7 @@ export const ModalEditAddress = () => {
                     inputType="text"
                     labelChildren="Cidade"
                     inputClass="input-outline cursor-not-allowed"
-                    inputDefaultValue={resultCep ? resultCep.localidade : user?.address.city}
+                    value={resultCep ? resultCep.localidade : user?.address.city}
                     disable={true}
                   />
                 </div>
@@ -145,7 +145,7 @@ export const ModalEditAddress = () => {
                   inputType="text"
                   labelChildren="Rua"
                   inputClass="input-outline cursor-not-allowed"
-                  inputDefaultValue={resultCep ? resultCep.logradouro : user?.address.street}
+                  value={resultCep ? resultCep.logradouro : user?.address.street}
                   disable={true}
                 />
               </div>
