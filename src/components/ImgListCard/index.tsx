@@ -26,10 +26,16 @@ export const ImgListCard = ({
 }: IImgListCardProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const imageStyle = {
+    maxHeight: "112px",
+    height: "auto",
+    width: "auto"
+  };
+
   return (
     <li className="w-28 relative group/item cursor-pointer" onClick={deleteImg ? onOpen : onClick}>
       <figure className="w-28 h-28 flex justify-center items-center rounded bg-grey7 group-hover/item:bg-grey5 duration-300 overflow-hidden">
-        <Image src={imgUrl} alt={imgAlt} width={28} height={28} style={{ objectFit: "contain" }} />
+        <Image src={imgUrl} alt={imgAlt} width={112} height={112} style={imageStyle} />
       </figure>
       <p className="truncate body-2-400 text-xs text-grey2">{objName}</p>
 
