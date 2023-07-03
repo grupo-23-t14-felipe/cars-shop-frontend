@@ -6,7 +6,6 @@ import { ModalCreateVehicle } from "@/components/ModalCreateVehicle";
 import { ModalEditVehicle } from "@/components/ModalEditVehicle";
 import { NavBar } from "@/components/Navbar";
 import { ICars, ProductCard } from "@/components/ProductCard";
-import { UserProvider } from "@/context/UserContext";
 import { IUser } from "@/context/UserContext/types";
 import { useUser } from "@/hooks/useUser";
 import { api } from "@/services/api";
@@ -21,14 +20,6 @@ interface IProfileProps {
 }
 
 const ProfileDetail = ({ params }: IProfileProps) => {
-  return (
-    <UserProvider>
-      <ProfileDetailPage params={params} />
-    </UserProvider>
-  );
-};
-
-const ProfileDetailPage = ({ params }: IProfileProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();

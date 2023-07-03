@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         maxAge: 60 * 60 * 24
       });
 
-      return router.push("/");
+      router.push("/");
     } catch (error) {
       console.error(error);
       return error;
