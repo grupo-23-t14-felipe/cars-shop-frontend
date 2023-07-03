@@ -59,7 +59,7 @@ export const ProductCard = ({ car }: IProductCardProps) => {
         <Image src={car.img_default} alt={car.model} width={250} height={152} style={imageStyle} />
       </figure>
 
-      {params.id && user?.uuid && (
+      {params.id === user?.uuid && (
         <div
           className={clsx(
             "text-whiteFixed body-2-500 text-center px-2 absolute top-3 left-3",

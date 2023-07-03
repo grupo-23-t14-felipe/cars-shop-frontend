@@ -20,7 +20,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { UserProvider } from "@/context/UserContext";
 import { HiOutlineTrash } from "react-icons/hi";
 import { getRandomColor } from "@/utils/getRandomColor";
 import { calcDatePost } from "@/utils/calcDatePost";
@@ -33,14 +32,6 @@ interface IVehicleDetailProps {
 }
 
 const VehicleDetail = ({ params }: IVehicleDetailProps) => {
-  return (
-    <UserProvider>
-      <VehicleDetailPage params={params} />
-    </UserProvider>
-  );
-};
-
-const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
   const router = useRouter();
 
   const { user, createComment, deleteComment } = useUser();
@@ -105,6 +96,7 @@ const VehicleDetailPage = ({ params }: IVehicleDetailProps) => {
 
   const imageStyle = {
     width: "auto",
+    height: "100%",
     maxHeight: "355px"
   };
 
