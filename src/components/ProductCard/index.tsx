@@ -59,15 +59,16 @@ export const ProductCard = ({ car }: IProductCardProps) => {
         <Image src={car.img_default} alt={car.model} width={250} height={152} style={imageStyle} />
       </figure>
 
-      {params.id === user?.uuid && (
-        <div
-          className={clsx(
-            "text-whiteFixed body-2-500 text-center px-2 absolute top-3 left-3",
-            car.is_active ? "bg-brand1" : "bg-grey4"
-          )}>
-          {car.is_active ? "Ativo" : "Inativo"}
-        </div>
-      )}
+      {!user ||
+        (params.id === user?.uuid && (
+          <div
+            className={clsx(
+              "text-whiteFixed body-2-500 text-center px-2 absolute top-3 left-3",
+              car.is_active ? "bg-brand1" : "bg-grey4"
+            )}>
+            {car.is_active ? "Ativo" : "Inativo"}
+          </div>
+        ))}
 
       {car.is_good_deal && (
         <div className="w-4 h-7 border-[1px] border-[#48a382] bg-random7 rounded rounded-tr-none flex justify-center items-center text-whiteFixed input-label absolute top-0 right-0 z-10">
