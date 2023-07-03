@@ -1,5 +1,10 @@
-import { ChangeEventHandler, HTMLInputTypeAttribute, LegacyRef } from "react";
+"use client";
+
+import { ChangeEventHandler, HTMLInputTypeAttribute, LegacyRef, useState } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
+import { Button } from "../Button";
+import { VscEye, VscEyeClosed } from "react-icons/vsc";
+import clsx from "clsx";
 
 interface IInputProps {
   labelClass?: string;
@@ -20,6 +25,7 @@ interface IInputProps {
   readOnly?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   ref?: LegacyRef<HTMLInputElement> | undefined;
+  viewPass?: boolean;
 }
 
 export const Input = ({
@@ -40,8 +46,11 @@ export const Input = ({
   inputDefaultChecked,
   readOnly,
   onChange,
-  ref
+  ref,
+  viewPass = false
 }: IInputProps) => {
+  const [seePass, setSeePass] = useState(false);
+
   return (
     <>
       <label htmlFor={labelFor} className={labelClass}>
@@ -50,7 +59,7 @@ export const Input = ({
       <input
         id={inputId}
         ref={ref}
-        type={inputType}
+        type={seePass ? "text" : inputType}
         name={inputName}
         placeholder={placeHolder}
         defaultValue={inputDefaultValue}
@@ -64,6 +73,15 @@ export const Input = ({
         defaultChecked={inputDefaultChecked}
         readOnly={readOnly}
       />
+      {viewPass && (
+        <Button
+          type="button"
+          onClick={() => setSeePass(!seePass)}
+          className="absolute right-5 top-[46px]">
+          {seePass ? <VscEye size={20} /> : <VscEyeClosed size={20} />}
+        </Button>
+      )}
     </>
   );
 };
+// to see a button, is required a div with relative style

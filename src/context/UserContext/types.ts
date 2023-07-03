@@ -3,6 +3,7 @@ import { FieldError } from "react-hook-form";
 
 export interface IUserProviderProps {
   user: IUser | undefined;
+  loading: boolean;
   createAnnouncer: (data: IAnnouncer) => Promise<boolean>;
   updateAnnouncer: (data: IAnnouncer, uuid: string) => Promise<boolean>;
   loggout: () => void;
@@ -15,6 +16,7 @@ export interface IUserProviderProps {
   deleteAd: (uuid: string) => Promise<boolean>;
   createComment: (data: { description: string }, uuidCar: string) => Promise<boolean>;
   deleteComment: (uuidComment: string) => Promise<boolean>;
+  getUser: (uuid: string) => void;
 }
 
 export interface IAnnouncer {

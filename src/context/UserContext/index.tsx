@@ -21,8 +21,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const cookies = parseCookies();
 
   const [token, setToken] = useState<string | undefined>(cookies.token_kenzie_cars);
-
   const [user, setUser] = useState<IUser | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
 
   if (token) {
     api.defaults.headers.common.Authorization = `Bearer ${token}`;
@@ -34,8 +34,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
       setToken(cookies.token_kenzie_cars);
 
+      if (!cookies.token_kenzie_cars) {
+        setLoading(false);
+      }
+
       if (cookies.token_kenzie_cars) {
         api.defaults.headers.common.Authorization = `Bearer ${cookies.token_kenzie_cars}`;
+
         const decoded: IDecodeProps = jwtDecode(cookies.token_kenzie_cars);
 
         await getUser(decoded.sub);
@@ -186,7 +191,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         deleteImgOfAd,
         deleteAd,
         createComment,
-        deleteComment
+        deleteComment,
+        getUser,
+        loading
       }}>
       {children}
     </UserContext.Provider>
