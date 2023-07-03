@@ -6,6 +6,7 @@ import { ModalCreateVehicle } from "@/components/ModalCreateVehicle";
 import { ModalEditVehicle } from "@/components/ModalEditVehicle";
 import { NavBar } from "@/components/Navbar";
 import { ICars, ProductCard } from "@/components/ProductCard";
+import { AnimateCard } from "@/components/ProductCard/animateCard";
 import { IUser } from "@/context/UserContext/types";
 import { useUser } from "@/hooks/useUser";
 import { api } from "@/services/api";
@@ -27,6 +28,7 @@ const ProfileDetail = ({ params }: IProfileProps) => {
   const [car, setCar] = useState<ICars[]>();
   const [ownerPage, setOwnerPage] = useState<IUser>();
   const [pagination, setPagination] = useState<{ count: number; page: number }>();
+  const [loading, setLoading] = useState(true);
 
   const { user } = useUser();
 
@@ -56,25 +58,39 @@ const ProfileDetail = ({ params }: IProfileProps) => {
       <main className="background-detail-page pt-16">
         <div className="container-default px-4">
           <section className="bg-grey10 py-10 px-7 flex flex-col gap-4 rounded">
-            <div className="flex flex-col gap-6 items-start justify-center">
-              <div className="w-[104px] h-[104px] rounded-full bg-brand2 flex justify-center items-center">
-                {ownerPage && (
-                  <p className="text-whiteFixed font-medium text-4xl">
-                    {ownerPage.name[0].toUpperCase() +
-                      ownerPage.name[ownerPage.name.lastIndexOf(" ") + 1].toUpperCase()}
-                  </p>
-                )}
+            {loading ? (
+              <div className="animate-pulse flex flex-col gap-10">
+                <div className="flex flex-col gap-4">
+                  <div className="w-[104px] h-[104px] rounded-full bg-brand3 flex justify-center items-center"></div>
+                  <div className="py-2 w-36 rounded-xl bg-grey6"></div>
+                </div>
+
+                <div className="flex flex-col gap-4">
+                  <div className="py-2 w-11/12 rounded-xl bg-grey6"></div>
+                  <div className="py-2 w-2/3 rounded-xl bg-grey6"></div>
+                </div>
               </div>
-              <div className="flex gap-2">
-                {ownerPage && <p className="text-grey1 heading-6-600">{ownerPage.name}</p>}
-                {ownerPage?.is_seller && (
-                  <p className="body-2-500 text-brand1 rounded bg-brand4 text-center py-1 px-2">
-                    Anunciante
-                  </p>
-                )}
+            ) : (
+              <div className="flex flex-col gap-6 items-start justify-center">
+                <div className="w-[104px] h-[104px] rounded-full bg-brand2 flex justify-center items-center">
+                  {ownerPage && (
+                    <p className="text-whiteFixed font-medium text-4xl">
+                      {ownerPage.name[0].toUpperCase() +
+                        ownerPage.name[ownerPage.name.lastIndexOf(" ") + 1].toUpperCase()}
+                    </p>
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  {ownerPage && <p className="text-grey1 heading-6-600">{ownerPage.name}</p>}
+                  {ownerPage?.is_seller && (
+                    <p className="body-2-500 text-brand1 rounded bg-brand4 text-center py-1 px-2">
+                      Anunciante
+                    </p>
+                  )}
+                </div>
+                {ownerPage && <p className="text-grey2 body-1-400">{ownerPage.description}</p>}
               </div>
-              {ownerPage && <p className="text-grey2 body-1-400">{ownerPage.description}</p>}
-            </div>
+            )}
             {user?.uuid === params.id && <ModalCreateVehicle setCar={setCar} />}
           </section>
         </div>
@@ -86,7 +102,9 @@ const ProfileDetail = ({ params }: IProfileProps) => {
             </div>
           )}
           <ul className="flex flex-nowrap w-full overflow-x-auto pb-4 px-4 gap-12 lg:overflow-auto lg:flex-wrap lg:justify-center xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:w-auto 2xl:gap-10">
-            {car ? (
+            {loading ? (
+              <AnimateCard />
+            ) : car ? (
               car.map((car, index) => (
                 <div
                   key={index}

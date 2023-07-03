@@ -1,15 +1,26 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ReactNode, createContext } from "react";
+import { ReactNode, createContext, useEffect } from "react";
 import { IAuthProviderProps, ILoginData, IRegisterNewData } from "./types";
 import { api } from "@/services/api";
 import { setCookie } from "nookies";
+import { useUser } from "@/hooks/useUser";
+import jwtDecode from "jwt-decode";
+import { IDecodeProps } from "../UserContext/types";
 
 export const AuthContext = createContext<IAuthProviderProps>({} as IAuthProviderProps);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
+
+  const { user, getUser } = useUser();
+
+  useEffect(() => {
+    if (user?.uuid) {
+      router.push("/");
+    }
+  }, [user]);
 
   const register = async (registerData: IRegisterNewData) => {
     try {
@@ -24,7 +35,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         maxAge: 60 * 60 * 24
       });
 
-      router.push("/");
+      api.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
+
+      setUser(response.data.token);
     } catch (error) {
       console.error(error);
     }
@@ -38,11 +51,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         maxAge: 60 * 60 * 24
       });
 
-      router.push("/");
+      api.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
+
+      setUser(response.data.token);
     } catch (error) {
       console.error(error);
       return error;
     }
+  };
+
+  const setUser = (token: string) => {
+    const decoded: IDecodeProps = jwtDecode(token);
+
+    getUser(decoded.sub);
   };
 
   const resetPassword = async (data: { password: string; confirm: string }, token: string) => {

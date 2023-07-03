@@ -13,6 +13,8 @@ import { useCallback, useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { AnimateFilter } from "@/components/Filters/animateFilter";
+import { AnimateCard } from "@/components/ProductCard/animateCard";
 
 const Home = () => {
   const router = useRouter();
@@ -23,6 +25,7 @@ const Home = () => {
 
   const [cars, setCars] = useState<ICars[]>();
   const [pagination, setPagination] = useState<{ count: number; page: number }>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -30,6 +33,7 @@ const Home = () => {
 
       setCars(response.data.data);
       setPagination({ count: response.data.count, page: response.data.page });
+      setLoading(false);
     })();
   }, [searchParams]);
 
@@ -62,39 +66,50 @@ const Home = () => {
 
       <main className="py-14 pb-20 flex flex-col container-1">
         <section className="flex gap-7">
-          <FilterHome
-            listCars={cars}
-            className="hidden lg:flex lg:flex-col lg:w-[45%] overflow-hidden max-w-[454px] pl-4 sm:pl-[1.875rem] gap-9 xl:w-1/4 2xl:w-full"
-          />
-          {cars?.length ? (
-            <ul className="flex flex-nowrap w-full h-min overflow-x-scroll pl-[1rem] pr-4 sm:pr-[1.875rem] xl:pr-[3.75rem] lg:pl-0 gap-6 mb-20 lg:overflow-auto lg:flex-wrap xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:gap-10">
-              {cars.map((car, index) => (
-                <ProductCard key={index} car={car} />
-              ))}
-            </ul>
-          ) : searchParams.toString() ? (
-            <div className="w-full pb-10 text-center">
-              <h2 className="heading-6-500">Não possuimos carro para este filtro</h2>
-              <Button
-                className="text-brand1 heading-7-500"
-                onClick={() => {
-                  router.push("/");
-                }}>
-                Limpar filtro
-              </Button>
+          {loading ? (
+            <div className="flex w-full px-4">
+              <AnimateFilter />
+              <AnimateCard />
             </div>
           ) : (
-            <div className="w-full pb-10 text-center">
-              <h2 className="heading-6-500">O Site ainda não possuí carros</h2>
-            </div>
+            <>
+              <FilterHome
+                listCars={cars}
+                className="hidden lg:flex lg:flex-col lg:w-[45%] overflow-hidden max-w-[454px] pl-4 sm:pl-[1.875rem] gap-9 xl:w-1/4 2xl:w-full"
+              />
+              {cars?.length ? (
+                <ul className="flex flex-nowrap w-full h-min overflow-x-scroll pl-[1rem] pr-4 sm:pr-[1.875rem] xl:pr-[3.75rem] lg:pl-0 gap-6 mb-20 lg:overflow-auto lg:flex-wrap xl:grid xl:grid-cols-3 xl:w-9/12 2xl:flex 2xl:gap-10">
+                  {cars.map((car, index) => (
+                    <ProductCard key={index} car={car} />
+                  ))}
+                </ul>
+              ) : searchParams.toString() ? (
+                <div className="w-full pb-10 text-center">
+                  <h2 className="heading-6-500">Não possuimos carro para este filtro</h2>
+                  <Button
+                    className="text-brand1 heading-7-500"
+                    onClick={() => {
+                      router.push("/");
+                    }}>
+                    Limpar filtro
+                  </Button>
+                </div>
+              ) : (
+                <div className="w-full pb-10 text-center">
+                  <h2 className="heading-6-500">O Site ainda não possuí carros</h2>
+                </div>
+              )}
+            </>
           )}
         </section>
 
-        <div className="flex justify-center mb-12 lg:hidden">
-          <Button className="btn-brand1-big w-[279px]" onClick={onOpen}>
-            Filtros
-          </Button>
-        </div>
+        {loading ? null : (
+          <div className="flex justify-center mb-12 lg:hidden">
+            <Button className="btn-brand1-big w-[279px]" onClick={onOpen}>
+              Filtros
+            </Button>
+          </div>
+        )}
 
         {pagination && (
           <div className="flex flex-col md:flex-row justify-center items-center gap-5">

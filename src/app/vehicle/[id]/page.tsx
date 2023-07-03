@@ -96,7 +96,6 @@ const VehicleDetail = ({ params }: IVehicleDetailProps) => {
 
   const imageStyle = {
     width: "auto",
-    height: "100%",
     maxHeight: "355px"
   };
 
@@ -172,7 +171,7 @@ const VehicleDetail = ({ params }: IVehicleDetailProps) => {
                 <section className="bg-grey10 rounded p-9 flex flex-col">
                   <h2 className="heading-6-600 mb-9">Fotos</h2>
                   <ul className="flex flex-wrap justify-evenly gap-x-1.5 gap-y-12 w-full ">
-                    {carSelected &&
+                    {carSelected.gallery.length ? (
                       carSelected.gallery.map((gallery, index) => (
                         <figure
                           key={index}
@@ -189,7 +188,10 @@ const VehicleDetail = ({ params }: IVehicleDetailProps) => {
                             style={{ width: "auto", maxHeight: "108px" }}
                           />
                         </figure>
-                      ))}
+                      ))
+                    ) : (
+                      <p className="text-grey2 body-1-400 w-full">Carro não possui outras fotos</p>
+                    )}
                   </ul>
                 </section>
 
