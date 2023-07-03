@@ -35,6 +35,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       setToken(cookies.token_kenzie_cars);
 
       if (cookies.token_kenzie_cars) {
+        api.defaults.headers.common.Authorization = `Bearer ${cookies.token_kenzie_cars}`;
         const decoded: IDecodeProps = jwtDecode(cookies.token_kenzie_cars);
 
         await getUser(decoded.sub);
