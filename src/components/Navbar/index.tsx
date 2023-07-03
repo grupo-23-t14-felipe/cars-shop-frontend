@@ -87,7 +87,7 @@ export const NavBar = () => {
             {user ? (
               <Popover>
                 <PopoverTrigger>
-                  <ButtonChakra className="flex items-center gap-2" variant={"unstyled"}>
+                  <ButtonChakra className="flex flex-row items-center gap-2" variant={"unstyled"}>
                     <div className="w-8 h-8 rounded-full bg-brand2 flex justify-center items-center">
                       <p className="text-whiteFixed font-bold text-sm">
                         {user.name[0].toUpperCase() +
