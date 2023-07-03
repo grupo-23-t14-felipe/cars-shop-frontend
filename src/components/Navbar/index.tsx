@@ -87,14 +87,16 @@ export const NavBar = () => {
             {user ? (
               <Popover>
                 <PopoverTrigger>
-                  <ButtonChakra className="flex flex-row items-center gap-2" variant={"unstyled"}>
-                    <div className="w-8 h-8 rounded-full bg-brand2 flex justify-center items-center">
-                      <p className="text-whiteFixed font-bold text-sm">
-                        {user.name[0].toUpperCase() +
-                          user.name[user.name.lastIndexOf(" ") + 1].toUpperCase()}
-                      </p>
+                  <ButtonChakra variant={"unstyled"}>
+                    <div className="flex flex-row items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-brand2 flex justify-center items-center">
+                        <p className="text-whiteFixed font-bold text-sm">
+                          {user.name[0].toUpperCase() +
+                            user.name[user.name.lastIndexOf(" ") + 1].toUpperCase()}
+                        </p>
+                      </div>
+                      <p className="text-grey2 body-1-400">{user.name}</p>
                     </div>
-                    <p className="text-grey2 body-1-400">{user.name}</p>
                   </ButtonChakra>
                 </PopoverTrigger>
 

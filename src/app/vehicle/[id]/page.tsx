@@ -112,12 +112,12 @@ const VehicleDetail = ({ params }: IVehicleDetailProps) => {
                   <figure
                     className="h-[355px] bg-grey10 rounded flex justify-center items-center overflow-hidden cursor-pointer"
                     onClick={() => {
-                      setImgDefault(carSelected && carSelected?.img_default);
+                      setImgDefault(carSelected.img_default);
                       onOpen();
                     }}>
                     <Image
-                      src={carSelected && carSelected?.img_default}
-                      alt={carSelected && carSelected?.model}
+                      src={carSelected.img_default}
+                      alt={carSelected.model}
                       width={1920}
                       height={1080}
                       style={imageStyle}
@@ -128,29 +128,34 @@ const VehicleDetail = ({ params }: IVehicleDetailProps) => {
 
                 <section className="p-7 sm:px-11 bg-grey10 rounded flex flex-col gap-8">
                   <h1 className="text-grey1 heading-6-600">
-                    {carSelected && carSelected?.brand} - {carSelected && carSelected?.model}
+                    {carSelected.brand} - {carSelected.model}
                   </h1>
 
                   <div className="flex flex-col gap-9 sm:justify-between sm:flex-row">
                     <div className="flex gap-3">
                       <p className="body-2-500 text-brand1 rounded py-1 px-2 bg-brand4">
-                        {carSelected && carSelected?.mileage} KM
+                        {carSelected.mileage} KM
                       </p>
                       <p className="body-2-500 text-brand1 rounded py-1 px-2 bg-brand4">
-                        {carSelected && carSelected?.year}
+                        {carSelected.year}
                       </p>
                     </div>
 
                     <p className="heading-7-600 text-grey1">
                       {carSelected &&
-                        parseInt(carSelected?.value).toLocaleString(undefined, {
+                        parseInt(carSelected.value).toLocaleString(undefined, {
                           style: "currency",
                           currency: "BRL"
                         })}
                     </p>
                   </div>
 
-                  <Button className="btn-brand1-big w-fit">Comprar</Button>
+                  <Link
+                    href={`https://wa.me/${carSelected.user.celphone}`}
+                    target="_blank"
+                    className="btn-brand1-big w-fit">
+                    Comprar
+                  </Link>
                 </section>
 
                 <section className="py-9 px-7 sm:px-11 lg:mt-6 bg-grey10 rounded flex flex-col gap-8">
@@ -168,7 +173,7 @@ const VehicleDetail = ({ params }: IVehicleDetailProps) => {
                   <h2 className="heading-6-600 mb-9">Fotos</h2>
                   <ul className="flex flex-wrap justify-evenly gap-x-1.5 gap-y-12 w-full ">
                     {carSelected &&
-                      carSelected?.gallery.map((gallery, index) => (
+                      carSelected.gallery.map((gallery, index) => (
                         <figure
                           key={index}
                           className="bg-grey7 rounded max-w-[108px] max-h-[108px] w-full h-full flex justify-center items-center overflow-hidden"
@@ -178,7 +183,7 @@ const VehicleDetail = ({ params }: IVehicleDetailProps) => {
                           }}>
                           <Image
                             src={gallery.imageUrl}
-                            alt={carSelected && carSelected.model}
+                            alt={carSelected.model}
                             width={108}
                             height={108}
                             style={{ width: "auto", maxHeight: "108px" }}
@@ -199,17 +204,15 @@ const VehicleDetail = ({ params }: IVehicleDetailProps) => {
                             ].toUpperCase()}
                       </p>
                     </div>
-                    <p className="text-grey2 heading-6-600">
-                      {carSelected && carSelected!.user.name}
-                    </p>
+                    <p className="text-grey2 heading-6-600">{carSelected!.user.name}</p>
                   </div>
 
                   <p className="body-1-400 text-grey2 text-center max-h-[600px] overflow-y-auto">
-                    {carSelected && carSelected?.user.description}
+                    {carSelected.user.description}
                   </p>
 
                   <Link
-                    href={`/user/${carSelected && carSelected?.user.uuid}`}
+                    href={`/user/${carSelected.user.uuid}`}
                     className="rounded max-w-[206px] w-full h-12 btn-gray1-big p-0 text-grey10 flex justify-center items-center">
                     Ver todos anuncios
                   </Link>
