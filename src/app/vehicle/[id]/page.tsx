@@ -23,6 +23,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { getRandomColor } from "@/utils/getRandomColor";
 import Image from "next/image";
 import { CommentCard } from "@/components/CommentCard";
+import { LoadingAnimate } from "./components/loading";
 
 interface IVehicleDetailProps {
   params: {
@@ -297,7 +298,9 @@ const VehicleDetail = ({ params }: IVehicleDetailProps) => {
             </section>
           </div>
         </main>
-      ) : null}
+      ) : (
+        <LoadingAnimate />
+      )}
       <Footer />
 
       <Modal isOpen={isOpen} onClose={onClose}>
