@@ -8,6 +8,7 @@ import { NavBar } from "@/components/Navbar";
 import { useAuth } from "@/hooks/useAuth";
 import { useUser } from "@/hooks/useUser";
 import { useDisclosure } from "@chakra-ui/react";
+import clsx from "clsx";
 import Link from "next/link";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -15,13 +16,18 @@ import { SubmitHandler, useForm } from "react-hook-form";
 const Login = () => {
   const { register, handleSubmit } = useForm<{ email: string; password: string }>();
   const { isOpen, onClose, onOpen } = useDisclosure();
+
   const [invalidCredentials, setInvalidCredentials] = useState(false);
+  const [loadingButton, setLoadingButton] = useState(false);
 
   const { login } = useAuth();
   const { loading } = useUser();
 
   const submit: SubmitHandler<{ email: string; password: string }> = async (data) => {
+    setLoadingButton(true);
+
     const result = await login(data);
+
     if (result) {
       setInvalidCredentials(true);
 
@@ -29,6 +35,10 @@ const Login = () => {
         setInvalidCredentials(false);
       }, 3000);
     }
+
+    setTimeout(() => {
+      setLoadingButton(false);
+    }, 500);
   };
 
   return (
@@ -77,8 +87,14 @@ const Login = () => {
             </Button>
 
             <div className="flex flex-col items-center justify-center gap-6">
-              <Button type="submit" className="btn-brand1-big w-full text-center">
-                Entrar
+              <Button
+                type="submit"
+                className={clsx(
+                  "w-full text-center",
+                  loadingButton ? "btn-disable-big animate-pulse" : "btn-brand1-big"
+                )}
+                disable={loadingButton}>
+                {loadingButton ? "Entrando..." : "Entrar"}
               </Button>
 
               <p className="body-2-400 text-grey2">Ainda não possui conta?</p>
