@@ -38,6 +38,7 @@ const ProfileDetail = ({ params }: IProfileProps) => {
       setOwnerPage(response.data.data);
 
       setPagination({ count: response.data.count, page: response.data.page });
+      setLoading(false);
     });
   }, [searchParams]);
 
