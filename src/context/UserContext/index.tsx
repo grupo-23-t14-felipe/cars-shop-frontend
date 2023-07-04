@@ -165,6 +165,17 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const updateComment = async (data: { description: string }, uuidComment: string) => {
+    try {
+      const response = await api.patch(`/cars/comments/${uuidComment}`, data);
+
+      return response;
+    } catch (error: any) {
+      console.error(error);
+      return error.data.message;
+    }
+  };
+
   const deleteComment = async (uuidComment: string) => {
     try {
       await api.delete(`/cars/comments/${uuidComment}`);
@@ -193,6 +204,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         createComment,
         deleteComment,
         getUser,
+        updateComment,
         loading
       }}>
       {children}

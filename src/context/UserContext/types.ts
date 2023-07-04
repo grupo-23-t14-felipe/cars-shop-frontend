@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { Dispatch, SetStateAction } from "react";
 import { FieldError } from "react-hook-form";
 
@@ -15,6 +16,10 @@ export interface IUserProviderProps {
   deleteImgOfAd: (uuid: string) => Promise<boolean>;
   deleteAd: (uuid: string) => Promise<boolean>;
   createComment: (data: { description: string }, uuidCar: string) => Promise<boolean>;
+  updateComment: (
+    data: { description: string },
+    uuidComment: string
+  ) => Promise<AxiosResponse<any, any> | any>;
   deleteComment: (uuidComment: string) => Promise<boolean>;
   getUser: (uuid: string) => void;
 }
