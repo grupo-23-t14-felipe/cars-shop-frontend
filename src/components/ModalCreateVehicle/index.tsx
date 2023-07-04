@@ -13,13 +13,13 @@ import { Button } from "../Button";
 import { Input } from "../Input";
 import { ICars } from "../ProductCard";
 import { SubmitErrorHandler, useForm } from "react-hook-form";
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 import { IListCars, IListModelCars } from "./types";
 import { MdOutlineClose } from "react-icons/md";
 import { FiUploadCloud } from "react-icons/fi";
 import { useDropzone } from "react-dropzone";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TCreateAnnoucement, createAnnoucementSchema } from "./validators";
+import { TCreateAnnoucement, checkCharactersSchema, createAnnoucementSchema } from "./validators";
 import { NumericFormat } from "react-number-format";
 import { useUser } from "@/hooks/useUser";
 import { api } from "@/services/api";
@@ -33,6 +33,7 @@ interface IModalVehicleProps {
 
 export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
   const params = useParams();
+
   const { createAnnouncer } = useUser();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -41,6 +42,7 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
   const [carSelected, setCarSelected] = useState<IListModelCars>();
   const [imgs, setImgs] = useState<{ name: string; img_url: string; file: File }[]>([]);
   const [value, setValue] = useState("");
+  const [color, setColor] = useState("");
   const [success, setSuccess] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
 
@@ -53,6 +55,14 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
         });
     })();
   }, [isOpen]);
+
+  useEffect(() => {
+    setCarSelected(undefined);
+    setModels(undefined);
+    setColor("");
+    setImgs([]);
+    reset();
+  }, [success]);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -121,7 +131,8 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
     handleSubmit,
     formState: { errors },
     setError,
-    clearErrors
+    clearErrors,
+    reset
   } = useForm({
     resolver: zodResolver(createAnnoucementSchema),
     mode: "onChange"
@@ -199,11 +210,6 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
       const result = await createAnnouncer(newData);
 
       if (result) {
-        setAllCars(undefined);
-        setCarSelected(undefined);
-        setModels(undefined);
-        setImgs([]);
-        setLoadingButton(false);
         setSuccess(true);
 
         setTimeout(async () => {
@@ -216,6 +222,11 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
         }, 3000);
       }
     }
+    setLoadingButton(false);
+  };
+
+  const checkCharacters = (value: string) => {
+    setColor(value.replace(/[^A-Za-z]+/g, ""));
   };
 
   const imageStyle = {
@@ -251,8 +262,7 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
                     {...register("brand")}
                     onChange={(e) => {
                       getModels(e.target.value);
-                    }}
-                    defaultValue={undefined}>
+                    }}>
                     {allCars &&
                       Object.keys(allCars).map((model, index) => (
                         <option value={model} key={index}>
@@ -341,6 +351,7 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
                       inputType="text"
                       inputName="color"
                       register={register("color")}
+                      onChange={(e) => checkCharacters(e.target.value)}
                       inputClass={clsx(
                         "input-outline",
                         errors.color ? "border-feedbackAlert1" : "border-grey7"
@@ -348,6 +359,7 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
                       placeHolder="Branco"
                       labelChildren="Cor"
                       labelClass="body-2-500 text-grey0"
+                      value={color}
                     />
                   </div>
 

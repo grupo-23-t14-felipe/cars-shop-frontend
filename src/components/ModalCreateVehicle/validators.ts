@@ -13,4 +13,6 @@ export const createAnnoucementSchema = z
   })
   .required();
 
+export const checkCharactersSchema = z.string().regex(/^[A-Za-z]+$/);
+
 export type TCreateAnnoucement = z.infer<typeof createAnnoucementSchema>;
