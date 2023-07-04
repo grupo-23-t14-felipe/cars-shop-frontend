@@ -20,10 +20,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { HiOutlineTrash } from "react-icons/hi";
 import { getRandomColor } from "@/utils/getRandomColor";
-import { calcDatePost } from "@/utils/calcDatePost";
 import Image from "next/image";
+import { CommentCard } from "@/components/CommentCard";
 
 interface IVehicleDetailProps {
   params: {
@@ -34,7 +33,7 @@ interface IVehicleDetailProps {
 const VehicleDetail = ({ params }: IVehicleDetailProps) => {
   const router = useRouter();
 
-  const { user, createComment, deleteComment } = useUser();
+  const { user, createComment } = useUser();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -84,13 +83,6 @@ const VehicleDetail = ({ params }: IVehicleDetailProps) => {
         getCarByParams(params.id);
         setMessage("");
       }
-    }
-  };
-
-  const buttonDeleteComment = async (uuidComment: string) => {
-    const result = await deleteComment(uuidComment);
-    if (result) {
-      getCarByParams(params.id);
     }
   };
 
@@ -230,46 +222,15 @@ const VehicleDetail = ({ params }: IVehicleDetailProps) => {
 
                 <ul className="flex flex-col gap-11 px-7 pb-9 sm:px-11">
                   {carSelected.comments.length ? (
-                    carSelected.comments.map((comment, index) => {
-                      return (
-                        <li key={index} className="flex flex-col gap-3">
-                          <div className="flex justify-between">
-                            <div className="flex gap-2 items-center">
-                              <div
-                                className={clsx(
-                                  `w-8 h-8 rounded-full flex justify-center items-center`,
-                                  comment.user.randomColor
-                                )}>
-                                <p className="text-whiteFixed font-medium text-sm">
-                                  {comment.user.name[0].toUpperCase() +
-                                    comment.user.name[
-                                      comment.user.name.lastIndexOf(" ") + 1
-                                    ].toUpperCase()}
-                                </p>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <p className="text-grey1 body-2-500">{comment.user.name}</p>
-                                <p className="text-grey4 p-0 m-0">•</p>
-                                <p className="text-grey3 body-2-400 text-xs">
-                                  {calcDatePost(comment.addedIn)}
-                                </p>
-                              </div>
-                            </div>
-                            {user?.uuid === comment.user.uuid && (
-                              <Button
-                                onClick={() => buttonDeleteComment(comment.uuid)}
-                                className="text-grey3 hover:text-feedbackAlert1 duration-300 relative after:absolute after:top-0 after:right-0 after:content-[''] after:z-20 after:text-[12px] after:w-max after:duration-700 after:text-transparent hover:after:content-['Excluir_comentário'] hover:after:-top-3 hover:after:text-feedbackAlert1">
-                                <HiOutlineTrash size={14} />
-                              </Button>
-                            )}
-                          </div>
-
-                          <p className="text-grey2 body-2-400 max-h-28 overflow-y-auto">
-                            {comment.description}
-                          </p>
-                        </li>
-                      );
-                    })
+                    carSelected.comments.map((comment, index) => (
+                      <CommentCard
+                        key={index}
+                        comment={comment}
+                        getCarByParams={getCarByParams}
+                        paramId={params.id}
+                        carState={setCarSelected}
+                      />
+                    ))
                   ) : (
                     <p className="text-grey2 body-2-400">Seja o primeiro a comentar!</p>
                   )}
