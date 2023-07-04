@@ -61,6 +61,7 @@ const LinksLoginAndRegister = () => {
 };
 
 export const NavBar = () => {
+  const pathName = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
   const { user, loggout } = useUser();
@@ -69,7 +70,15 @@ export const NavBar = () => {
     <header
       className={clsx(
         "flex-col px-4 sm:px-[1.875rem] lg:px-[3.75rem] justify-between items-center border-b-2 border-b-grey6 bg-grey10 overflow-hidden duration-300",
-        isOpen ? (user ? (user.is_seller ? "h-[372px]" : "h-[304px]") : "h-[264px]") : "h-[78px]"
+        isOpen
+          ? user
+            ? user.is_seller
+              ? pathName.includes("user") && user.is_seller
+                ? "h-[304px]"
+                : "h-[372px]"
+              : "h-[304px]"
+            : "h-[264px]"
+          : "h-[78px]"
       )}>
       <div className="w-full min-h-[78px] flex justify-between items-center">
         <figure>

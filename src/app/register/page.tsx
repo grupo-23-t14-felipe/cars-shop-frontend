@@ -18,6 +18,7 @@ import { useUser } from "@/hooks/useUser";
 const Register = () => {
   const { loading } = useUser();
 
+  const [loadingButton, setLoadingButton] = useState(false);
   const [typeAccount, setTypeAccount] = useState(false);
   const [cpf, setCpf] = useState("");
   const [cellphone, setCellphone] = useState("");
@@ -43,7 +44,10 @@ const Register = () => {
   });
 
   const onFormSubmit: SubmitHandler<TRegisterData> = (formData) => {
+    setLoadingButton(true);
+
     const regex = /\D/g;
+
     clearErrors("cpf");
     clearErrors("cellphone");
 
@@ -74,6 +78,10 @@ const Register = () => {
 
       registerUser(newFormData);
     }
+
+    setTimeout(() => {
+      setLoadingButton(false);
+    }, 500);
   };
 
   const consultCep = async (cep: string) => {
@@ -423,8 +431,12 @@ const Register = () => {
                 )}
               </div>
 
-              <Button type="submit" className="btn-brand1-big">
-                Finalizar cadastro
+              <Button
+                type="submit"
+                className={clsx(
+                  loadingButton ? "btn-disable-big animate-pulse" : "btn-brand1-big"
+                )}>
+                {loadingButton ? "Cadastrando..." : "Finalizar cadastro"}
               </Button>
             </div>
           </form>
