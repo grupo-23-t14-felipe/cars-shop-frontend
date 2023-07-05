@@ -152,7 +152,7 @@ const Register = () => {
     !loading && (
       <>
         <NavBar />
-        <main className="bg-grey8 flex items-center justify-center pt-11 pb-24 px-4 min-h-screen">
+        <main className="bg-grey8 flex items-center justify-center pt-11 pb-24 px-4 h-full flex-1">
           <form
             className="bg-grey10 max-w-[412px] w-full py-11 px-7 sm:px-12 flex flex-col gap-8 rounded"
             onSubmit={handleSubmit(onFormSubmit)}>
