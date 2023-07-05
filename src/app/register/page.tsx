@@ -14,6 +14,7 @@ import axios from "axios";
 import { IResponseCepApi } from "./types";
 import clsx from "clsx";
 import { useUser } from "@/hooks/useUser";
+import { checkPassword } from "@/utils/checkPasswordIsValid";
 
 const Register = () => {
   const { loading } = useUser();
@@ -103,48 +104,6 @@ const Register = () => {
 
       setStreet(response.data.logradouro);
       setResultCep(response.data);
-    }
-  };
-
-  const checkPassword = (pass: string) => {
-    if (pass.length > 8) {
-      setValidationPass((prev) => {
-        return { ...prev, length: true };
-      });
-    } else {
-      setValidationPass((prev) => {
-        return { ...prev, length: false };
-      });
-    }
-
-    if (/(?=.*[A-Z])/.test(pass)) {
-      setValidationPass((prev) => {
-        return { ...prev, capital: true };
-      });
-    } else {
-      setValidationPass((prev) => {
-        return { ...prev, capital: false };
-      });
-    }
-
-    if (/(?=.*[a-z])/.test(pass)) {
-      setValidationPass((prev) => {
-        return { ...prev, tiny: true };
-      });
-    } else {
-      setValidationPass((prev) => {
-        return { ...prev, tiny: false };
-      });
-    }
-
-    if (/[!@#$%^&*(),.?":{}|<>]/.test(pass)) {
-      setValidationPass((prev) => {
-        return { ...prev, special: true };
-      });
-    } else {
-      setValidationPass((prev) => {
-        return { ...prev, special: false };
-      });
     }
   };
 
@@ -380,7 +339,7 @@ const Register = () => {
                   labelClass="body-2-500 text-grey1 relative"
                   labelChildren="Senha"
                   register={register("password")}
-                  onChange={(e) => checkPassword(e.target.value)}
+                  onChange={(e) => checkPassword(e.target.value, setValidationPass)}
                   viewPass
                 />
 
