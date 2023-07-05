@@ -29,6 +29,7 @@ const Register = () => {
     tiny: false,
     special: false
   });
+  const [street, setStreet] = useState(resultCep?.logradouro);
 
   const { register: registerUser } = useAuth();
 
@@ -68,7 +69,7 @@ const Register = () => {
         is_seller: typeAccount,
         address: {
           cep: resultCep?.cep.replace(regex, ""),
-          street: resultCep?.logradouro,
+          street: street,
           state: resultCep?.uf,
           city: resultCep?.localidade,
           number: formData.number,
@@ -100,6 +101,7 @@ const Register = () => {
         return setError("cep", { type: "required", message: "Digite um CEP válido" });
       }
 
+      setStreet(response.data.logradouro);
       setResultCep(response.data);
     }
   };
@@ -150,7 +152,7 @@ const Register = () => {
     !loading && (
       <>
         <NavBar />
-        <main className="bg-grey8 flex items-center justify-center pt-11 pb-24 px-4">
+        <main className="bg-grey8 flex items-center justify-center pt-11 pb-24 px-4 min-h-screen">
           <form
             className="bg-grey10 max-w-[412px] w-full py-11 px-7 sm:px-12 flex flex-col gap-8 rounded"
             onSubmit={handleSubmit(onFormSubmit)}>
@@ -294,8 +296,9 @@ const Register = () => {
                   )}
                   labelClass="body-2-500 text-grey1"
                   labelChildren="Rua"
-                  disable={true}
-                  value={resultCep ? resultCep.logradouro : ""}
+                  disable={resultCep?.logradouro === "" ? false : true}
+                  value={street}
+                  onChange={(e) => setStreet(e.target.value)}
                 />
               </div>
 

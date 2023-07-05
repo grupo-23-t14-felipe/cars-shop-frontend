@@ -226,7 +226,7 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
   };
 
   const checkCharacters = (value: string) => {
-    setColor(value.replace(/[^A-Za-z]+/g, ""));
+    setColor(value.replace(/[^A-Za-z ]+/g, ""));
   };
 
   const imageStyle = {

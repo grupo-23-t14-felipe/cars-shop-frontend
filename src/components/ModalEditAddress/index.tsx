@@ -20,11 +20,13 @@ import axios from "axios";
 import { useUser } from "@/hooks/useUser";
 
 export const ModalEditAddress = () => {
+  const { user, updateAddress } = useUser();
+
+  const [cep, setCep] = useState("");
   const [resultCep, setResultCep] = useState<IResponseCepApi>();
   const [buttonDisable, setButtonDisable] = useState(true);
+  const [street, setStreet] = useState(resultCep?.logradouro || user?.address.street);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const { user, updateAddress } = useUser();
 
   const {
     register,
@@ -43,7 +45,7 @@ export const ModalEditAddress = () => {
     const newData = {
       uuid: user!.address.uuid,
       cep: resultCep?.cep.replace(regex, "") || user!.address.cep,
-      street: resultCep?.logradouro || user!.address.street,
+      street: street || user!.address.street,
       state: resultCep?.uf || user!.address.state,
       city: resultCep?.localidade || user!.address.city,
       number: data.number,
@@ -72,7 +74,9 @@ export const ModalEditAddress = () => {
         return setError("cep", { type: "required", message: "Digite um CEP válido" });
       }
 
+      setStreet(response.data.logradouro);
       setResultCep(response.data);
+      checkHaveChanges(cep);
     }
   };
 
@@ -110,8 +114,11 @@ export const ModalEditAddress = () => {
                   format="#####-###"
                   className={clsx("input-outline", errors.cep && "border-feedbackAlert1")}
                   placeholder="00000-000"
-                  onChange={(e) => consultCep(e.target.value)}
-                  value={user?.address.cep}
+                  onChange={(e) => {
+                    setCep(e.target.value);
+                    consultCep(e.target.value);
+                  }}
+                  defaultValue={cep ? cep : user?.address.cep}
                 />
 
                 {errors.cep && (
@@ -145,8 +152,9 @@ export const ModalEditAddress = () => {
                   inputType="text"
                   labelChildren="Rua"
                   inputClass="input-outline cursor-not-allowed"
-                  value={resultCep ? resultCep.logradouro : user?.address.street}
-                  disable={true}
+                  onChange={(e) => setStreet(e.target.value)}
+                  value={street}
+                  disable={resultCep?.logradouro === "" ? false : true}
                 />
               </div>
 

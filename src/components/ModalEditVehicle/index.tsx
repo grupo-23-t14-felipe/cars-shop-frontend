@@ -46,6 +46,7 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
   const [carSelected, setCarSelected] = useState<IListModelCars>();
   const [imgs, setImgs] = useState<{ name: string; img_url: string; file: File }[]>([]);
   const [carValue, setCarValue] = useState(carToEdit.value.slice(0, -2));
+  const [color, setColor] = useState(carToEdit.color);
   const [imgCape, setImgCape] = useState<
     | string
     | {
@@ -275,7 +276,9 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
 
       if (result) {
         setTimeout(async () => {
-          await api.get(`/users/cars/${params.id}`).then((response) => setCar(response.data));
+          await api
+            .get(`/users/cars/${params.id}`)
+            .then((response) => setCar(response.data.data.cars));
 
           setButtonDisable(true);
           setImgs([]);
@@ -307,6 +310,10 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
     } else {
       setButtonDisable(true);
     }
+  };
+
+  const checkCharacters = (value: string) => {
+    setColor(value.replace(/[^A-Za-z ]+/g, ""));
   };
 
   return (
@@ -459,8 +466,10 @@ export const ModalEditVehicle = ({ setCar, carToEdit }: IModalVehicleProps) => {
                       carToEdit.color[0].toUpperCase() + carToEdit.color.substring(1)
                     }
                     onChange={(e) => {
+                      checkCharacters(e.target.value);
                       checkHaveChanges(carToEdit.color.toLowerCase(), e.target.value.toLowerCase());
                     }}
+                    value={color}
                   />
                 </div>
 
