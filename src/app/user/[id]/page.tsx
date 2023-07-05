@@ -56,7 +56,7 @@ const ProfileDetail = ({ params }: IProfileProps) => {
   return (
     <>
       <NavBar />
-      <main className="background-detail-page pt-16 min-h-screen">
+      <main className="background-detail-page pt-16 flex-1">
         <div className="container-default px-4">
           <section className="bg-grey10 py-10 px-7 flex flex-col gap-4 rounded">
             {loading ? (

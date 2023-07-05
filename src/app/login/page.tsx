@@ -45,7 +45,7 @@ const Login = () => {
     !loading && (
       <>
         <NavBar />
-        <main className="bg-grey8 flex items-center justify-center px-4 pt-12 pb-16 min-h-screen">
+        <main className="bg-grey8 flex items-center justify-center px-4 pt-12 pb-16 flex-1">
           <form
             className="bg-grey10 max-w-[412px] w-full rounded py-11 px-7 sm:px-12 flex flex-col gap-2"
             onSubmit={handleSubmit(submit)}>
