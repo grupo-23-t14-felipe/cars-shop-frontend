@@ -96,7 +96,7 @@ const VehicleDetail = ({ params }: IVehicleDetailProps) => {
     <>
       <NavBar />
       {carSelected ? (
-        <main className="background-detail-page">
+        <main className="background-detail-page min-h-screen">
           <div className="max-w-[78rem] w-full px-3 py-10 mx-auto relative">
             <section className="flex flex-col lg:flex-row lg:gap-11 lg:max-w-[61.5%]">
               <div className="mb-7 lg:mb-4 flex flex-col gap-4 w-full">

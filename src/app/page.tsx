@@ -64,7 +64,7 @@ const Home = () => {
         </div>
       </header>
 
-      <main className="py-14 pb-20 flex flex-col container-1">
+      <main className="py-14 pb-20 flex flex-col container-1 min-h-screen">
         <section className="flex gap-7">
           {loading ? (
             <div className="flex w-full px-4">
