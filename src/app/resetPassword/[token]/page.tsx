@@ -9,11 +9,24 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { TResetPassword, resetPasswordSchema } from "./validators";
 import clsx from "clsx";
 import { useAuth } from "@/hooks/useAuth";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import { checkPassword } from "@/utils/checkPasswordIsValid";
 
 const ResetPassword = () => {
   const { resetPassword } = useAuth();
+
   const params = useParams();
+  const router = useRouter();
+
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [validationPass, setValidationPass] = useState({
+    length: false,
+    capital: false,
+    tiny: false,
+    special: false
+  });
 
   const {
     handleSubmit,
@@ -24,8 +37,19 @@ const ResetPassword = () => {
     mode: "onChange"
   });
 
-  const submit: SubmitHandler<TResetPassword> = (data) => {
-    resetPassword(data, params.token);
+  const submit: SubmitHandler<TResetPassword> = async (data) => {
+    setLoading(true);
+    const result = await resetPassword(data, params.token);
+
+    if (result) {
+      setSuccess(true);
+
+      setTimeout(() => {
+        setSuccess(false);
+        router.push("/login");
+      }, 2000);
+    }
+    setLoading(false);
   };
 
   return (
@@ -36,7 +60,7 @@ const ResetPassword = () => {
           className="bg-grey10 max-w-[412px] w-full rounded py-11 px-7 sm:px-12 flex flex-col gap-5"
           onSubmit={handleSubmit(submit)}>
           <h1 className="heading-5-500 text-grey0">Redefinir senha</h1>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 relative">
             <Input
               inputType="password"
               labelChildren="Senha"
@@ -44,12 +68,41 @@ const ResetPassword = () => {
               inputClass={clsx("input-outline", errors.password && "border-feedbackAlert1")}
               placeHolder="Digite sua nova senha"
               register={register("password")}
+              onChange={(e) => checkPassword(e.target.value, setValidationPass)}
+              viewPass
             />
-            {errors.password && (
-              <p className="body-2-500 text-sm text-feedbackAlert1">{errors.password.message}</p>
-            )}
+            <div className="flex flex-col">
+              <p
+                className={clsx(
+                  "body-2-500 text-xs",
+                  validationPass.length ? "text-feedbackSucess1" : "text-feedbackAlert1"
+                )}>
+                Deve ter no mínimo 8 caracteres
+              </p>
+              <p
+                className={clsx(
+                  "body-2-500 text-xs",
+                  validationPass.capital ? "text-feedbackSucess1" : "text-feedbackAlert1"
+                )}>
+                Deve conter ao menos uma letra maiúscula
+              </p>
+              <p
+                className={clsx(
+                  "body-2-500 text-xs",
+                  validationPass.tiny ? "text-feedbackSucess1" : "text-feedbackAlert1"
+                )}>
+                Deve conter ao menos uma letra minúscula
+              </p>
+              <p
+                className={clsx(
+                  "body-2-500 text-xs",
+                  validationPass.special ? "text-feedbackSucess1" : "text-feedbackAlert1"
+                )}>
+                Deve conter ao menos um caractere especial
+              </p>
+            </div>
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 relative">
             <Input
               inputType="password"
               labelChildren="Cofirme a senha"
@@ -57,13 +110,20 @@ const ResetPassword = () => {
               inputClass={clsx("input-outline", errors.confirm && "border-feedbackAlert1")}
               placeHolder="Confirme a nova senha"
               register={register("confirm")}
+              viewPass
             />
             {errors.confirm && (
               <p className="body-2-500 text-sm text-feedbackAlert1">{errors.confirm.message}</p>
             )}
           </div>
 
-          <Button className="btn-brand1-big w-full">Redefinir senha</Button>
+          {success && (
+            <p className="body-2-500 text-sm text-feedbackSucess1">Senha trocada com sucesso!</p>
+          )}
+
+          <Button className="btn-brand1-big w-full" disable={loading}>
+            {loading ? "Redefinindo..." : "Redefinir senha"}
+          </Button>
         </form>
       </main>
       <Footer />
