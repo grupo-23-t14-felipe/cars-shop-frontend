@@ -419,7 +419,7 @@ export const ModalCreateVehicle = ({ setCar }: IModalVehicleProps) => {
                     isDragActive ? "bg-grey5" : "bg-grey7",
                     errors.img ? "border-feedbackAlert1" : "border-brand2"
                   )}>
-                  <input {...getInputProps()} {...register("img", { required: true })} />
+                  <input {...getInputProps()} />
                   <div>
                     <FiUploadCloud
                       size={42}
