@@ -41,6 +41,17 @@ export const ModalSwiper = ({ car, isOpen, onClose }: IModalSwiper) => {
               navigation={true}
               modules={[Pagination, Navigation]}
               className="mySwiper">
+              <SwiperSlide className="overflow-hidden">
+                <figure className="bg-grey7 h-[472px] max-w-[472px] w-full flex justify-center items-center">
+                  <Image
+                    src={car.img_default}
+                    alt="Image gallery"
+                    width={472}
+                    height={472}
+                    style={{ height: "100%", width: "100%", objectFit: "contain" }}
+                  />
+                </figure>
+              </SwiperSlide>
               {car.gallery.map((gallery, index) => (
                 <SwiperSlide key={index} className="overflow-hidden">
                   <figure className="bg-grey7 h-[472px] max-w-[472px] w-full flex justify-center items-center">
