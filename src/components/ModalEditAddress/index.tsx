@@ -20,13 +20,15 @@ import axios from "axios";
 import { useUser } from "@/hooks/useUser";
 
 export const ModalEditAddress = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { user, updateAddress } = useUser();
 
   const [cep, setCep] = useState("");
   const [resultCep, setResultCep] = useState<IResponseCepApi>();
   const [buttonDisable, setButtonDisable] = useState(true);
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [street, setStreet] = useState(resultCep?.logradouro || user?.address.street);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {
     register,
@@ -40,6 +42,7 @@ export const ModalEditAddress = () => {
   });
 
   const submit: SubmitHandler<TEditAddress> = async (data) => {
+    setLoading(true);
     const regex = /\D/g;
 
     const newData = {
@@ -53,9 +56,16 @@ export const ModalEditAddress = () => {
     };
 
     const result = await updateAddress(newData);
-    if (result) {
-      onClose();
+    if (result === true) {
+      setSuccess(true);
+      setButtonDisable(true);
+
+      setTimeout(() => {
+        setSuccess(false);
+        onClose();
+      }, 3000);
     }
+    setLoading(false);
   };
 
   const consultCep = async (cep: string) => {
@@ -187,17 +197,24 @@ export const ModalEditAddress = () => {
                 </div>
               </fieldset>
 
+              {success && (
+                <p className="body-2-500 text-sm text-feedbackSucess1">
+                  Alteração realizada com sucesso!
+                </p>
+              )}
+
               <div className="flex justify-end gap-3 w-full">
                 <Button type="button" className="btn-negative-big" onClick={onClose}>
                   Cancelar
                 </Button>
+
                 <Button
                   type="submit"
                   className={clsx(
                     buttonDisable ? "btn-brand-disable-big cursor-not-allowed" : "btn-brand1-big"
                   )}
                   disable={buttonDisable}>
-                  Salvar alterações
+                  {loading ? "Alterando..." : "Salvar alterações"}
                 </Button>
               </div>
             </form>
