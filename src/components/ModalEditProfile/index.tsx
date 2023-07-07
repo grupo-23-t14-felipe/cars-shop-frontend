@@ -22,9 +22,12 @@ import { IUserUpdate } from "@/context/UserContext/types";
 export const ModalEditProfile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user, updateUser } = useUser();
+
   const [buttonDisable, setButtonDisable] = useState(true);
   const [cellphone, setCellphone] = useState(user!.celphone);
   const [cpf, setCpf] = useState(user!.cpf);
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -35,14 +38,28 @@ export const ModalEditProfile = () => {
     mode: "onChange"
   });
 
-  const submit: SubmitHandler<IUserUpdate> = (data: IUserUpdate) => {
+  const submit: SubmitHandler<IUserUpdate> = async (data: IUserUpdate) => {
+    setLoading(true);
     const regex = /\D/g;
+
     const newData: IUserUpdate = {
       ...data!,
       cpf: cpf.replace(regex, ""),
       celphone: cellphone.replace(regex, "")
     };
-    updateUser(newData);
+
+    const result = await updateUser(newData);
+
+    if (result === true) {
+      setSuccess(true);
+      setButtonDisable(true);
+
+      setTimeout(() => {
+        setSuccess(false);
+        onClose();
+      }, 3000);
+    }
+    setLoading(false);
   };
 
   const checkHaveChanges = (value: string) => {
@@ -169,6 +186,12 @@ export const ModalEditProfile = () => {
                     checkHaveChanges(e.target.value);
                   }}
                 />
+
+                {success && (
+                  <p className="body-2-500 text-sm text-feedbackSucess1">
+                    Alteração realizada com sucesso!
+                  </p>
+                )}
               </div>
 
               <div className="flex flex-wrap justify-center sm:flex-nowrap gap-3 w-full">
@@ -188,7 +211,7 @@ export const ModalEditProfile = () => {
                     buttonDisable ? "btn-brand-disable-big cursor-not-allowed" : "btn-brand1-big"
                   )}
                   disable={buttonDisable}>
-                  Salvar alterações
+                  {loading ? "Alterando..." : "Salvar alterações"}
                 </Button>
               </div>
             </form>
