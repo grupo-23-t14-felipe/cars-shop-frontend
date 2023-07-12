@@ -45,6 +45,21 @@ module.exports = {
         grey9: "#f8f9fa",
         grey10: "#fdfdfd",
         whiteFixed: "#ffffff"
+      },
+      keyframes: {
+        aboutUs: {
+          "0%": {
+            transform: "translateX(200px)",
+            opacity: "0"
+          },
+          "100%": {
+            transform: "translateX(0)",
+            opacity: "1"
+          }
+        }
+      },
+      animation: {
+        aboutUs: "aboutUs 1s ease-in-out"
       }
     }
   },
